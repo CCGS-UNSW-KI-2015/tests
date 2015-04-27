@@ -12,7 +12,7 @@ int main(int argc, char *argv[]){
 
 	printf("Press enter to continue");
 	char temp = 'a';
-	scanf_s("%c", &temp);
+	scanf("%c", &temp);
 
 	//---------------TESTs-----------//
 
@@ -31,7 +31,7 @@ int main(int argc, char *argv[]){
 
 	printf("Press Enter to continue");
 	temp = 'a';
-	scanf_s("%c", &temp);
+	scanf("%c", &temp);
 
 	return EXIT_SUCCESS;
 }

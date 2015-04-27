@@ -10,3 +10,7 @@ Game newGame(int discipline[], int dice[]){
 int getTurnNumber(Game g){ 
 	return -1; 
 }
+
+void throwDice(Game g, int diceScore){
+	//Do stuff :D
+}
