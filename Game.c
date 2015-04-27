@@ -12,5 +12,11 @@ int getTurnNumber(Game g){
 }
 
 void throwDice(Game g, int diceScore){
-	//Do stuff :D
+	// Correct me if I'm wrong, this might
+	// be bad style but I don't see an
+	// alternative.
+	srand(clock());
+	
+	// Return a random number
+	return rand() % 6 + 1;
 }
