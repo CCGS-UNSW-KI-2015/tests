@@ -10,10 +10,26 @@
 int main(int argc, char *argv[]){
 	Game game;
 
-	game = newGame(DEFAULT_DISCIPLINES, DEFAULT_DICE);
+	printf("Press enter to continue");
+	char temp = 'a';
+	scanf_s("%c", &temp);
+
+	//---------------TESTs-----------//
+
+	int defaultDis[] = DEFAULT_DISCIPLINES;
+	int defaultDice[] = DEFAULT_DICE;
+	game = newGame(defaultDis, defaultDice);
 
 
 	assert(getTurnNumber(game) == -1);//When game is first gened turnNum should be -1
+
+	printf("All tests passed. You can kind of code :D\n");
+
+	//--------------TESTS------------//
+
+	printf("Press Enter to continue");
+	temp = 'a';
+	scanf_s("%c", &temp);
 
 	return EXIT_SUCCESS;
 }

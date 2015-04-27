@@ -123,18 +123,14 @@ typedef struct _action {
 // so to create the default game as shown on the badly drawn map:
 //
 
-#define DEFAULT_DISCIPLINES {STUDENT_BQN, STUDENT_MMONEY, STUDENT_MJ, 
-                STUDENT_MMONEY, STUDENT_MJ, STUDENT_BPS, STUDENT_MTV, 
-                STUDENT_MTV, STUDENT_BPS,STUDENT_MTV, STUDENT_BQN, 
-                STUDENT_MJ, STUDENT_BQN, STUDENT_THD, STUDENT_MJ, 
-                STUDENT_MMONEY, STUDENT_MTV, STUDENT_BQN, STUDENT_BPS }
+#define DEFAULT_DISCIPLINES {STUDENT_BQN, STUDENT_MMONEY, STUDENT_MJ, STUDENT_MMONEY, STUDENT_MJ, STUDENT_BPS, STUDENT_MTV,  STUDENT_MTV, STUDENT_BPS,STUDENT_MTV, STUDENT_BQN, STUDENT_MJ, STUDENT_BQN, STUDENT_THD, STUDENT_MJ, STUDENT_MMONEY, STUDENT_MTV, STUDENT_BQN, STUDENT_BPS }
 #define DEFAULT_DICE {9,10,8,12,6,5,3,11,3,11,4,6,4,7,9,2,8,10,5}
 
 //
 //   int disciplines[] = DEFAULT_DISCIPLINES;
 //   int dice[] = DEFAULT_DICE;
 //   Game g = newGame (disciplines, dice);
-Game newGame (int discipline[], int dice[]);
+Game newGame(int discipline[], int dice[]);
  
 // free all the memory malloced for the game
 void disposeGame (Game g);
@@ -172,7 +168,7 @@ int getMostARCs (Game g);
 int getMostPublications (Game g);
  
 // return the current turn number of the game -1,0,1, ..
-int getTurnNumber (Game g);
+int getTurnNumber(Game g);
  
 // return the player id of the player whose turn it is 
 // the result of this function is NO_ONE during Terra Nullis
