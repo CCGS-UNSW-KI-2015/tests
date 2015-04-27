@@ -1,4 +1,4 @@
-//Used to make functions do something
+//Game.c
 
 #include "game.h"
 

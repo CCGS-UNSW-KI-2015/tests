@@ -22,6 +22,8 @@ int main(int argc, char *argv[]){
 
 
 	assert(getTurnNumber(game) == -1);//When game is first gened turnNum should be -1
+	throwDice(game, 2);
+	assert(getTurnNumber(game) == 0);
 
 	printf("All tests passed. You can kind of code :D\n");
 
