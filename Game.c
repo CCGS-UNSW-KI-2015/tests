@@ -101,6 +101,9 @@ typedef struct _game {
 //------------Main-------------//
 
 
+//------------Building Map Functions--------//
+
+//------------Interface functons------------//
 
 Game newGame(int discipline[], int dice[]){
 	Game game = (Game) malloc(sizeof(Game));
@@ -121,13 +124,46 @@ Game newGame(int discipline[], int dice[]){
 	return game;
 }
 
-//------------Building Map Functions--------//
-
+void disposeGame (Game g);
+ 
+void makeAction (Game g, action a);
+ 
+void throwDice (Game g, int diceScore);
+ 
+int getDiscipline (Game g, int regionID);
+ 
+int getDiceValue (Game g, int regionID){
+	return g->dice[regionID];   
+}
+int getMostARCs (Game g);
+ 
+int getMostPublications (Game g);
+ 
 int getTurnNumber(Game g){ 
 	return -1; 
 }
-
-void throwDice(Game g, int diceScore){
-	//Read the description of the funciton in game.h...
-	//It takes in a diceScore ie rolling the dice and then does stuff
-}
+ 
+int getWhoseTurn (Game g);
+ 
+int getCampus(Game g, path pathToVertex);
+ 
+int getARC(Game g, path pathToEdge);
+ 
+int isLegalAction (Game g, action a);
+ 
+int getKPIpoints (Game g, int player);
+ 
+int getARCs (Game g, int player);
+ 
+int getGO8s (Game g, int player);
+ 
+int getCampuses (Game g, int player);
+ 
+int getIPs (Game g, int player);
+ 
+int getPublications (Game g, int player);
+ 
+int getStudents (Game g, int player, int discipline);
+ 
+int getExchangeRate (Game g, int player, 
+                     int disciplineFrom, int disciplineTo);
