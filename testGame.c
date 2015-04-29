@@ -8,6 +8,7 @@
 
 #include "Game.h"
 
+<<<<<<< HEAD
 #define RED     "\x1b[31m"
 #define GREEN   "\x1b[32m"
 #define YELLOW  "\x1b[33m"
@@ -22,7 +23,7 @@ typedef _actionSet struct {
 	int expectedReturn;
 } actionSet;
 
-typedef _stateSet struct {
+typedef struct _uniSet {
 	int numKPIPoints;
 	int numARCs;
 	int numGroupOfEights;
@@ -31,9 +32,27 @@ typedef _stateSet struct {
 	int numPublications;
 	int numStudents;
 	int numExchangeRate;
+} uniSet;
+
+typedef struct _actionSet {
+	int action;
+	int valueToAction;
+	int expectedReturn;
+} actionSet;
+
+typedef struct _stateSet {
+	int numDiscipline;
+	int numDiceValue;
+	int numMostARCs;
+	int numMostPublications;
+	int numTurnNumber;
+	int numWhoseTurn;
+	int numCampus;
+	int numARC;
+	uniSet unis[NUM_UNIS];
 } stateSet;
 
-typedef _testSet struct {
+typedef struct _testSet {
 	actionSet action;
 	stateSet state;
 } testSet;
