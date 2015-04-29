@@ -18,21 +18,19 @@ int main(int argc, char *argv[]){
 
 	int defaultDis[] = DEFAULT_DISCIPLINES;
 	int defaultDice[] = DEFAULT_DICE;
-	int universities[] = {UNI_A, UNI_B, UNI_C}
+	int universities[] = {UNI_A, UNI_B, UNI_C};
 	int defaultSize = NUM_REGIONS;
 	int universitiesSize = NUM_UNIS;
 	int i = 0;
 
 	game = newGame(defaultDis, defaultDice);
 
-	path startLocA1 = { 0 };
-
 	// Verify that everything has been loaded correctly
 
 	i = 0;
 	while (i < NUM_REGIONS) {
-		assert(defaultDice[i] == getDiceValue(i));
-		assert(defaultDis[i] == getDiscipline(i));
+		assert(defaultDice[i] == getDiceValue(game, i));
+		assert(defaultDis[i] == getDiscipline(game, i));
 		i++;
 	}
 
@@ -51,9 +49,13 @@ int main(int argc, char *argv[]){
 		assert(getIPs(game, universities[i]) == 0);
 		assert(getPublications(game, universities[i]) == 0);
 	}
-
+	
 	int isLegalAction(Game g, action a);
-	action illegalAction1 = {OBTAIN_ARC, startLocA1, STUDENT_THD, STUDENT_THD};
+	action illegalAction1;
+	illegalAction1.actionCode = OBTAIN_ARC;
+	illegalAction1.disciplineFrom = STUDENT_THD;
+	illegalAction1.disciplineTo = STUDENT_THD;
+	
 	assert(isLegalAction(game, illegalAction1) == FALSE);
 
 	assert(getTurnNumber(game) == -1); // When game is first gened turnNum should be -1

@@ -2,28 +2,22 @@
 
 //----------#include-----------//
 
+#include <stdio.h>
+#include <stdlib.h>
+
 #include "game.h"
-
-
 
 //----------#defines----------//
 
-
+#define BOARD_SIZE 19
 
 //-----------Structs-----------//
 
-typedef struct _game game;
+typedef struct _game * Game;
 typedef struct _hex hex;
 typedef struct _vert vert;
 typedef struct _edge edge;
-
-typedef struct _game { 
-	int currentTurn;
-	
-	int disciplines;
-	//... more stuff in here
-} game;
-
+typedef struct _player player;
 
 typedef struct _hex {
 	int hexID; // 1-19 starting with 1 at top left
@@ -88,12 +82,42 @@ typedef struct _edge {
 	
 } edge;
 
+typedef struct _player{
+	
+	int playerID;
+	
+} player;
+
+typedef struct _game { 
+	int currentTurn;
+	
+	int disciplines[BOARD_SIZE];
+	int dice[BOARD_SIZE];
+	
+	player playerArray[3];
+	
+} * Game;
+
 //------------Main-------------//
 
 
 
 Game newGame(int discipline[], int dice[]){
-	Game game = { 0 };
+	Game game = (Game) malloc(sizeof(Game));
+	
+	int i = 0;
+	while(i < BOARD_SIZE){
+		game->disciplines[i] = discipline[i];
+		game->dice[i] = dice[i];
+		i++;
+	}
+	
+	//DEBUG//
+	
+	printf("Game dice[0] : %d", game->dice[0]);
+	
+	//DEBUG//
+	
 	return game;
 }
 
