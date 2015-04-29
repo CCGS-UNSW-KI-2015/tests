@@ -1,11 +1,34 @@
-//Do I know how to use github???
-//YAY I KNOW GITHUD ;)
+/* testGame.c
+ * It's alive!
+ */
 
 #include <stdio.h>
 #include <stdlib.h>
 #include <assert.h>
 
-#include "game.h"
+#include "Game.h"
+
+typedef _actionSet struct {
+	int action;
+	int valueToAction;
+	int expectedReturn;
+} actionSet;
+
+typedef _stateSet struct {
+	int numKPIPoints;
+	int numARCs;
+	int numGroupOfEights;
+	int numCampuses;
+	int numIPs;
+	int numPublications;
+	int numStudents;
+	int numExchangeRate;
+} stateSet;
+
+typedef _testSet struct {
+	actionSet action;
+	stateSet state;
+} testSet;
 
 int main(int argc, char *argv[]){
 	Game game;
