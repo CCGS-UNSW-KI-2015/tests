@@ -1,3 +1,8 @@
+/* testState.c
+ * A bunch of tests for the game state.
+ * Includes a verbose advAssert() function.
+ */
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <assert.h>
@@ -6,15 +11,7 @@
 #include "Game.h"
 #include "testState.h"
 
-#define RED     "\x1b[31m"
-#define GREEN   "\x1b[32m"
-#define YELLOW  "\x1b[33m"
-#define BLUE    "\x1b[34m"
-#define MAGENTA "\x1b[35m"
-#define CYAN    "\x1b[36m"
-#define BOLD    "\x1b[1m"
-
-#define RESET   "\x1b[0m"
+// Color ANSI escape sequences are in testState.h
 
 int defaultSize = 12;
 int universitiesSize = 3;
