@@ -1,5 +1,6 @@
 //Do I know how to use github???
 //YAY I KNOW GITHUD ;)
+//KOHSUKE CAN GITHUD TOO
 
 #include <stdio.h>
 #include <stdlib.h>
