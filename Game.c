@@ -86,6 +86,9 @@ typedef struct _player{
 	
 	int playerID;
 	
+	int numARCs;
+	int numPubs;
+	
 } player;
 
 typedef struct _game { 
@@ -130,15 +133,46 @@ void makeAction (Game g, action a);
  
 void throwDice (Game g, int diceScore);
  
-int getDiscipline (Game g, int regionID);
- 
+int getDiscipline (Game g, int regionID){
+	return g->disciplines[regionID];
+}
+
 int getDiceValue (Game g, int regionID){
 	return g->dice[regionID];   
 }
-int getMostARCs (Game g);
- 
-int getMostPublications (Game g);
- 
+
+int getMostARCs (Game g){
+	int uniWithARCs = NO_ONE;
+	int mostARCs = 0;
+	
+	int i = 1;
+	while (i <= 3){
+		if( g->playerArray[i-1].numARCs > mostARCs ){
+			uniWithARCs = i;
+			mostARCs = g->playerArray[i-1].numARCs;
+		}
+		i++;
+	}
+
+	return uniWithARCs;
+}
+
+int getMostPublications (Game g){
+	int uniWithPubs = NO_ONE;
+	int mostPubs = 0;
+	
+	int i = 1;
+	while (i <= 3){
+		if( g->playerArray[i-1].numPubs > mostPubs ){
+			uniWithPubs = i;
+			mostPubs = g->playerArray[i-1].numPubs;
+		}
+		i++;
+	}
+
+	return uniWithARCs; 
+}
+
 int getTurnNumber(Game g){ 
 	return -1; 
 }
