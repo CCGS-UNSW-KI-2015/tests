@@ -8,13 +8,21 @@
 
 #include "Game.h"
 
-typedef _actionSet struct {
+typedef struct _actionSet {
 	int action;
 	int valueToAction;
 	int expectedReturn;
 } actionSet;
 
-typedef _stateSet struct {
+typedef struct _structSet {
+	int numDiscipline;
+	int numDiceValue;
+	int numMostARCs;
+	int numMostPublications;
+	int numTurnNumber;
+	int numWhoseTurn;
+	int numCampus;
+	int numARC;
 	int numKPIPoints;
 	int numARCs;
 	int numGroupOfEights;
@@ -25,7 +33,7 @@ typedef _stateSet struct {
 	int numExchangeRate;
 } stateSet;
 
-typedef _testSet struct {
+typedef struct _testSet {
 	actionSet action;
 	stateSet state;
 } testSet;
