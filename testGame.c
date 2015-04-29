@@ -49,8 +49,6 @@ typedef struct _testSet {
 	stateSet state;
 } testSet;
 
-void assertState(Game game, stateSet state);
-
 int main(int argc, char *argv[]){
 	Game game;
 
