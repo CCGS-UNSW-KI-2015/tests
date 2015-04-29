@@ -20,13 +20,15 @@ typedef struct _edge edge;
 typedef struct _game { 
 	int currentTurn;
 	
-	int disciplines
-	... more stuff in here
+	int disciplines;
+	//... more stuff in here
 } game;
 
 
 typedef struct _hex {
 	int hexID; // 1-19 starting with 1 at top left
+	int hexDiscipline;
+	
 	
 	hex *hexUp;
 	hex *hexDown;
@@ -48,8 +50,43 @@ typedef struct _hex {
 	edge *edgeUpRight;
 	edge *edgeDownLeft;
 	edge *edgeDownRight;
+	
 } hex;
 
+typedef struct _vert {
+	int hasUni;
+	int hasGO8;
+	
+	int teamID;
+	
+	
+	hex *hexLeft;
+	hex *hexRight;
+	hex *hexVertical;
+	
+	vert *vertLeft;
+	vert *vertRight;
+	vert *vertVertical;
+	
+	edge *edgeLeft;
+	edge *edgeRight;
+	edge *edgeVertical;
+	
+} vert;
+
+typedef struct _edge {
+	int hasRoad;
+	
+	int teamID;
+	
+	
+	hex *hexLeft;
+	hex *hexRight;
+	
+	vert *vertUp;
+	vert *vertDown;
+	
+} edge;
 
 //------------Main-------------//
 
