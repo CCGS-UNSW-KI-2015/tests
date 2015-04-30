@@ -24,7 +24,7 @@ typedef char boolean;
  * If it is not, it prints a description, and dumps the current
  * game state. (All of it.)
  */
-void advAssert(Game game, char* action, int expected, int got, char* helpText);
+void advAssert(Game game, assertInfo info);
 
 /* void assertState(Game game, stateSet state)
  * Performs checks on the state
