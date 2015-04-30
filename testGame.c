@@ -9,12 +9,10 @@
 #include "Game.h"
 #include "testState.h"
 
-typedef _actionSet struct {
-	int action;
-	int valueToAction;
-	int expectedReturn;
-} actionSet;
-
+/* uniSet
+ * Information on a single
+ * university
+ */
 typedef struct _uniSet {
 	int numKPIPoints;
 	int numARCs;
@@ -26,24 +24,52 @@ typedef struct _uniSet {
 	int numExchangeRate;
 } uniSet;
 
+/* regionSet
+ * Information on a single
+ * region
+ */
+typedef struct _regionSet {
+	int numDiscipline;
+	int numDiceValue;
+} regionSet;
+
+/* pathSet
+ * Information on a single
+ * path
+ */
+typedef struct _pathSet {
+	path myPath;
+	int numCampus;
+	int numARC;
+} pathSet;
+
+/* actionSet
+ * Information on which actions
+ * go with which expected
+ * returns
+ */
 typedef struct _actionSet {
 	int action;
 	int valueToAction;
 	int expectedReturn;
 } actionSet;
 
+/* stateSet
+ * A game state.
+ */
 typedef struct _stateSet {
-	int numDiscipline;
-	int numDiceValue;
+	regionSet regions[NUM_REGIONS];
 	int numMostARCs;
 	int numMostPublications;
 	int numTurnNumber;
 	int numWhoseTurn;
-	int numCampus;
-	int numARC;
+	pathSet paths[PATH_LIMIT];
 	uniSet unis[NUM_UNIS];
 } stateSet;
 
+/* testSet
+ * A testing struct.
+ */
 typedef struct _testSet {
 	actionSet action;
 	stateSet state;
