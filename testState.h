@@ -20,14 +20,13 @@
 typedef char boolean;
 
 /* void advAssert(Game game, char* action, int expected, int got, char* helpText)
- * A verbose assert that checks if expected is equal to got.
+ * A verbose assert that checks, for every check inputted, if expected is equal to got.
  * If it is not, it prints a description, and dumps the current
  * game state. (All of it.)
  */
-void advAssert(Game game, assertInfo info);
+void advAssert(Game game, assertInfo info[], int infoLen);
 
 /* void assertState(Game game, stateSet state)
- * Performs checks on the state
- * (I think, correct this if I'm wrong)
+ * Performs checks on the ENTIRE game state
  */
 void assertState(Game game, stateSet state);
