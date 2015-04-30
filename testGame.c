@@ -17,21 +17,22 @@ int main(int argc, char *argv[]){
 
 	//--------------TESTS-----------//
 
-	int defaultDis[] = DEFAULT_DISCIPLINES;
-	int defaultDice[] = DEFAULT_DICE;
+	// Just changed the variable names because that's how the header file asked to do
+	int disciplines[] = DEFAULT_DISCIPLINES;
+	int dice[] = DEFAULT_DICE;
 	int universities[] = {UNI_A, UNI_B, UNI_C};
 	int defaultSize = NUM_REGIONS;
 	int universitiesSize = NUM_UNIS;
 	int i = 0;
 
-	game = newGame(defaultDis, defaultDice);
+	game = newGame(disciplines, dice);
 
 	// Verify that everything has been loaded correctly
 
 	i = 0;
 	while (i < NUM_REGIONS) {
-		assert(defaultDice[i] == getDiceValue(game, i));
-		assert(defaultDis[i] == getDiscipline(game, i));
+		assert(dice[i] == getDiceValue(game, i));
+		assert(disciplines[i] == getDiscipline(game, i));
 		i++;
 	}
 
