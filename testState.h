@@ -1,6 +1,7 @@
 /* testState.h
  * Defines functions for testState.c
  * Includes color ANSI escape sequences
+ * and boolean integers.
  */
 
 #define RED     "\x1b[31m"
@@ -12,6 +13,11 @@
 #define BOLD    "\x1b[1m"
 
 #define RESET   "\x1b[0m"
+
+#define TRUE 1
+#define FALSE 0
+
+typedef char boolean;
 
 /* void advAssert(Game game, char* action, int expected, int got, char* helpText)
  * A verbose assert that checks if expected is equal to got.
