@@ -7,22 +7,12 @@
 #include <assert.h>
 
 #include "Game.h"
+#include "testState.h"
 
-<<<<<<< HEAD
-#define RED     "\x1b[31m"
-#define GREEN   "\x1b[32m"
-#define YELLOW  "\x1b[33m"
-#define BLUE    "\x1b[34m"
-#define MAGENTA "\x1b[35m"
-#define CYAN    "\x1b[36m"
-#define RESET   "\x1b[0m"
-
-typedef _actionSet struct {
-	int action;
-	int valueToAction;
-	int expectedReturn;
-} actionSet;
-
+/* uniSet
+ * Information on a single
+ * university
+ */
 typedef struct _uniSet {
 	int numKPIPoints;
 	int numARCs;
@@ -34,30 +24,56 @@ typedef struct _uniSet {
 	int numExchangeRate;
 } uniSet;
 
+/* regionSet
+ * Information on a single
+ * region
+ */
+typedef struct _regionSet {
+	int numDiscipline;
+	int numDiceValue;
+} regionSet;
+
+/* pathSet
+ * Information on a single
+ * path
+ */
+typedef struct _pathSet {
+	path myPath;
+	int numCampus;
+	int numARC;
+} pathSet;
+
+/* actionSet
+ * Information on which actions
+ * go with which expected
+ * returns
+ */
 typedef struct _actionSet {
 	int action;
 	int valueToAction;
 	int expectedReturn;
 } actionSet;
 
+/* stateSet
+ * A game state.
+ */
 typedef struct _stateSet {
-	int numDiscipline;
-	int numDiceValue;
+	regionSet regions[NUM_REGIONS];
 	int numMostARCs;
 	int numMostPublications;
 	int numTurnNumber;
 	int numWhoseTurn;
-	int numCampus;
-	int numARC;
+	pathSet paths[PATH_LIMIT];
 	uniSet unis[NUM_UNIS];
 } stateSet;
 
+/* testSet
+ * A testing struct.
+ */
 typedef struct _testSet {
 	actionSet action;
 	stateSet state;
 } testSet;
-
-void assertState(Game game, stateSet state);
 
 int main(int argc, char *argv[]){
 	Game game;
@@ -125,18 +141,4 @@ int main(int argc, char *argv[]){
 	scanf("%c", &temp);
 
 	return EXIT_SUCCESS;
-}
-
-void advAssert(Game game, int okay, char* description) {
-	if (!okay) {
-		printf(RED "------------------------------");
-		printf(RED "Assertion failed!\n");
-		printf(RED "Description: %s\n\n", description);
-		printf(RED "+-----------------+----------+");
-	}
-}
-
-
-void assertState(Game game, stateSet state) {
-
 }
