@@ -101,6 +101,11 @@ typedef struct _game {
 	
 } * Game;
 
+//------------Local Functions--------------//
+
+static player newPlayer(playerID);
+
+
 //------------Main-------------//
 
 
@@ -118,6 +123,14 @@ Game newGame(int discipline[], int dice[]){
 		i++;
 	}
 	
+	game->currentTurn = -1;
+
+
+	int playerI = 0;
+	while (playerI < 3){
+		game->playerArray[playerI] = newPlayer(playerI + 1);
+	}
+
 	//DEBUG//
 	
 	printf("Game dice[0] : %d", game->dice[0]);
@@ -131,7 +144,11 @@ void disposeGame (Game g);
  
 void makeAction (Game g, action a);
  
-void throwDice (Game g, int diceScore);
+void throwDice(Game g, int diceScore){
+	//Adv turn
+	g->currentTurn++;
+	//Give resources??
+}
  
 int getDiscipline (Game g, int regionID){
 	return g->disciplines[regionID];
@@ -170,11 +187,11 @@ int getMostPublications (Game g){
 		i++;
 	}
 
-	return uniWithARCs; 
+	return uniWithPubs; 
 }
 
 int getTurnNumber(Game g){ 
-	return -1; 
+	return g->currentTurn; 
 }
  
 int getWhoseTurn (Game g);
@@ -201,3 +218,11 @@ int getStudents (Game g, int player, int discipline);
  
 int getExchangeRate (Game g, int player, 
                      int disciplineFrom, int disciplineTo);
+
+static player newPlayer(playerID){
+	player playerNew;
+
+	playerNew.playerID = playerID;
+
+	return playerNew;
+}
