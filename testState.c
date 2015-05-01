@@ -282,11 +282,15 @@ void assertState(Game game, stateSet state) {
 }
 
 
-void printAction(char* action) {
+int printAction(char* action, int actionStep) {
 	if (actionStep == 0) {
 		printf(RESET CYAN  "------------------ Start Tests -----------------\n");
 	}
 	printf(RESET CYAN  "Action %d: %s\n", actionStep, action);
+
+	actionStep++;
+
+	return actionStep;
 }
 
 void printEnd() {
