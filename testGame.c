@@ -105,8 +105,7 @@ int main(int argc, char *argv[]){
 	assert(getTurnNumber(game) == 0);
 	*/
 
-
-	printf("All tests passed. You can kind of code :D\n");
+	printEnd();
 
 	//--------------TESTS------------//
 
