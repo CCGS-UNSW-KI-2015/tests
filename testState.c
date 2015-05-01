@@ -11,31 +11,50 @@
 #include "Game.h"
 #include "testState.h"
 
-// Color ANSI escape sequences are in testState.h
+// Color ANSI escape sequences and 'fake' booleans
+// are #defined in testState.h
 
 int defaultSize = 12;
 int universitiesSize = 3;
 int universities[] = {UNI_A, UNI_B, UNI_C};
 
-void advAssert(Game game, char* action, int expected, int got, char* helpText) {
-	if (expected != got) {
-		printf(RED         "================================================\n");
-		printf(BOLD RED    "Assertion failed!\n");
-		printf(            "Expected %d got %d ", expected, got);
-		printf(            "for function \"%s\"\n", action);
-		printf(RESET RED   "%s\n\n", helpText);
+typedef struct _assertInfo {
+	char* action;
+	int expected;
+	int got;
+	char* helpText;
+} assertInfo;
+
+void advAssert(Game game, assertInfo info[], int infoLen) {
+	bool passed = TRUE;
+	
+	// Print errors for all of the checks.
+	int i = 0;
+	while (i < infoLen) {
+		if (info[i].expected != info[i].got) {
+			passed = FALSE;
+			printf(RED         "================================================\n");
+			printf(BOLD RED    "Assertion failed!\n");
+			printf(            "Expected %d got %d ", info[i].expected, info[i].got);
+			printf(            "for function \"%s\"\n", info[i].action);
+			printf(RESET RED   "%s\n\n", info[i].helpText);
+		}
+		i++;
+	}
+	
+	if (!passed) {
 		printf(BOLD RED    "====================== Dump ====================\n");
 		printf(RESET GREEN "------------------------------------------------\n");
 		printf(RESET GREEN "Region Information\n");
 		printf(RESET GREEN "------------------------------------------------\n");
 		printf(BOLD GREEN  "getDiscipline\n");
 		printf(BOLD GREEN  "Region ID | Type\n" RESET GREEN);
-
+	
 		int i = 0;
 		while (i < defaultSize) {
 			int rawType = STUDENT_THD; // getDiscipline(game, i);
 			char disciplineType[10];
-
+	
 			if (rawType == STUDENT_THD) {
 				strcpy(disciplineType, "THD");
 			} else if (rawType == STUDENT_BPS) {
@@ -47,43 +66,43 @@ void advAssert(Game game, char* action, int expected, int got, char* helpText) {
 			} else if (rawType == STUDENT_MMONEY) {
 				strcpy(disciplineType, "MMONEY");
 			}
-
-
+	
+	
 			if (i >= 10) {
 				printf(      "%d        | %s\n", i, disciplineType);
 			} else {
 				printf(      "%d         | %s\n", i, disciplineType);
 			}
-
+	
 			i++;
 		}
-
+	
 		printf(RESET GREEN "------------------------------------------------\n");
 		printf(BOLD GREEN  "getDiceValue\n");
 		printf(            "Region ID | Dice Value\n" RESET GREEN);
-
+	
 		i = 0;
 		while (i < defaultSize) {
 			int diceValue = 3; // getDiceValue(game, i);
-
+	
 			if (i >= 10) {
 				printf(      "%d        | %d\n", i, diceValue);
 			} else {
 				printf(      "%d         | %d\n", i, diceValue);
 			}
-
+	
 			i++;
 		}
-
-
+	
+	
 		printf(RESET BLUE  "------------------------------------------------\n");
 		printf(BOLD BLUE   "Player Information\n");
 		printf(RESET BLUE  "------------------------------------------------\n");
-
+	
 		i = 0;
 		while (i < universitiesSize) {
 			printf(RESET BLUE "================================================\n");
-
+	
 			int player = universities[i];
 			printf(BOLD BLUE  "Player %d\n", player);
 			printf(RESET BLUE "------------------------------------------------\n");
@@ -94,21 +113,21 @@ void advAssert(Game game, char* action, int expected, int got, char* helpText) {
 			printf(           "Campuses              | %d\n", 4); // getCampuses(game, i);
 			printf(           "IPs                   | %d\n", 5); // getIPs(game, i);
 			printf(           "Publications          | %d\n", 6); // getPublications(game, i);
-
+	
 			printf(RESET BLUE "------------------------------------------------\n");
-
+	
 			printf(BOLD BLUE  "Discipline            | Students\n");
 			printf(RESET BLUE "THD                   | %d\n", 4); // getStudents(game, player, STUDENT_THD) ... you get the point
 			printf(RESET BLUE "BPS                   | %d\n", 5);
 			printf(RESET BLUE "MJ                    | %d\n", 6);
 			printf(RESET BLUE "MTV                   | %d\n", 7);
 			printf(RESET BLUE "MMONEY                | %d\n", 8);
-
+	
 			i++;
 		}
-
+	
 		printf(RESET BLUE "================================================\n");
-
+	
 		printf(RESET CYAN "------------------------------------------------\n");
 		printf(BOLD CYAN  "Game information\n");
 		printf(RESET CYAN "------------------------------------------------\n");
@@ -117,13 +136,144 @@ void advAssert(Game game, char* action, int expected, int got, char* helpText) {
 		printf(           "Most Publications     | %d\n", 2); // getMostPublications(game);
 		printf(           "Turn Number           | %d\n", 3); // getTurnNumber(game);
 		printf(           "Whose Turn            | %d\n", 4); // getWhoseTurn(game);
-
+	
 		printf(RED BOLD   "================= END OF DUMP ==================\n");
-
+	
 		printf(RESET);
 	}
 }
 
 void assertState(Game game, stateSet state) {
-    // TODO
+	// I'm assuming there will never be
+	// more than 1000 checks necessary...
+    assertInfo info[1000];
+    int infoPos = 0;
+    
+    // The way this works is it just
+    // passes everything into advAssert to
+    // have it checked. (At once.)
+    // :D
+    
+    int i = 0;
+    while (i < NUM_REGIONS) {
+    	info[infoPos].action = "getDiscipline";
+    	info[infoPos].expected = state.regions[i].numDiscipline;
+    	info[infoPos].got = getDiscipline(game, i);
+    	sprintf(info[infoPos].helpText, "The game did not find the correct discipline at region number %d", i);
+    	infoPos++;
+    	
+    	info[infoPos].action = "getDiceValue";
+    	info[infoPos].expected = state.regions[i].numDiceValue;
+    	info[infoPos].got = getDiceValue(game, i);
+    	sprintf(info[infoPos].helpText, "The game did not find the correct dice value for region number %d", i);
+    	infoPos++;
+    	
+    	i++;
+    }
+    
+    info[infoPos].action = "getMostARCs";
+    info[infoPos].expected = state.numMostARCs;
+    info[infoPos].got = getMostARCs(game);
+    info[infoPos].helpText = "The game did not find the correct player number.";
+    infoPos++;
+    
+    info[infoPos].action = "getMostPublications";
+    info[infoPos].expected = state.numMostPublications;
+    info[infoPos].got = getMostPublications(game);
+    info[infoPos].helpText = "The game did not find the correct player number.";
+    infoPos++;
+    
+    info[infoPos].action = "getTurnNumber";
+    info[infoPos].expected = state.numTurnNumber;
+    info[infoPos].got = getTurnNumber(game);
+    info[infoPos].helpText = "The game did not find the correct turn number.";
+    infoPos++;
+    
+    info[infoPos].action = "getWhoseTurn";
+    info[infoPos].expected = state.numWhoseTurn;
+    info[infoPos].got = getWhoseTurn(game);
+    info[infoPos].helpText = "The game did not find the correct player number.";
+    infoPos++;
+    
+    i = 0;
+    while (i < PATH_LIMIT) {
+    	info[infoPos].action = "getCampus";
+	    info[infoPos].expected = state.paths[i].numCampus;
+	    info[infoPos].got = getCampus(game, state.paths[i].myPath);
+	    sprintf(info[infoPos].helpText, "The game did not find the correct campus at path number %d", i);
+	    infoPos++;
+	    
+	    info[infoPos].action = "getARC";
+	    info[infoPos].expected = state.paths[i].numARC;
+	    info[infoPos].got = getARC(game, state.paths[i].myPath);
+	    sprintf(info[infoPos].helpText, "The game did not find the correct number of ARCs for path number %d", i);
+	    infoPos++;
+	    
+	    i++;
+    }
+    
+    i = 0;
+    while (i < NUM_UNIS) {
+    	info[infoPos].action = "getKPIPoints";
+	    info[infoPos].expected = state.unis[i].numKPIPoints;
+	    info[infoPos].got = getCampus(game, i);
+	    sprintf(info[infoPos].helpText, "The game did not find the correct number of KPIs for uni number %d", i);
+	    infoPos++;
+	    
+	    info[infoPos].action = "getARCs";
+	    info[infoPos].expected = state.unis[i].numARCs;
+	    info[infoPos].got = getARCs(game, i);
+	    sprintf(info[infoPos].helpText, "The game did not find the correct number of ARCs for uni number %d", i);
+	    infoPos++;
+	    
+	    info[infoPos].action = "getGO8s";
+	    info[infoPos].expected = state.unis[i].numGroupOfEights;
+	    info[infoPos].got = getGO8s(game, i);
+	    sprintf(info[infoPos].helpText, "The game did not find the correct number of GO8s for uni number %d", i);
+	    infoPos++;
+	    
+	    info[infoPos].action = "getCampuses";
+	    info[infoPos].expected = state.unis[i].numCampuses;
+	    info[infoPos].got = getCampuses(game, i);
+	    sprintf(info[infoPos].helpText, "The game did not find the correct number of campuses for uni number %d", i);
+	    infoPos++;
+	    
+	    info[infoPos].action = "getIPs";
+	    info[infoPos].expected = state.unis[i].numIPs;
+	    info[infoPos].got = getIPs(game, i);
+	    sprintf(info[infoPos].helpText, "The game did not find the correct number of IPs for uni number %d", i);
+	    infoPos++;
+	    
+	    info[infoPos].action = "getPublications";
+	    info[infoPos].expected = state.unis[i].numPublications;
+	    info[infoPos].got = getPublications(game, i);
+	    sprintf(info[infoPos].helpText, "The game did not find the correct number of publications for uni number %d", i);
+	    infoPos++;
+	    
+	    int j = 0;
+	    while (j < NUM_DISCIPLINES) {
+		    info[infoPos].action = "getStudents";
+		    info[infoPos].expected = state.unis[i].numStudents[j];
+		    info[infoPos].got = getStudents(game, i, j);
+		    sprintf(info[infoPos].helpText, "The game did not find the correct number of ARCs for uni number %d and discipline %d", i, j);
+		    infoPos++;
+		    
+		    int k = 0;
+		    while (k < NUM_DISCIPLINES) {
+			    info[infoPos].action = "getExchangeRate";
+			    info[infoPos].expected = state.unis[i].numExchangeRate[j][k];
+			    info[infoPos].got = getExchangeRate(game, i, j, k);
+			    sprintf(info[infoPos].helpText, "The game did not find the correct number of ARCs for uni number %d, discipline from %d and discipline to %d", i, j, k);
+			    infoPos++;
+			    
+			    k++;
+		    }
+		    
+		    j++;
+	    }
+		    
+		i++;
+    }
+    
+    advAssert(game, info, infoPos);
 }

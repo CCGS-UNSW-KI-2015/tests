@@ -20,8 +20,8 @@ typedef struct _uniSet {
 	int numCampuses;
 	int numIPs;
 	int numPublications;
-	int numStudents;
-	int numExchangeRate;
+	int numStudents[NUM_DISCIPLINES];
+	int numExchangeRate[NUM_DISCIPLINES][NUM_DISCIPLINES];
 } uniSet;
 
 /* regionSet
