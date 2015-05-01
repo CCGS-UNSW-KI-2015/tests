@@ -9,6 +9,11 @@
 #include "Game.h"
 #include "testState.h"
 
+/*
+ * Function prototypes
+ */
+stateSet initState (stateSet myState);
+
 /* uniSet
  * Information on a single
  * university
@@ -64,7 +69,7 @@ typedef struct _stateSet {
 	int numTurnNumber;
 	int numWhoseTurn;
 	pathSet paths[PATH_LIMIT];
-	uniSet unis[NUM_UNIS];
+	uniSet unis[20];
 } stateSet;
 
 /* testSet
@@ -78,67 +83,83 @@ typedef struct _testSet {
 int main(int argc, char *argv[]){
 	Game game;
 
-	printf("Press enter to continue");
+	printf("Press the any key to continue: ");
 	char temp = 'a';
 	scanf("%c", &temp);
 
 	//--------------TESTS-----------//
-
-	int defaultDis[] = DEFAULT_DISCIPLINES;
-	int defaultDice[] = DEFAULT_DICE;
-	int universities[] = {UNI_A, UNI_B, UNI_C}
-	int defaultSize = NUM_REGIONS;
-	int universitiesSize = NUM_UNIS;
-	int i = 0;
-
+	
 	game = newGame(defaultDis, defaultDice);
+	stateSet currentState;
+	
+	// Inititalise currentState game state
+	currentState = initState(currentState);
+	
+	// Check it!
+	assertState(game, currentState);
 
-	path startLocA1 = { 0 };
-
-	// Verify that everything has been loaded correctly
-
-	i = 0;
-	while (i < NUM_REGIONS) {
-		assert(defaultDice[i] == getDiceValue(i));
-		assert(defaultDis[i] == getDiscipline(i));
-		i++;
-	}
-
-	// Make sure the game state is intialised correctly
-
-	assert(getMostARCs(game) == NO_ONE);
-	assert(getMostPublications(game) == NO_ONE);
-	assert(getWhoseTurn(game) == NO_ONE);
-
-	i = 0;
-	while (i < universitiesSize) {
-		assert(getKPIpoints(game, universities[i]) == 0);
-		assert(getARCs(game, universities[i]) == 0);
-		assert(getGO8s(game, universities[i]) == 0);
-		assert(getCampuses(game, universities[i]) == 0);
-		assert(getIPs(game, universities[i]) == 0);
-		assert(getPublications(game, universities[i]) == 0);
-	}
-
-	int isLegalAction(Game g, action a);
-	action illegalAction1 = {OBTAIN_ARC, startLocA1, STUDENT_THD, STUDENT_THD};
-	assert(isLegalAction(game, illegalAction1) == FALSE);
-
-	assert(getTurnNumber(game) == -1); // When game is first gened turnNum should be -1
-
+	/*
 	// Throw a dice of 2
 
 	throwDice(game, 2);
 	assert(getTurnNumber(game) == 0);
+	*/
 
 
 	printf("All tests passed. You can kind of code :D\n");
 
 	//--------------TESTS------------//
 
-	printf("Press Enter to continue");
+	printf("Press the any key to continue: ");
 	temp = 'a';
 	scanf("%c", &temp);
 
 	return EXIT_SUCCESS;
+}
+
+stateSet initState (stateSet myState) {
+	int defaultDis[] = DEFAULT_DISCIPLINES;
+	int defaultDice[] = DEFAULT_DICE;
+	int universities[] = {UNI_A, UNI_B, UNI_C};
+	int defaultSize = NUM_REGIONS;
+	int universitiesSize = NUM_UNIS;
+	
+	int i = 0;
+	while (i < NUM_REGIONS) {
+		state.regions[i].numDiscipline = defaultDis[i];
+		state.regions[i].numDiceValue = defaultDice[i];
+		
+		i++;
+	}
+	
+	state.numMostARCs = NO_ONE;
+	state.numMostPublications = NO_ONE;
+	state.numTurnNumber = -1;
+	state.numWhoseTurn = NO_ONE;
+	
+	i = 0;
+	while (i < PATH_LIMIT) {
+		state.paths[i].numCampus = VACANT_VERTEX;
+		state.paths[i].numARC = VACANT_ARC;
+		
+		i++;
+	}
+	
+	i = 0;
+	while (i < NUM_UNIS) {
+		state.unis[i].numKPIPoints = 0;
+		state.unis[i].numARCs = 0;
+		state.unis[i].numGroupOfEights = 0;
+		state.unis[i].numCampuses = 0;
+		state.unis[i].numIPs = 0;
+		state.unis[i].numPublications = 0;
+		
+		// Mega-array-setter-quicker Get-a-lotta-stuff-done-like-a mega-super-awesome-looking setter-everything-to-zero
+		memset(array, 0, sizeof(states.unis[i].numStudents) / sizeof(states.unis[i].numStudents[0]));
+		memset(array, 0, sizeof(states.unis[i].numExchangeRate) / sizeof(states.unis[i].numExchangeRate[0][0]));
+		
+		i++;
+	}
+	
+	return state;
 }
