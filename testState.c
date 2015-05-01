@@ -8,7 +8,6 @@
 #include <assert.h>
 #include <string.h>
 
-#include "Game.h"
 #include "testState.h"
 
 // Color ANSI escape sequences and 'fake' booleans
@@ -18,34 +17,31 @@ int defaultSize = 12;
 int universitiesSize = 3;
 int universities[] = {UNI_A, UNI_B, UNI_C};
 
-typedef struct _assertInfo {
-	char* action;
-	int expected;
-	int got;
-	char* helpText;
-} assertInfo;
-
 void advAssert(Game game, assertInfo info[], int infoLen) {
-	bool passed = TRUE;
+	boolean passed = TRUE;
 
 	// Print errors for all of the checks.
 	int i = 0;
-	while (i < infoLen) {
+	while (i < infoLen && i < 5) {
 		if (info[i].expected != info[i].got) {
 			passed = FALSE;
 			// printf(RED         "================================================\n");
-			printf(BOLD RED    "Assertion failed!\n");
+			printf(BOLD RED    "\nAssertion failed!\n");
 			printf(            "Expected %d got %d ", info[i].expected, info[i].got);
 			printf(            "for function \"%s\"\n", info[i].action);
-			printf(RESET RED   "%s\n\n", info[i].helpText);
+			printf(RESET RED   "%s\n", info[i].helpText);
 		}
 		i++;
+	}
+
+	if (i < infoLen) {
+		printf(BOLD RED "\nand %d additional assertion failures...\n", infoLen - 5);
 	}
 
 	if (passed) {
 		printf(BOLD GREEN "Tests passed!\n");
 	} else {
-		printf(BOLD RED    "====================== Dump ====================\n");
+		printf(BOLD RED    "\n====================== Dump ====================\n");
 		printf(RESET GREEN "------------------------------------------------\n");
 		printf(RESET GREEN "Region Information\n");
 		printf(RESET GREEN "------------------------------------------------\n");
@@ -85,7 +81,7 @@ void advAssert(Game game, assertInfo info[], int infoLen) {
 
 		i = 0;
 		while (i < defaultSize) {
-			int diceValue = 3; // getDiceValue(game, i);
+			int diceValue = getDiceValue(game, i);
 
 			if (i >= 10) {
 				printf(      "%d        | %d\n", i, diceValue);
@@ -141,15 +137,16 @@ void advAssert(Game game, assertInfo info[], int infoLen) {
 
 		printf(RED BOLD   "================= END OF DUMP ==================\n");
 	}
-
-	printf(RESET CYAN "------------------------------------------------\n");
+	printf(RESET CYAN "------------ Premature End of Tests ------------\n");
 	printf(RESET "\n");
+	exit(0);
 }
 
 void assertState(Game game, stateSet state) {
 	// I'm assuming there will never be
 	// more than 1000 checks necessary...
     assertInfo info[1000];
+    assertInfo currentInfo;
     int infoPos = 0;
 
     // The way this works is it just
@@ -163,12 +160,14 @@ void assertState(Game game, stateSet state) {
     	info[infoPos].expected = state.regions[i].numDiscipline;
     	info[infoPos].got = getDiscipline(game, i);
     	sprintf(info[infoPos].helpText, "The game did not find the correct discipline at region number %d", i);
+
     	infoPos++;
 
     	info[infoPos].action = "getDiceValue";
     	info[infoPos].expected = state.regions[i].numDiceValue;
     	info[infoPos].got = getDiceValue(game, i);
     	sprintf(info[infoPos].helpText, "The game did not find the correct dice value for region number %d", i);
+
     	infoPos++;
 
     	i++;
@@ -177,25 +176,25 @@ void assertState(Game game, stateSet state) {
     info[infoPos].action = "getMostARCs";
     info[infoPos].expected = state.numMostARCs;
     info[infoPos].got = getMostARCs(game);
-    info[infoPos].helpText = "The game did not find the correct player number.";
+    sprintf(info[infoPos].helpText, "The game did not find the correct player number.");
     infoPos++;
 
     info[infoPos].action = "getMostPublications";
     info[infoPos].expected = state.numMostPublications;
     info[infoPos].got = getMostPublications(game);
-    info[infoPos].helpText = "The game did not find the correct player number.";
+    sprintf(info[infoPos].helpText, "The game did not find the correct player number.");
     infoPos++;
 
     info[infoPos].action = "getTurnNumber";
     info[infoPos].expected = state.numTurnNumber;
     info[infoPos].got = getTurnNumber(game);
-    info[infoPos].helpText = "The game did not find the correct turn number.";
+    sprintf(info[infoPos].helpText, "The game did not find the correct turn number.");
     infoPos++;
 
     info[infoPos].action = "getWhoseTurn";
     info[infoPos].expected = state.numWhoseTurn;
     info[infoPos].got = getWhoseTurn(game);
-    info[infoPos].helpText = "The game did not find the correct player number.";
+    sprintf(info[infoPos].helpText, "The game did not find the correct player number.");
     infoPos++;
 
     i = 0;
@@ -204,12 +203,14 @@ void assertState(Game game, stateSet state) {
 	    info[infoPos].expected = state.paths[i].numCampus;
 	    info[infoPos].got = getCampus(game, state.paths[i].myPath);
 	    sprintf(info[infoPos].helpText, "The game did not find the correct campus at path number %d", i);
+
 	    infoPos++;
 
 	    info[infoPos].action = "getARC";
 	    info[infoPos].expected = state.paths[i].numARC;
 	    info[infoPos].got = getARC(game, state.paths[i].myPath);
 	    sprintf(info[infoPos].helpText, "The game did not find the correct number of ARCs for path number %d", i);
+
 	    infoPos++;
 
 	    i++;
@@ -219,38 +220,44 @@ void assertState(Game game, stateSet state) {
     while (i < NUM_UNIS) {
     	info[infoPos].action = "getKPIPoints";
 	    info[infoPos].expected = state.unis[i].numKPIPoints;
-	    info[infoPos].got = getCampus(game, i);
+	    info[infoPos].got = getKPIpoints(game, i);
 	    sprintf(info[infoPos].helpText, "The game did not find the correct number of KPIs for uni number %d", i);
+
 	    infoPos++;
 
 	    info[infoPos].action = "getARCs";
 	    info[infoPos].expected = state.unis[i].numARCs;
 	    info[infoPos].got = getARCs(game, i);
 	    sprintf(info[infoPos].helpText, "The game did not find the correct number of ARCs for uni number %d", i);
+
 	    infoPos++;
 
 	    info[infoPos].action = "getGO8s";
 	    info[infoPos].expected = state.unis[i].numGroupOfEights;
 	    info[infoPos].got = getGO8s(game, i);
 	    sprintf(info[infoPos].helpText, "The game did not find the correct number of GO8s for uni number %d", i);
+
 	    infoPos++;
 
 	    info[infoPos].action = "getCampuses";
 	    info[infoPos].expected = state.unis[i].numCampuses;
 	    info[infoPos].got = getCampuses(game, i);
 	    sprintf(info[infoPos].helpText, "The game did not find the correct number of campuses for uni number %d", i);
+
 	    infoPos++;
 
 	    info[infoPos].action = "getIPs";
 	    info[infoPos].expected = state.unis[i].numIPs;
 	    info[infoPos].got = getIPs(game, i);
 	    sprintf(info[infoPos].helpText, "The game did not find the correct number of IPs for uni number %d", i);
+
 	    infoPos++;
 
 	    info[infoPos].action = "getPublications";
 	    info[infoPos].expected = state.unis[i].numPublications;
 	    info[infoPos].got = getPublications(game, i);
 	    sprintf(info[infoPos].helpText, "The game did not find the correct number of publications for uni number %d", i);
+
 	    infoPos++;
 
 	    int j = 0;
@@ -259,6 +266,7 @@ void assertState(Game game, stateSet state) {
 		    info[infoPos].expected = state.unis[i].numStudents[j];
 		    info[infoPos].got = getStudents(game, i, j);
 		    sprintf(info[infoPos].helpText, "The game did not find the correct number of ARCs for uni number %d and discipline %d", i, j);
+
 		    infoPos++;
 
 		    int k = 0;
@@ -267,6 +275,7 @@ void assertState(Game game, stateSet state) {
 			    info[infoPos].expected = state.unis[i].numExchangeRate[j][k];
 			    info[infoPos].got = getExchangeRate(game, i, j, k);
 			    sprintf(info[infoPos].helpText, "The game did not find the correct number of ARCs for uni number %d, discipline from %d and discipline to %d", i, j, k);
+
 			    infoPos++;
 
 			    k++;
@@ -286,7 +295,7 @@ int printAction(char* action, int actionStep) {
 	if (actionStep == 0) {
 		printf(RESET CYAN  "------------------ Start Tests -----------------\n");
 	}
-	printf(RESET CYAN  "Action %d: %s\n", actionStep, action);
+	printf(RESET CYAN  "Action %d: %s" RESET "\n", actionStep, action);
 
 	actionStep++;
 
@@ -295,7 +304,7 @@ int printAction(char* action, int actionStep) {
 
 void printEnd() {
 	printf(RESET CYAN  "------------------- End Tests ------------------\n\n");
-	printf(RESET ORANGE);
+	printf(RESET YELLOW);
 	printf("            ,:/+/-                      \n");
 	printf("            /M/              .,-=;//;-  \n");
 	printf("       .:/= ;MH/,    ,=/+%%$XH@MM#@:     \n");

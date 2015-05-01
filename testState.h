@@ -4,6 +4,8 @@
  * and boolean integers.
  */
 
+#include "testGame.h"
+
 #define RED     "\x1b[31m"
 #define GREEN   "\x1b[32m"
 #define YELLOW  "\x1b[33m"
@@ -19,6 +21,13 @@
 
 typedef char boolean;
 
+typedef struct _assertInfo {
+	char* action;
+	int expected;
+	int got;
+	char helpText[200];
+} assertInfo;
+
 /* void advAssert(Game game, char* action, int expected, int got, char* helpText)
  * A verbose assert that checks, for every check inputted, if expected is equal to got.
  * If it is not, it prints a description, and dumps the current
@@ -32,6 +41,11 @@ void advAssert(Game game, assertInfo info[], int infoLen);
 void assertState(Game game, stateSet state);
 
 /* void printAction(char* action)
- * Performs check
+ * Prints action information to the terminal
  */
-void printAction(char* action);
+int printAction(char* action, int actionStep);
+
+/* void printAction(char* action)
+ * Prints the end success message to the terminal
+ */
+void printEnd();
