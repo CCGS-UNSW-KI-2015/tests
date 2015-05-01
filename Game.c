@@ -89,6 +89,8 @@ typedef struct _player{
 	int numARCs;
 	int numPubs;
 	
+	int kpiPoints;
+
 } player;
 
 typedef struct _game { 
@@ -130,6 +132,14 @@ Game newGame(int discipline[], int dice[]){
 	while (playerI < 3){
 		game->playerArray[playerI] = newPlayer(playerI + 1);
 	}
+
+	//Map info
+
+	vert vertArray[48];
+	hex hexArray[19];
+	edge edgeArray[72];
+
+	vert * entryPoint;
 
 	//DEBUG//
 	
@@ -202,7 +212,9 @@ int getARC(Game g, path pathToEdge);
  
 int isLegalAction (Game g, action a);
  
-int getKPIpoints (Game g, int player);
+int getKPIpoints(Game g, int player){
+	g->playerArray[player - 1].kpiPoints;
+}
  
 int getARCs (Game g, int player);
  
