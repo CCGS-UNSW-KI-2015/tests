@@ -1,6 +1,6 @@
 //Game.c
 
-#include "game.h"
+#include "Game.h"
 
 Game newGame(int discipline[], int dice[]){
 	Game game = { 0 };
