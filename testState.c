@@ -22,20 +22,25 @@ void advAssert(Game game, assertInfo info[], int infoLen) {
 
 	// Print errors for all of the checks.
 	int i = 0;
-	while (i < infoLen && i < 5) {
+	int displayedErrors = 0;
+	while (i < infoLen) {
 		if (info[i].expected != info[i].got) {
-			passed = FALSE;
-			// printf(RED         "================================================\n");
-			printf(BOLD RED    "\nAssertion failed!\n");
-			printf(            "Expected %d got %d ", info[i].expected, info[i].got);
-			printf(            "for function \"%s\"\n", info[i].action);
-			printf(RESET RED   "%s\n", info[i].helpText);
+			if (displayedErrors < 5) {
+				passed = FALSE;
+				// printf(RED         "================================================\n");
+				printf(BOLD RED    "\nAssertion failed!\n");
+				printf(            "Expected %d got %d ", info[i].expected, info[i].got);
+				printf(            "for function \"%s\"\n", info[i].action);
+				printf(RESET RED   "%s\n", info[i].helpText);
+			}
+
+			displayedErrors++;
 		}
 		i++;
 	}
 
-	if (i < infoLen) {
-		printf(BOLD RED "\nand %d additional assertion failures...\n", infoLen - 5);
+	if (displayedErrors > 5) {
+		printf(BOLD RED "\nand %d additional assertion failures...\n", displayedErrors - 5);
 	}
 
 	if (passed) {
