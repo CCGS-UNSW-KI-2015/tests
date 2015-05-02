@@ -57,7 +57,7 @@ typedef struct _stateSet {
 	int numTurnNumber;
 	int numWhoseTurn;
 	pathSet paths[PATH_LIMIT];
-	uniSet unis[NUM_UNIS];
+	uniSet unis[20];
 } stateSet;
 
 /* testSet

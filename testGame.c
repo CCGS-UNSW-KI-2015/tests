@@ -46,6 +46,7 @@ stateSet initState (stateSet state) {
 	int defaultDice[] = DEFAULT_DICE;
 	int universities[] = {UNI_A, UNI_B, UNI_C};
 	int defaultSize = NUM_REGIONS;
+	int universitySize = 20;
 
 	int i = 0;
 	while (i < NUM_REGIONS) {
@@ -68,7 +69,7 @@ stateSet initState (stateSet state) {
 		i++;
 	}
 
-	memset(state.unis, 0, sizeof(state.unis[0]) * NUM_UNIS);
+	memset(state.unis, 0, sizeof(state.unis[0]) * universitySize);
 
 	return state;
 }
