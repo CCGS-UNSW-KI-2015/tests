@@ -9,11 +9,6 @@
 
 #include "testState.h"
 
-/*
- * Function prototypes
- */
-stateSet initState (stateSet state);
-
 int main(int argc, char *argv[]){
 	Game game;
 
@@ -51,7 +46,6 @@ stateSet initState (stateSet state) {
 	int defaultDice[] = DEFAULT_DICE;
 	int universities[] = {UNI_A, UNI_B, UNI_C};
 	int defaultSize = NUM_REGIONS;
-	int universitiesSize = 20;
 
 	int i = 0;
 	while (i < NUM_REGIONS) {
@@ -74,7 +68,7 @@ stateSet initState (stateSet state) {
 		i++;
 	}
 
-	memset(state.unis, 0, sizeof(state.unis[0]) * universitiesSize);
+	memset(state.unis, 0, sizeof(state.unis[0]) * NUM_UNIS);
 
 	return state;
 }
