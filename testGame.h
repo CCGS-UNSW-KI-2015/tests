@@ -1,4 +1,3 @@
-
 #include "Game.h"
 
 #define NUM_DISCIPLINES 6
@@ -68,3 +67,8 @@ typedef struct _testSet {
 	actionSet action;
 	stateSet state;
 } testSet;
+
+/* initState
+ * Initialise a stateSet to default.
+ */
+stateSet initState (stateSet state);
