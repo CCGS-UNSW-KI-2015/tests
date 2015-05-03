@@ -36,17 +36,6 @@ typedef struct _pathSet {
 	int numARC;
 } pathSet;
 
-/* actionSet
- * Information on which actions
- * go with which expected
- * returns
- */
-typedef struct _actionSet {
-	int action;
-	int valueToAction;
-	int expectedReturn;
-} actionSet;
-
 /* stateSet
  * A game state.
  */
@@ -59,14 +48,6 @@ typedef struct _stateSet {
 	pathSet paths[PATH_LIMIT];
 	uniSet unis[20];
 } stateSet;
-
-/* testSet
- * A testing struct.
- */
-typedef struct _testSet {
-	actionSet action;
-	stateSet state;
-} testSet;
 
 /* initState
  * Initialise a stateSet to default.
