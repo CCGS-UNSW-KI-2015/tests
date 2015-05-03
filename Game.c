@@ -157,13 +157,18 @@ void makeAction (Game g, action a) {
 		
 		// check if there's enough students
 		if (g->playerArray[g->currentTurn].students[BPS] < 1 ||
-			g->playerArray[g->currentTurn].students[BQN] < 1 ||
-			g->playerArray[g->currentTurn].students[MJ] < 1 ||
-			g->playerArray[g->currentTurn].students[MTV] < 1) {
+			g->playerArray[g->currentTurn%3].students[BQN] < 1 ||
+			g->playerArray[g->currentTurn%3].students[MJ] < 1 ||
+			g->playerArray[g->currentTurn%3].students[MTV] < 1) {
 			return; // Stop!
 		}
 		// Add a campus and take the cost from the user
+		g->playerArray[g->currentTurn].students[BPS]
+		g->playerArray[g->currentTurn].students[BPS]
+		g->playerArray[g->currentTurn].students[BPS]
+		
 		// also add 10 KPI points
+		g->playerArray[g->currentTurn%3] += 10;
 	} else if (a.actionCode == BUILD_GO8) {
 		// check if there's a campus by the player
 		// check if there's enough students
