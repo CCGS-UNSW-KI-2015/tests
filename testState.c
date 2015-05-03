@@ -152,7 +152,6 @@ void assertState(Game game, stateSet state) {
 	// I'm assuming there will never be
 	// more than 1000 checks necessary...
     assertInfo info[1000];
-    assertInfo currentInfo;
     int infoPos = 0;
 
     // The way this works is it just
