@@ -16,11 +16,13 @@ int main(int argc, char *argv[]){
 
 	int defaultDis[] = DEFAULT_DISCIPLINES;
 	int defaultDice[] = DEFAULT_DICE;
+	int currentAction = 0;
 
 	game = newGame(defaultDis, defaultDice);
 	stateSet currentState;
 
-	printAction("Initializing game with default values", 0);
+	currentAction = printAction("Initializing game with default values",
+		currentAction);
 
 	// Inititalise currentState game state
 	currentState = initState(currentState);
@@ -28,12 +30,18 @@ int main(int argc, char *argv[]){
 	// Check it!
 	assertState(game, currentState);
 
-	/*
+
 	// Throw a dice of 2
 
+	currentAction = printAction("Throwing dice with value 2",
+		currentAction);
+
 	throwDice(game, 2);
-	assert(getTurnNumber(game) == 0);
-	*/
+
+	currentState.state.numTurnNumber++;
+
+	assertState(game, currentState);
+
 
 	printEnd();
 
