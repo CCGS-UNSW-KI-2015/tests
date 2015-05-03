@@ -100,6 +100,12 @@ typedef struct _game {
 
 	int disciplines[BOARD_SIZE];
 	int dice[BOARD_SIZE];
+	
+	vert vertArray[48];
+	hex hexArray[19];
+	edge edgeArray[72];
+
+	vert * entryPoint;
 
 	player playerArray[3];
 
@@ -135,14 +141,6 @@ Game newGame(int discipline[], int dice[]){
 		game->playerArray[playerI] = newPlayer(playerI + 1);
 		playerI++;
 	}
-
-	//Map info
-
-	vert vertArray[48];
-	hex hexArray[19];
-	edge edgeArray[72];
-
-	vert * entryPoint;
 
 	return game;
 }
@@ -320,15 +318,15 @@ int getCampuses (Game g, int player){
 }
 
 int getIPs (Game g, int player){
-	return 0; // Placeholder
+	return g->playerArray[g->currentTurn % NUM_UNIS].numIPs;
 }
 
 int getPublications (Game g, int player){
-	return 0; // Placeholder
+	return g->playerArray[g->currentTurn % NUM_UNIS].numPubs
 }
 
 int getStudents (Game g, int player, int discipline){
-	return 0; // Placeholder
+	g->playerArray[g->currentTurn % NUM_UNIS].students[discipline];
 }
 
 int getExchangeRate (Game g, int player,
