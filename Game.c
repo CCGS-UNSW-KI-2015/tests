@@ -129,6 +129,7 @@ Game newGame(int discipline[], int dice[]){
 	int playerI = 0;
 	while (playerI < 3){
 		game->playerArray[playerI] = newPlayer(playerI + 1);
+		playerI++;
 	}
 
 	//Map info
