@@ -31,18 +31,30 @@ int main(int argc, char *argv[]){
 	assertState(game, currentState);
 
 
-	// Throw a dice of 2
-
+	// Throw a dice of 2 (Also tests getWhoseTurn)
 	currentAction = printAction("Throwing dice with value 2",
 		currentAction);
 
 	throwDice(game, 2);
 
 	currentState.numTurnNumber++;
+	currentState.numWhoseTurn = UNI_A;
 
 	assertState(game, currentState);
 
 
+	// Test action PASS
+	currentAction = printAction("Testing action PASS",
+		currentAction);
+		
+	makeAction(game, PASS);
+	
+	currentState.numTurnNumber++;
+	currentState.numWhoseTurn = UNI_B;
+	
+	assertState(game, currentState);
+
+	// Done!
 	printEnd();
 
 
