@@ -1,4 +1,4 @@
-//Game.c
+// Game.c
 
 //----------#include-----------//
 
@@ -103,7 +103,7 @@ typedef struct _game {
 
 //------------Local Functions--------------//
 
-static player newPlayer(playerID);
+static player newPlayer(int playerID);
 
 
 //------------Main-------------//
@@ -118,17 +118,17 @@ Game newGame(int discipline[], int dice[]){
 	
 	int i = 0;
 	while(i < BOARD_SIZE){
-		game.disciplines[i] = discipline[i];
-		game.dice[i] = dice[i];
+		game->disciplines[i] = discipline[i];
+		game->dice[i] = dice[i];
 		i++;
 	}
 	
-	game.currentTurn = -1;
+	game->currentTurn = -1;
 
 
 	int playerI = 0;
 	while (playerI < 3){
-		game.playerArray[playerI] = newPlayer(playerI + 1);
+		game->playerArray[playerI] = newPlayer(playerI + 1);
 	}
 
 	//Map info
@@ -141,7 +141,7 @@ Game newGame(int discipline[], int dice[]){
 
 	//DEBUG//
 	
-	printf("Game dice[0] : %d", game.dice[0]);
+	printf("Game dice[0] : %d", game->dice[0]);
 	
 	//DEBUG//
 	
@@ -153,33 +153,33 @@ void disposeGame (Game g) {
 }
  
 void makeAction (Game g, action a) {
-	if (a == PASS) {
-		g.currentTurn++;
-	} else if (a == BUILD_CAMPUS) {
+	if (a.actionCode == PASS) {
+		g->currentTurn++;
+	} else if (a.actionCode == BUILD_CAMPUS) {
 		// check if the location is connected to an ARC grant
 		// check if there's enough students
 		// Add a campus and take the cost from the user
 		// also add 10 KPI points
-	} else if (a == BUILD_GO8) {
+	} else if (a.actionCode == BUILD_GO8) {
 		// check if there's a campus by the player
 		// check if there's enough students
 		// Remove the campus, add a GO8 campus and take the cost from the user
 		// add 10 KPI points (20 for building G08, -10 for removing a campus)
-	} else if (a == OBTAIN_ARC) {
+	} else if (a.actionCode == OBTAIN_ARC) {
 		// check if the location of the player is connected to his/her ARC
 		// check if there's enough students
 		// Add arc and take the cost from the user
 		// Add 2 KPI points
-	} else if (a == START_SPINOFF) {
+	} else if (a.actionCode == START_SPINOFF) {
 		// check if there's enough students
 		// 1/3 of the chance will be OBTAIN_IP_PATENT
 		// if not, then OBTAIN_PUBLICATION
-	} else if (a == OBTAIN_PUBLICATION) {
+	} else if (a.actionCode == OBTAIN_PUBLICATION) {
 		// increase the number of publications by 1
-	} else if (a == OBTAIN_IP_PATENT) {
+	} else if (a.actionCode == OBTAIN_IP_PATENT) {
 		// increase the number of IP patents by 1
 		// increase the KPI points by 10
-	} else if (a == RETRAIN_STUDENTS) {
+	} else if (a.actionCode == RETRAIN_STUDENTS) {
 		// see if (disciplineFrom != STUDENT_THD)
 		// see if there's enough students
 		// convert the 3 students of disciplineFrom into disciplineTo
@@ -188,16 +188,16 @@ void makeAction (Game g, action a) {
  
 void throwDice(Game g, int diceScore){
 	//Adv turn
-	g.currentTurn++;
+	g->currentTurn++;
 	//Give resources??
 }
  
 int getDiscipline (Game g, int regionID){
-	return g.disciplines[regionID];
+	return g->disciplines[regionID];
 }
 
 int getDiceValue (Game g, int regionID){
-	return g.dice[regionID];   
+	return g->dice[regionID];   
 }
 
 int getMostARCs (Game g){
@@ -206,9 +206,9 @@ int getMostARCs (Game g){
 	
 	int i = 1;
 	while (i <= 3){
-		if(g.playerArray[i-1].numARCs > mostARCs ){
+		if(g->playerArray[i-1].numARCs > mostARCs ){
 			uniWithARCs = i;
-			mostARCs = g.playerArray[i-1].numARCs;
+			mostARCs = g->playerArray[i-1].numARCs;
 		}
 		i++;
 	}
@@ -222,9 +222,9 @@ int getMostPublications (Game g){
 	
 	int i = 1;
 	while (i <= 3){
-		if( g.playerArray[i-1].numPubs > mostPubs ){
+		if( g->playerArray[i-1].numPubs > mostPubs ){
 			uniWithPubs = i;
-			mostPubs = g.playerArray[i-1].numPubs;
+			mostPubs = g->playerArray[i-1].numPubs;
 		}
 		i++;
 	}
@@ -233,42 +233,63 @@ int getMostPublications (Game g){
 }
 
 int getTurnNumber(Game g){ 
-	return g.currentTurn; 
+	return g->currentTurn; 
 }
  
-int getWhoseTurn (Game g);
+int getWhoseTurn (Game g){
+	return g->playerArray[g->currentTurn % NUM_UNIS].playerID;
+}
  
-int getCampus(Game g, path pathToVertex);
+int getCampus(Game g, path pathToVertex){
+	return 0; // Placeholder so it compiles
+}
  
-int getARC(Game g, path pathToEdge);
+int getARC(Game g, path pathToEdge){
+	return 0; // Placeholder
+}
  
-int isLegalAction (Game g, action a);
+int isLegalAction (Game g, action a){
+	return 0; // Placeholder
+}
  
 int getKPIpoints(Game g, int player){
-	return g.playerArray[player - 1].kpiPoints;
+	return g->playerArray[player - 1].kpiPoints;
 }
  
 int getARCs (Game g, int player) {
-	return g.playerArray[player - 1].numARCs;
+	return g->playerArray[player - 1].numARCs;
 }
  
-int getGO8s (Game g, int player);
+int getGO8s (Game g, int player){
+	return 0; // Placeholder
+}
  
-int getCampuses (Game g, int player);
+int getCampuses (Game g, int player){
+	return 0; // Placeholder
+}
  
-int getIPs (Game g, int player);
+int getIPs (Game g, int player){
+	return 0; // Placeholder
+}
  
-int getPublications (Game g, int player);
+int getPublications (Game g, int player){
+	return 0; // Placeholder
+}
  
-int getStudents (Game g, int player, int discipline);
+int getStudents (Game g, int player, int discipline){
+	return 0; // Placeholder
+}
  
 int getExchangeRate (Game g, int player, 
-                     int disciplineFrom, int disciplineTo);
+                     int disciplineFrom, int disciplineTo){
+	return 0; // Placeholder
+}
 
-static player newPlayer(playerID){
+static player newPlayer(int playerID){
 	player playerNew;
 
 	playerNew.playerID = playerID;
 
 	return playerNew;
 }
+
