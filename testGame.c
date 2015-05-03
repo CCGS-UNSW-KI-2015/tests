@@ -1,80 +1,94 @@
-//Do I know how to use github???
-//YAY I KNOW GITHUD ;)
-//KOHSUKE CAN GITHUD TOO
+/* testGame.c
+ * It's alive!
+ */
 
 #include <stdio.h>
 #include <stdlib.h>
 #include <assert.h>
+#include <string.h>
 
-#include "Game.h"
+#include "testState.h"
 
 int main(int argc, char *argv[]){
 	Game game;
 
-	printf("Press enter to continue");
-	char temp = 'a';
-	scanf("%c", &temp);
-
 	//--------------TESTS-----------//
 
-	// Just changed the variable names because that's how the header file asked to do
-	int disciplines[] = DEFAULT_DISCIPLINES;
-	int dice[] = DEFAULT_DICE;
-	int universities[] = {UNI_A, UNI_B, UNI_C};
-	int defaultSize = NUM_REGIONS;
-	int universitiesSize = NUM_UNIS;
+	int defaultDis[] = DEFAULT_DISCIPLINES;
+	int defaultDice[] = DEFAULT_DICE;
+	int currentAction = 0;
+
+	game = newGame(defaultDis, defaultDice);
+	stateSet currentState;
+
+	currentAction = printAction("Initializing game with default values",
+		currentAction);
+
+	// Inititalise currentState game state
+	currentState = initState(currentState);
+
+	// Check it!
+	assertState(game, currentState);
+
+	// Throw a dice of 2 (Also tests getWhoseTurn)
+	currentAction = printAction("Throwing dice with value 2",
+		currentAction);
+
+	throwDice(game, 2);
+
+	currentState.numTurnNumber++;
+	currentState.numWhoseTurn = UNI_A;
+
+	assertState(game, currentState);
+
+
+	// Test action PASS
+	currentAction = printAction("Testing action PASS",
+		currentAction);
+
+	action myAction;
+	myAction.actionCode = PASS;
+	makeAction(game, myAction);
+
+	currentState.numTurnNumber++;
+	currentState.numWhoseTurn = UNI_B;
+
+	assertState(game, currentState);
+
+	// Done!
+	printEnd();
+
+
+	return EXIT_SUCCESS;
+}
+
+stateSet initState (stateSet state) {
+	int defaultDis[] = DEFAULT_DISCIPLINES;
+	int defaultDice[] = DEFAULT_DICE;
+	int universitySize = 20;
+
 	int i = 0;
-
-	game = newGame(disciplines, dice);
-
-	// Verify that everything has been loaded correctly
-
-	i = 0;
 	while (i < NUM_REGIONS) {
-		assert(dice[i] == getDiceValue(game, i));
-		assert(disciplines[i] == getDiscipline(game, i));
+		state.regions[i].numDiscipline = defaultDis[i];
+		state.regions[i].numDiceValue = defaultDice[i];
+
 		i++;
 	}
 
-	// Make sure the game state is intialised correctly
-
-	assert(getMostARCs(game) == NO_ONE);
-	assert(getMostPublications(game) == NO_ONE);
-	assert(getWhoseTurn(game) == NO_ONE);
+	state.numMostARCs = NO_ONE;
+	state.numMostPublications = NO_ONE;
+	state.numTurnNumber = -1;
+	state.numWhoseTurn = NO_ONE;
 
 	i = 0;
-	while (i < universitiesSize) {
-		assert(getKPIpoints(game, universities[i]) == 0);
-		assert(getARCs(game, universities[i]) == 0);
-		assert(getGO8s(game, universities[i]) == 0);
-		assert(getCampuses(game, universities[i]) == 0);
-		assert(getIPs(game, universities[i]) == 0);
-		assert(getPublications(game, universities[i]) == 0);
+	while (i < PATH_LIMIT) {
+		state.paths[i].numCampus = VACANT_VERTEX;
+		state.paths[i].numARC = VACANT_ARC;
+
+		i++;
 	}
-	
-	int isLegalAction(Game g, action a);
-	action illegalAction1;
-	illegalAction1.actionCode = OBTAIN_ARC;
-	illegalAction1.disciplineFrom = STUDENT_THD;
-	illegalAction1.disciplineTo = STUDENT_THD;
-	
-	assert(isLegalAction(game, illegalAction1) == FALSE);
 
-	assert(getTurnNumber(game) == -1); // When game is first gened turnNum should be -1
+	memset(state.unis, 0, sizeof(state.unis[0]) * universitySize);
 
-	// Throw a dice of 2
-
-	throwDice(game, 2);
-	assert(getTurnNumber(game) == 0);
-
-
-	printf("All tests passed. You can kind of code :D\n");
-
-	//--------------TESTS------------//
-
-	printf("Press Enter to continue");
-	temp = 'a';
-	scanf("%c", &temp);
-
-	return EXIT_SUCCESS;
+	return state;
 }

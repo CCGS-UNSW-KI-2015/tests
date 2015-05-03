@@ -2,7 +2,7 @@
  *  Game.h
  *  1917 v1.07
  *   edit log - 
- *    1.07 badly-drawn map region and dice values comment
+s *    1.07 badly-drawn map region and dice values comment
  *    1.06 expanded comments on newGame(), explain regionID
  *    1.05 expanded the comments explaining isLegalAction()
  *    1.04 expanded path description, starting direction
