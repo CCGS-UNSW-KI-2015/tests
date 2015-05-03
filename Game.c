@@ -142,7 +142,7 @@ Game newGame(int discipline[], int dice[]){
 
 	//DEBUG//
 	
-	printf("Game dice[0] : %d", game->dice[0]);
+	//printf("Game dice[0] : %d", game->dice[0]);
 	
 	//DEBUG//
 	
@@ -204,16 +204,23 @@ int getDiceValue (Game g, int regionID){
 int getMostARCs (Game g){
 	int uniWithARCs = NO_ONE;
 	int mostARCs = 0;
+	char allEqual = 1;
 	
 	int i = 1;
-	while (i <= 3){
+	while (i <= NUM_UNIS){
 		if(g->playerArray[i-1].numARCs > mostARCs ){
 			uniWithARCs = i;
 			mostARCs = g->playerArray[i-1].numARCs;
 		}
+		if (g->playerArray[i-1].numARCs != mostARCs && i != 1) {
+			allEqual = 0;
+		}
 		i++;
 	}
-
+	
+	if (allEqual == 1) {
+		uniWithARCs = NO_ONE;
+	}
 	return uniWithARCs;
 }
 
@@ -238,7 +245,11 @@ int getTurnNumber(Game g){
 }
  
 int getWhoseTurn (Game g){
-	return g->playerArray[g->currentTurn % NUM_UNIS].playerID;
+	if (g->currentTurn == -1) {
+		return NO_ONE;
+	} else {
+		return g->playerArray[g->currentTurn % NUM_UNIS].playerID;
+	}
 }
  
 int getCampus(Game g, path pathToVertex){
@@ -290,6 +301,7 @@ static player newPlayer(int playerID){
 	player playerNew;
 
 	playerNew.playerID = playerID;
+	playerNew.numARCs = 0;
 
 	return playerNew;
 }
