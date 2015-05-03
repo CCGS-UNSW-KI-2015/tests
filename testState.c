@@ -14,7 +14,7 @@
 // are #defined in testState.h
 
 int defaultSize = 12;
-int universitiesSize = 3;
+int universitiesSize = NUM_UNIS;
 int universities[] = {UNI_A, UNI_B, UNI_C};
 
 void advAssert(Game game, assertInfo info[], int infoLen) {
@@ -221,8 +221,9 @@ void assertState(Game game, stateSet state) {
 	    i++;
     }
 
-    i = 0;
+    int iterator = 0;
     while (i < NUM_UNIS) {
+    	int i = universities[iterator];
     	info[infoPos].action = "getKPIPoints";
 	    info[infoPos].expected = state.unis[i].numKPIPoints;
 	    info[infoPos].got = getKPIpoints(game, i);
@@ -289,7 +290,7 @@ void assertState(Game game, stateSet state) {
 		    j++;
 	    }
 
-		i++;
+		iterator++;
     }
 
     advAssert(game, info, infoPos);
