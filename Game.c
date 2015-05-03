@@ -154,7 +154,14 @@ void makeAction (Game g, action a) {
 		g->currentTurn++;
 	} else if (a.actionCode == BUILD_CAMPUS) {
 		// check if the location is connected to an ARC grant
+		
 		// check if there's enough students
+		if (g->playerArray[g->currentTurn].students[BPS] < 1 ||
+			g->playerArray[g->currentTurn].students[BQN] < 1 ||
+			g->playerArray[g->currentTurn].students[MJ] < 1 ||
+			g->playerArray[g->currentTurn].students[MTV] < 1) {
+			return; // Stop!
+		}
 		// Add a campus and take the cost from the user
 		// also add 10 KPI points
 	} else if (a.actionCode == BUILD_GO8) {
