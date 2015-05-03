@@ -10,6 +10,7 @@
 //----------#defines----------//
 
 #define BOARD_SIZE 19
+#define DEFAULT_PLAYERS 0, 3, 3, 1, 1, 1
 
 //-----------Structs-----------//
 
@@ -86,6 +87,7 @@ typedef struct _player{
 
 	int numARCs;
 	int numPubs;
+	int students[6];
 
 	int kpiPoints;
 
@@ -298,6 +300,7 @@ static player newPlayer(int playerID){
 	player playerNew;
 
 	playerNew.playerID = playerID;
+	playerNew.students = {DEFAULT_PLAYERS};
 	playerNew.numARCs = 0;
 
 	return playerNew;
