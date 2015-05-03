@@ -4,6 +4,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <sys/time.h>
 
 #include "Game.h"
 
@@ -87,6 +88,7 @@ typedef struct _player{
 
 	int numARCs;
 	int numPubs;
+	int numIPs;
 	int students[6];
 
 	int kpiPoints;
@@ -171,7 +173,7 @@ void makeAction (Game g, action a) {
 		g->playerArray[g->currentTurn % NUM_UNIS].students[MTV]--;
 		
 		// also add 10 KPI points
-		g->playerArray[g->currentTurn % NUM_UNIS] += 10;
+		g->playerArray[g->currentTurn % NUM_UNIS].kpiPoints += 10;
 	} else if (a.actionCode == BUILD_GO8) {
 		// check if there's a campus by the player
 		// check if there's enough students
@@ -186,13 +188,36 @@ void makeAction (Game g, action a) {
 		// check if there's enough students
 		// 1/3 of the chance will be OBTAIN_IP_PATENT
 		// if not, then OBTAIN_PUBLICATION
+		if (g->playerArray[g->currentTurn % NUM_UNIS].students[MJ] < 1 ||
+			g->playerArray[g->currentTurn % NUM_UNIS].students[MTV] < 1 ||
+			g->playerArray[g->currentTurn % NUM_UNIS].students[MMONEY] < 1) {
+			return;
+		}
+		// Create a sort-of-almost-random number
+		struct timeval tv;
+		gettimeofday(&tv, NULL);
+		srand(tv.tv_usec);
+		int r = rand() % 3;
+		if (r == 0) {
+			a.actionCode = OBTAIN_IP_PATENT;
+			makeAction(g, a);
+		} else {
+			a.actionCode = OBTAIN_PUBLICATION
+			makeAction(g, a);
+		}
 	} else if (a.actionCode == OBTAIN_PUBLICATION) {
 		// increase the number of publications by 1
+		g->playerArray[g->currentTurn % NUM_UNIS].numPubs++;
 	} else if (a.actionCode == OBTAIN_IP_PATENT) {
 		// increase the number of IP patents by 1
 		// increase the KPI points by 10
+		g->playerArray[g->currentTurn % NUM_UNIS].numIPs++;
+		g->playerArray[g->currentTurn % NUM_UNIS].kpiPoints += 10;
 	} else if (a.actionCode == RETRAIN_STUDENTS) {
 		// see if (disciplineFrom != STUDENT_THD)
+		if (a.disciplineFrom == THD) {
+			return;
+		}
 		// see if there's enough students
 		// convert the 3 students of disciplineFrom into disciplineTo
 	}
@@ -317,6 +342,8 @@ static player newPlayer(int playerID){
 	playerNew.playerID = playerID;
 	playerNew.students = DEFAULT_PLAYERS;
 	playerNew.numARCs = 0;
+	playerNew.numPubs = 0;
+	playerNew.numIPs = 0;
 
 	return playerNew;
 }
