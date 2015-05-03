@@ -68,6 +68,8 @@ void advAssert(Game game, assertInfo info[], int infoLen) {
 				strcpy(disciplineType, "MTV");
 			} else if (rawType == STUDENT_MMONEY) {
 				strcpy(disciplineType, "MMONEY");
+			} else {
+				sprintf(disciplineType, "INVALID: %d", disciplineType);
 			}
 
 
