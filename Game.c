@@ -10,7 +10,7 @@
 //----------#defines----------//
 
 #define BOARD_SIZE 19
-#define DEFAULT_PLAYERS 0, 3, 3, 1, 1, 1
+#define DEFAULT_PLAYERS {0, 3, 3, 1, 1, 1}
 
 //-----------Structs-----------//
 
@@ -300,7 +300,7 @@ static player newPlayer(int playerID){
 	player playerNew;
 
 	playerNew.playerID = playerID;
-	playerNew.students = {DEFAULT_PLAYERS};
+	playerNew.students = DEFAULT_PLAYERS;
 	playerNew.numARCs = 0;
 
 	return playerNew;
