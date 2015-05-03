@@ -38,7 +38,7 @@ int main(int argc, char *argv[]){
 
 	throwDice(game, 2);
 
-	currentState.state.numTurnNumber++;
+	currentState.numTurnNumber++;
 
 	assertState(game, currentState);
 
