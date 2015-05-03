@@ -141,10 +141,11 @@ void advAssert(Game game, assertInfo info[], int infoLen) {
 		printf(           "Whose Turn            | %d\n", getWhoseTurn(game));
 
 		printf(RED BOLD   "================= END OF DUMP ==================\n");
+
+		printf(RESET CYAN "------------ Premature End of Tests ------------\n");
+		printf(RESET "\n");
+		exit(0);
 	}
-	printf(RESET CYAN "------------ Premature End of Tests ------------\n");
-	printf(RESET "\n");
-	exit(0);
 }
 
 void assertState(Game game, stateSet state) {
@@ -302,6 +303,8 @@ void assertState(Game game, stateSet state) {
 int printAction(char* action, int actionStep) {
 	if (actionStep == 0) {
 		printf(RESET CYAN  "------------------ Start Tests -----------------\n");
+	} else {
+		printf(RESET CYAN  "------------------------------------------------\n");
 	}
 	printf(RESET CYAN  "Action %d: %s" RESET "\n", actionStep, action);
 
