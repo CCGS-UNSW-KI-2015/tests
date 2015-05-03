@@ -125,7 +125,7 @@ Game newGame(int discipline[], int dice[]){
 		i++;
 	}
 	
-	game->currentTurn = -1;
+	game.currentTurn = -1;
 
 
 	int playerI = 0;
@@ -154,7 +154,39 @@ void disposeGame (Game g) {
 	free(g);
 }
  
-void makeAction (Game g, action a);
+void makeAction (Game g, action a) {
+	if (a == PASS) {
+		g.currentTurn++;
+	} else if (a == BUILD_CAMPUS) {
+		// check if the location is connected to an ARC grant
+		// check if there's enough students
+		// Add a campus and take the cost from the user
+		// also add 10 KPI points
+	} else if (a == BUILD_GO8) {
+		// check if there's a campus by the player
+		// check if there's enough students
+		// Remove the campus, add a GO8 campus and take the cost from the user
+		// add 10 KPI points (20 for building G08, -10 for removing a campus)
+	} else if (a == OBTAIN_ARC) {
+		// check if the location of the player is connected to his/her ARC
+		// check if there's enough students
+		// Add arc and take the cost from the user
+		// Add 2 KPI points
+	} else if (a == START_SPINOFF) {
+		// check if there's enough students
+		// 1/3 of the chance will be OBTAIN_IP_PATENT
+		// if not, then OBTAIN_PUBLICATION
+	} else if (a == OBTAIN_PUBLICATION) {
+		// increase the number of publications by 1
+	} else if (a == OBTAIN_IP_PATENT) {
+		// increase the number of IP patents by 1
+		// increase the KPI points by 10
+	} else if (a == RETRAIN_STUDENTS) {
+		// see if (disciplineFrom != STUDENT_THD)
+		// see if there's enough students
+		// convert the 3 students of disciplineFrom into disciplineTo
+	}
+};
  
 void throwDice(Game g, int diceScore){
 	//Adv turn
