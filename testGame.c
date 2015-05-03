@@ -47,7 +47,9 @@ int main(int argc, char *argv[]){
 	currentAction = printAction("Testing action PASS",
 		currentAction);
 		
-	makeAction(game, PASS);
+	action myAction;
+	myAction.actionCode = PASS;
+	makeAction(game, myAction);
 	
 	currentState.numTurnNumber++;
 	currentState.numWhoseTurn = UNI_B;
@@ -64,8 +66,6 @@ int main(int argc, char *argv[]){
 stateSet initState (stateSet state) {
 	int defaultDis[] = DEFAULT_DISCIPLINES;
 	int defaultDice[] = DEFAULT_DICE;
-	int universities[] = {UNI_A, UNI_B, UNI_C};
-	int defaultSize = NUM_REGIONS;
 	int universitySize = 20;
 
 	int i = 0;
