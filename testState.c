@@ -287,12 +287,12 @@ void assertState(Game game, stateSet state) {
 			    infoPos++;
 
 			    k++;
-		    }
+			}
 
-		    j++;
-	    }
+		    	j++;
+	    	}
 
-		iterator++;
+		i++;
     }
 
     advAssert(game, info, infoPos);
