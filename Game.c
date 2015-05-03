@@ -200,7 +200,7 @@ void makeAction (Game g, action a) {
 			a.actionCode = OBTAIN_IP_PATENT;
 			makeAction(g, a);
 		} else {
-			a.actionCode = OBTAIN_PUBLICATION
+			a.actionCode = OBTAIN_PUBLICATION;
 			makeAction(g, a);
 		}
 	} else if (a.actionCode == OBTAIN_PUBLICATION) {
