@@ -120,8 +120,8 @@ Game newGame(int discipline[], int dice[]){
 	
 	int i = 0;
 	while(i < BOARD_SIZE){
-		game->disciplines[i] = discipline[i];
-		game->dice[i] = dice[i];
+		game.disciplines[i] = discipline[i];
+		game.dice[i] = dice[i];
 		i++;
 	}
 	
@@ -130,7 +130,7 @@ Game newGame(int discipline[], int dice[]){
 
 	int playerI = 0;
 	while (playerI < 3){
-		game->playerArray[playerI] = newPlayer(playerI + 1);
+		game.playerArray[playerI] = newPlayer(playerI + 1);
 	}
 
 	//Map info
@@ -143,29 +143,31 @@ Game newGame(int discipline[], int dice[]){
 
 	//DEBUG//
 	
-	printf("Game dice[0] : %d", game->dice[0]);
+	printf("Game dice[0] : %d", game.dice[0]);
 	
 	//DEBUG//
 	
 	return game;
 }
 
-void disposeGame (Game g);
+void disposeGame (Game g) {
+	free(g);
+}
  
 void makeAction (Game g, action a);
  
 void throwDice(Game g, int diceScore){
 	//Adv turn
-	g->currentTurn++;
+	g.currentTurn++;
 	//Give resources??
 }
  
 int getDiscipline (Game g, int regionID){
-	return g->disciplines[regionID];
+	return g.disciplines[regionID];
 }
 
 int getDiceValue (Game g, int regionID){
-	return g->dice[regionID];   
+	return g.dice[regionID];   
 }
 
 int getMostARCs (Game g){
@@ -174,9 +176,9 @@ int getMostARCs (Game g){
 	
 	int i = 1;
 	while (i <= 3){
-		if( g->playerArray[i-1].numARCs > mostARCs ){
+		if(g.playerArray[i-1].numARCs > mostARCs ){
 			uniWithARCs = i;
-			mostARCs = g->playerArray[i-1].numARCs;
+			mostARCs = g.playerArray[i-1].numARCs;
 		}
 		i++;
 	}
@@ -190,9 +192,9 @@ int getMostPublications (Game g){
 	
 	int i = 1;
 	while (i <= 3){
-		if( g->playerArray[i-1].numPubs > mostPubs ){
+		if( g.playerArray[i-1].numPubs > mostPubs ){
 			uniWithPubs = i;
-			mostPubs = g->playerArray[i-1].numPubs;
+			mostPubs = g.playerArray[i-1].numPubs;
 		}
 		i++;
 	}
@@ -201,7 +203,7 @@ int getMostPublications (Game g){
 }
 
 int getTurnNumber(Game g){ 
-	return g->currentTurn; 
+	return g.currentTurn; 
 }
  
 int getWhoseTurn (Game g);
@@ -213,10 +215,12 @@ int getARC(Game g, path pathToEdge);
 int isLegalAction (Game g, action a);
  
 int getKPIpoints(Game g, int player){
-	g->playerArray[player - 1].kpiPoints;
+	return g.playerArray[player - 1].kpiPoints;
 }
  
-int getARCs (Game g, int player);
+int getARCs (Game g, int player) {
+	return g.playerArray[player - 1].numARCs;
+}
  
 int getGO8s (Game g, int player);
  
