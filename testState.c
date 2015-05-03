@@ -56,12 +56,14 @@ void advAssert(Game game, assertInfo info[], int infoLen) {
 		i = 0;
 		while (i < defaultSize) {
 			int rawType = getDiscipline(game, i); // getDiscipline(game, i);
-			char disciplineType[10];
+			char disciplineType[20];
 
 			if (rawType == STUDENT_THD) {
 				strcpy(disciplineType, "THD");
 			} else if (rawType == STUDENT_BPS) {
 				strcpy(disciplineType, "BPS");
+			} else if (rawType == STUDENT_BQN) {
+				strcpy(disciplineType, "BQN");
 			} else if (rawType == STUDENT_MJ) {
 				strcpy(disciplineType, "MJ");
 			} else if (rawType == STUDENT_MTV) {
@@ -69,7 +71,7 @@ void advAssert(Game game, assertInfo info[], int infoLen) {
 			} else if (rawType == STUDENT_MMONEY) {
 				strcpy(disciplineType, "MMONEY");
 			} else {
-				sprintf(disciplineType, "INVALID: %d", disciplineType);
+				sprintf(disciplineType, "INVALID: %d", rawType);
 			}
 
 
@@ -303,7 +305,7 @@ void assertState(Game game, stateSet state) {
 
 int printAction(char* action, int actionStep) {
 	if (actionStep == 0) {
-		printf(RESET CYAN  "------------------ Start Tests -----------------\n");
+		printf(RESET CYAN  "\n------------------ Start Tests -----------------\n");
 	} else {
 		printf(RESET CYAN  "------------------------------------------------\n");
 	}
