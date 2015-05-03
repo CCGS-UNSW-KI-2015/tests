@@ -69,10 +69,9 @@ typedef struct _vert {
 } vert;
 
 typedef struct _edge {
-	int hasRoad;
+	int hasARC;
 	
 	int teamID;
-	
 	
 	hex *hexLeft;
 	hex *hexRight;
@@ -83,7 +82,6 @@ typedef struct _edge {
 } edge;
 
 typedef struct _player{
-	
 	int playerID;
 	
 	int numARCs;
