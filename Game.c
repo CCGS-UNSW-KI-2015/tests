@@ -287,11 +287,13 @@ int getTurnNumber(Game g){
 }
 
 int getWhoseTurn (Game g){
+	int returnValue;
 	if (g->currentTurn == -1) {
-		return NO_ONE;
+		returnValue = NO_ONE;
 	} else {
-		return g->playerArray[g->currentTurn % NUM_UNIS].playerID;
+		returnValue = g->playerArray[g->currentTurn % NUM_UNIS].playerID;
 	}
+	return returnValue;
 }
 
 int getCampus(Game g, path pathToVertex){
