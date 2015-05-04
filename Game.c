@@ -151,7 +151,7 @@ void disposeGame (Game g) {
 
 void makeAction (Game g, action a) {
 	if (a.actionCode == PASS) {
-		g->currentTurn++;
+		//Do nothing
 	} else if (a.actionCode == BUILD_CAMPUS) {
 		// check if the location is connected to an ARC grant
 		// TODO
