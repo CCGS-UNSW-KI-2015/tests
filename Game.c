@@ -216,10 +216,10 @@ void makeAction (Game g, action a) {
 		g->playerArray[g->currentTurn % NUM_UNIS].kpiPoints += 10;
 	} else if (a.actionCode == RETRAIN_STUDENTS) {
 		// see if (disciplineFrom != STUDENT_THD)
-		if (a.disciplineFrom == THD) {
+		if (a.disciplineFrom == STUDENT_THD) {
 			//None
-		}
-		else {
+		} else {
+			// Use getExchangeRate()
 			// see if there's enough students
 			// convert the 3 students of disciplineFrom into disciplineTo
 		}	
