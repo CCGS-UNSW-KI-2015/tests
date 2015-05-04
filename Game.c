@@ -12,6 +12,7 @@
 
 #define BOARD_SIZE 19
 #define DEFAULT_PLAYERS {0, 3, 3, 1, 1, 1}
+#define NUM_STUDENTS_TYPES 6
 
 //-----------Structs-----------//
 
@@ -89,7 +90,7 @@ typedef struct _player{
 	int numARCs;
 	int numPubs;
 	int numIPs;
-	int students[6];
+	int students[NUM_STUDENTS_TYPES];
 
 	int kpiPoints;
 
@@ -100,7 +101,7 @@ typedef struct _game {
 
 	int disciplines[BOARD_SIZE];
 	int dice[BOARD_SIZE];
-	
+
 	vert vertArray[48];
 	hex hexArray[19];
 	edge edgeArray[72];
@@ -109,7 +110,7 @@ typedef struct _game {
 
 	player playerArray[3];
 
-} * Game;
+} *Game;
 
 //------------Local Functions--------------//
 
@@ -124,10 +125,10 @@ static player newPlayer(int playerID);
 //------------Interface functons------------//
 
 Game newGame(int discipline[], int dice[]){
-	Game game = (Game) malloc(sizeof(Game));
+	Game game = (Game)malloc(sizeof(Game));
 
 	int i = 0;
-	while(i < BOARD_SIZE){
+	while (i < BOARD_SIZE){
 		game->disciplines[i] = discipline[i];
 		game->dice[i] = dice[i];
 		i++;
@@ -145,24 +146,26 @@ Game newGame(int discipline[], int dice[]){
 	return game;
 }
 
-void disposeGame (Game g) {
+void disposeGame(Game g) {
 	free(g);
 }
 
-void makeAction (Game g, action a) {
+void makeAction(Game g, action a) {
 	if (a.actionCode == PASS) {
 		//Do nothing
-	} else if (a.actionCode == BUILD_CAMPUS) {
+	}
+	else if (a.actionCode == BUILD_CAMPUS) {
 		// check if the location is connected to an ARC grant
 		// TODO
-		
+
 		// check if there's enough students
 		if (g->playerArray[g->currentTurn].students[STUDENT_BPS] < 1 ||
 			g->playerArray[g->currentTurn % NUM_UNIS].students[STUDENT_BQN] < 1 ||
 			g->playerArray[g->currentTurn % NUM_UNIS].students[STUDENT_MJ] < 1 ||
 			g->playerArray[g->currentTurn % NUM_UNIS].students[STUDENT_MTV] < 1) {
 			//None
-		} else {
+		}
+		else {
 			// Add a campus and take the cost from the user
 			// TODO - add the campus
 			g->playerArray[g->currentTurn % NUM_UNIS].students[STUDENT_BPS]--;
@@ -173,17 +176,20 @@ void makeAction (Game g, action a) {
 			// also add 10 KPI points
 			g->playerArray[g->currentTurn % NUM_UNIS].kpiPoints += 10;
 		}
-	} else if (a.actionCode == BUILD_GO8) {
+	}
+	else if (a.actionCode == BUILD_GO8) {
 		// check if there's a campus by the player
 		// check if there's enough students
 		// Remove the campus, add a GO8 campus and take the cost from the user
 		// add 10 KPI points (20 for building G08, -10 for removing a campus)
-	} else if (a.actionCode == OBTAIN_ARC) {
+	}
+	else if (a.actionCode == OBTAIN_ARC) {
 		// check if the location of the player is connected to his/her ARC
 		// check if there's enough students
 		// Add arc and take the cost from the user
 		// Add 2 KPI points
-	} else if (a.actionCode == START_SPINOFF) {
+	}
+	else if (a.actionCode == START_SPINOFF) {
 		// check if there's enough students
 		// 1/3 of the chance will be OBTAIN_IP_PATENT
 		// if not, then OBTAIN_PUBLICATION
@@ -191,9 +197,10 @@ void makeAction (Game g, action a) {
 			g->playerArray[g->currentTurn % NUM_UNIS].students[STUDENT_MTV] < 1 ||
 			g->playerArray[g->currentTurn % NUM_UNIS].students[STUDENT_MMONEY] < 1) {
 			//None
-		} else {
+		}
+		else {
 			// Create a sort-of-almost-random number
-			srand((unsigned int) time(NULL));//Simpler
+			srand((unsigned int)time(NULL));//Simpler
 			int r = rand() % 3;
 			if (r == 0) {
 				a.actionCode = OBTAIN_IP_PATENT;
@@ -204,23 +211,27 @@ void makeAction (Game g, action a) {
 				makeAction(g, a);
 			}
 		}
-	} else if (a.actionCode == OBTAIN_PUBLICATION) {
+	}
+	else if (a.actionCode == OBTAIN_PUBLICATION) {
 		// increase the number of publications by 1
 		g->playerArray[g->currentTurn % NUM_UNIS].numPubs++;
-	} else if (a.actionCode == OBTAIN_IP_PATENT) {
+	}
+	else if (a.actionCode == OBTAIN_IP_PATENT) {
 		// increase the number of IP patents by 1
 		// increase the KPI points by 10
 		g->playerArray[g->currentTurn % NUM_UNIS].numIPs++;
 		g->playerArray[g->currentTurn % NUM_UNIS].kpiPoints += 10;
-	} else if (a.actionCode == RETRAIN_STUDENTS) {
+	}
+	else if (a.actionCode == RETRAIN_STUDENTS) {
 		// see if (disciplineFrom != STUDENT_THD)
 		if (a.disciplineFrom == STUDENT_THD) {
 			//None
-		} else {
+		}
+		else {
 			// Use getExchangeRate()
 			// see if there's enough students
 			// convert the 3 students of disciplineFrom into disciplineTo
-		}	
+		}
 	}
 };
 
@@ -230,15 +241,15 @@ void throwDice(Game g, int diceScore){
 	//Give resources
 }
 
-int getDiscipline (Game g, int regionID){
+int getDiscipline(Game g, int regionID){
 	return g->disciplines[regionID];
 }
 
-int getDiceValue (Game g, int regionID){
+int getDiceValue(Game g, int regionID){
 	return g->dice[regionID];
 }
 
-int getMostARCs (Game g){
+int getMostARCs(Game g){
 	int uniWithARCs = NO_ONE;
 	int mostARCs = 0;
 
@@ -246,12 +257,12 @@ int getMostARCs (Game g){
 
 	int i = 1;
 	while (i <= NUM_UNIS){
-		if(g->playerArray[i-1].numARCs > mostARCs ){
+		if (g->playerArray[i - 1].numARCs > mostARCs){
 			uniWithARCs = i;
-			mostARCs = g->playerArray[i-1].numARCs;
+			mostARCs = g->playerArray[i - 1].numARCs;
 		}
 
-		if (g->playerArray[i-1].numARCs != mostARCs && i != 1) {
+		if (g->playerArray[i - 1].numARCs != mostARCs && i != 1) {
 			allEqual = 0;
 		}
 		i++;
@@ -264,15 +275,15 @@ int getMostARCs (Game g){
 	return uniWithARCs;
 }
 
-int getMostPublications (Game g){
+int getMostPublications(Game g){
 	int uniWithPubs = NO_ONE;
 	int mostPubs = 0;
 
 	int i = 1;
 	while (i <= 3){
-		if( g->playerArray[i-1].numPubs > mostPubs ){
+		if (g->playerArray[i - 1].numPubs > mostPubs){
 			uniWithPubs = i;
-			mostPubs = g->playerArray[i-1].numPubs;
+			mostPubs = g->playerArray[i - 1].numPubs;
 		}
 		i++;
 	}
@@ -284,11 +295,12 @@ int getTurnNumber(Game g){
 	return g->currentTurn;
 }
 
-int getWhoseTurn (Game g){
+int getWhoseTurn(Game g){
 	int returnValue;
 	if (g->currentTurn == -1) {
 		returnValue = NO_ONE;
-	} else {
+	}
+	else {
 		returnValue = g->playerArray[g->currentTurn % NUM_UNIS].playerID;
 	}
 	return returnValue;
@@ -302,7 +314,7 @@ int getARC(Game g, path pathToEdge){
 	return 0; // Placeholder
 }
 
-int isLegalAction (Game g, action a){
+int isLegalAction(Game g, action a){
 	return 0; // Placeholder
 }
 
@@ -310,32 +322,32 @@ int getKPIpoints(Game g, int player){
 	return g->playerArray[player - 1].kpiPoints;
 }
 
-int getARCs (Game g, int player) {
+int getARCs(Game g, int player) {
 	return g->playerArray[player - 1].numARCs;
 }
 
-int getGO8s (Game g, int player){
+int getGO8s(Game g, int player){
 	return 0; // Placeholder
 }
 
-int getCampuses (Game g, int player){
+int getCampuses(Game g, int player){
 	return 0; // Placeholder
 }
 
-int getIPs (Game g, int player){
+int getIPs(Game g, int player){
 	return g->playerArray[g->currentTurn % NUM_UNIS].numIPs;
 }
 
-int getPublications (Game g, int player){
+int getPublications(Game g, int player){
 	return g->playerArray[g->currentTurn % NUM_UNIS].numPubs;
 }
 
-int getStudents (Game g, int player, int discipline){
+int getStudents(Game g, int player, int discipline){
 	g->playerArray[g->currentTurn % NUM_UNIS].students[discipline];
 }
 
-int getExchangeRate (Game g, int player,
-                     int disciplineFrom, int disciplineTo){
+int getExchangeRate(Game g, int player,
+	int disciplineFrom, int disciplineTo){
 	return 0; // Placeholder
 }
 
@@ -343,7 +355,14 @@ static player newPlayer(int playerID){
 	player playerNew;
 
 	playerNew.playerID = playerID;
-	playerNew.students = DEFAULT_PLAYERS;
+
+	int buffer[NUM_STUDENTS_TYPES] = { 0, 3, 3, 1, 1, 1 };
+	int i = 0;
+	while (i < NUM_STUDENTS_TYPES) {
+		playerNew.students[i] = buffer[i];
+		i++;
+	}
+
 	playerNew.numARCs = 0;
 	playerNew.numPubs = 0;
 	playerNew.numIPs = 0;
