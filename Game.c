@@ -157,18 +157,18 @@ void makeAction (Game g, action a) {
 		// TODO
 		
 		// check if there's enough students
-		if (g->playerArray[g->currentTurn].students[BPS] < 1 ||
-			g->playerArray[g->currentTurn % NUM_UNIS].students[BQN] < 1 ||
-			g->playerArray[g->currentTurn % NUM_UNIS].students[MJ] < 1 ||
-			g->playerArray[g->currentTurn % NUM_UNIS].students[MTV] < 1) {
+		if (g->playerArray[g->currentTurn].students[STUDENT_BPS] < 1 ||
+			g->playerArray[g->currentTurn % NUM_UNIS].students[STUDENT_BQN] < 1 ||
+			g->playerArray[g->currentTurn % NUM_UNIS].students[STUDENT_MJ] < 1 ||
+			g->playerArray[g->currentTurn % NUM_UNIS].students[STUDENT_MTV] < 1) {
 			return; // Stop!
 		}
 		// Add a campus and take the cost from the user
 		// TODO - add the campus
-		g->playerArray[g->currentTurn % NUM_UNIS].students[BPS]--;
-		g->playerArray[g->currentTurn % NUM_UNIS].students[BQN]--;
-		g->playerArray[g->currentTurn % NUM_UNIS].students[MJ]--;
-		g->playerArray[g->currentTurn % NUM_UNIS].students[MTV]--;
+		g->playerArray[g->currentTurn % NUM_UNIS].students[STUDENT_BPS]--;
+		g->playerArray[g->currentTurn % NUM_UNIS].students[STUDENT_BQN]--;
+		g->playerArray[g->currentTurn % NUM_UNIS].students[STUDENT_MJ]--;
+		g->playerArray[g->currentTurn % NUM_UNIS].students[STUDENT_MTV]--;
 		
 		// also add 10 KPI points
 		g->playerArray[g->currentTurn % NUM_UNIS].kpiPoints += 10;
@@ -186,9 +186,9 @@ void makeAction (Game g, action a) {
 		// check if there's enough students
 		// 1/3 of the chance will be OBTAIN_IP_PATENT
 		// if not, then OBTAIN_PUBLICATION
-		if (g->playerArray[g->currentTurn % NUM_UNIS].students[MJ] < 1 ||
-			g->playerArray[g->currentTurn % NUM_UNIS].students[MTV] < 1 ||
-			g->playerArray[g->currentTurn % NUM_UNIS].students[MMONEY] < 1) {
+		if (g->playerArray[g->currentTurn % NUM_UNIS].students[STUDENT_MJ] < 1 ||
+			g->playerArray[g->currentTurn % NUM_UNIS].students[STUDENT_MTV] < 1 ||
+			g->playerArray[g->currentTurn % NUM_UNIS].students[STUDENT_MMONEY] < 1) {
 			return;
 		}
 		// Create a sort-of-almost-random number
