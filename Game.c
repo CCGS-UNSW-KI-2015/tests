@@ -4,7 +4,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-#include <sys/time.h>
+#include <time.h>
 
 #include "Game.h"
 
@@ -193,9 +193,7 @@ void makeAction (Game g, action a) {
 			//None
 		} else {
 			// Create a sort-of-almost-random number
-			struct timeval tv;
-			gettimeofday(&tv, NULL);
-			srand(tv.tv_usec);
+			srand((unsigned int) time(NULL));//Simpler
 			int r = rand() % 3;
 			if (r == 0) {
 				a.actionCode = OBTAIN_IP_PATENT;
@@ -329,7 +327,7 @@ int getIPs (Game g, int player){
 }
 
 int getPublications (Game g, int player){
-	return g->playerArray[g->currentTurn % NUM_UNIS].numPubs
+	return g->playerArray[g->currentTurn % NUM_UNIS].numPubs;
 }
 
 int getStudents (Game g, int player, int discipline){
