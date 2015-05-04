@@ -161,17 +161,18 @@ void makeAction (Game g, action a) {
 			g->playerArray[g->currentTurn % NUM_UNIS].students[STUDENT_BQN] < 1 ||
 			g->playerArray[g->currentTurn % NUM_UNIS].students[STUDENT_MJ] < 1 ||
 			g->playerArray[g->currentTurn % NUM_UNIS].students[STUDENT_MTV] < 1) {
-			return; // Stop!
+			//None
+		} else {
+			// Add a campus and take the cost from the user
+			// TODO - add the campus
+			g->playerArray[g->currentTurn % NUM_UNIS].students[STUDENT_BPS]--;
+			g->playerArray[g->currentTurn % NUM_UNIS].students[STUDENT_BQN]--;
+			g->playerArray[g->currentTurn % NUM_UNIS].students[STUDENT_MJ]--;
+			g->playerArray[g->currentTurn % NUM_UNIS].students[STUDENT_MTV]--;
+
+			// also add 10 KPI points
+			g->playerArray[g->currentTurn % NUM_UNIS].kpiPoints += 10;
 		}
-		// Add a campus and take the cost from the user
-		// TODO - add the campus
-		g->playerArray[g->currentTurn % NUM_UNIS].students[STUDENT_BPS]--;
-		g->playerArray[g->currentTurn % NUM_UNIS].students[STUDENT_BQN]--;
-		g->playerArray[g->currentTurn % NUM_UNIS].students[STUDENT_MJ]--;
-		g->playerArray[g->currentTurn % NUM_UNIS].students[STUDENT_MTV]--;
-		
-		// also add 10 KPI points
-		g->playerArray[g->currentTurn % NUM_UNIS].kpiPoints += 10;
 	} else if (a.actionCode == BUILD_GO8) {
 		// check if there's a campus by the player
 		// check if there's enough students
@@ -189,19 +190,21 @@ void makeAction (Game g, action a) {
 		if (g->playerArray[g->currentTurn % NUM_UNIS].students[STUDENT_MJ] < 1 ||
 			g->playerArray[g->currentTurn % NUM_UNIS].students[STUDENT_MTV] < 1 ||
 			g->playerArray[g->currentTurn % NUM_UNIS].students[STUDENT_MMONEY] < 1) {
-			return;
-		}
-		// Create a sort-of-almost-random number
-		struct timeval tv;
-		gettimeofday(&tv, NULL);
-		srand(tv.tv_usec);
-		int r = rand() % 3;
-		if (r == 0) {
-			a.actionCode = OBTAIN_IP_PATENT;
-			makeAction(g, a);
+			//None
 		} else {
-			a.actionCode = OBTAIN_PUBLICATION;
-			makeAction(g, a);
+			// Create a sort-of-almost-random number
+			struct timeval tv;
+			gettimeofday(&tv, NULL);
+			srand(tv.tv_usec);
+			int r = rand() % 3;
+			if (r == 0) {
+				a.actionCode = OBTAIN_IP_PATENT;
+				makeAction(g, a);
+			}
+			else {
+				a.actionCode = OBTAIN_PUBLICATION;
+				makeAction(g, a);
+			}
 		}
 	} else if (a.actionCode == OBTAIN_PUBLICATION) {
 		// increase the number of publications by 1
@@ -214,17 +217,19 @@ void makeAction (Game g, action a) {
 	} else if (a.actionCode == RETRAIN_STUDENTS) {
 		// see if (disciplineFrom != STUDENT_THD)
 		if (a.disciplineFrom == THD) {
-			return;
+			//None
 		}
-		// see if there's enough students
-		// convert the 3 students of disciplineFrom into disciplineTo
+		else {
+			// see if there's enough students
+			// convert the 3 students of disciplineFrom into disciplineTo
+		}	
 	}
 };
 
 void throwDice(Game g, int diceScore){
 	//Adv turn
 	g->currentTurn++;
-	//Give resources??
+	//Give resources
 }
 
 int getDiscipline (Game g, int regionID){
