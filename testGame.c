@@ -9,8 +9,6 @@
 
 #include "testState.h"
 
-#define DEFAULT_PLAYERS {0, 3, 3, 1, 1, 1}
-
 int main(int argc, char *argv[]){
 	Game game;
 
@@ -98,8 +96,14 @@ stateSet initState (stateSet state) {
 		state.unis[i].numCampuses;
 		state.unis[i].numIPs;
 		state.unis[i].numPublications;
-		state.unis[i].numStudents[] = DEFAULT_PLAYERS;
-		memset(state.unis[i].numExchangeRate, 0, sizeof(state.unis[i].numExchangeRate[0]) * NUM_DISCIPLINES * NUM_DISCIPLINES);
+		state.unis[i].numStudents[0] = 0;
+		state.unis[i].numStudents[1] = 3;
+		state.unis[i].numStudents[2] = 3;
+		state.unis[i].numStudents[3] = 1;
+		state.unis[i].numStudents[4] = 1;
+		state.unis[i].numStudents[5] = 1;
+		memset(state.unis[i].numExchangeRate, 0, sizeof(state.unis[i].numExchangeRate[0][0]) * NUM_DISCIPLINES * NUM_DISCIPLINES);
+		i++;
 	}
 
 	return state;

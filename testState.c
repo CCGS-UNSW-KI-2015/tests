@@ -278,7 +278,7 @@ void assertState(Game game, stateSet state) {
 		    info[infoPos].action = "getStudents";
 		    info[infoPos].expected = state.unis[currentUni].numStudents[j];
 		    info[infoPos].got = getStudents(game, currentUni, j);
-		    sprintf(info[infoPos].helpText, "The game did not find the correct number of ARCs for uni number %d and discipline %d", currentUni, j);
+		    sprintf(info[infoPos].helpText, "The game did not find the correct number of students for uni number %d and discipline %d", currentUni, j);
 
 		    infoPos++;
 
@@ -287,7 +287,7 @@ void assertState(Game game, stateSet state) {
 			    info[infoPos].action = "getExchangeRate";
 			    info[infoPos].expected = state.unis[currentUni].numExchangeRate[j][k];
 			    info[infoPos].got = getExchangeRate(game, currentUni, j, k);
-			    sprintf(info[infoPos].helpText, "The game did not find the correct number of ARCs for uni number %d, discipline from %d and discipline to %d", currentUni, j, k);
+			    sprintf(info[infoPos].helpText, "The game did not find the correct exchange rate for uni number %d, discipline from %d and discipline to %d", currentUni, j, k);
 
 			    infoPos++;
 

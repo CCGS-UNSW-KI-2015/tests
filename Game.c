@@ -90,7 +90,7 @@ typedef struct _player{
 	int numARCs;
 	int numPubs;
 	int numIPs;
-	int students[NUM_STUDENTS_TYPES];
+	int students[NUM_DISCIPLINES];
 
 	int kpiPoints;
 
@@ -356,7 +356,7 @@ static player newPlayer(int playerID){
 
 	playerNew.playerID = playerID;
 
-	int buffer[NUM_DISCIPLINES] = { 0, 3, 3, 1, 1, 1 };
+	int buffer[NUM_DISCIPLINES] = DEFAULT_PLAYERS;
 	int i = 0;
 	while (i < NUM_DISCIPLINES) {
 		playerNew.students[i] = buffer[i];
