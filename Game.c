@@ -12,7 +12,7 @@
 
 #define BOARD_SIZE 19
 #define DEFAULT_PLAYERS {0, 3, 3, 1, 1, 1}
-#define NUM_STUDENTS_TYPES 6
+#define NUM_DISCIPLINES 6
 
 //-----------Structs-----------//
 
@@ -356,9 +356,9 @@ static player newPlayer(int playerID){
 
 	playerNew.playerID = playerID;
 
-	int buffer[NUM_STUDENTS_TYPES] = { 0, 3, 3, 1, 1, 1 };
+	int buffer[NUM_DISCIPLINES] = DEFAULT_PLAYERS;
 	int i = 0;
-	while (i < NUM_STUDENTS_TYPES) {
+	while (i < NUM_DISCIPLINES) {
 		playerNew.students[i] = buffer[i];
 		i++;
 	}
