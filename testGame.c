@@ -98,7 +98,7 @@ stateSet initState (stateSet state) {
 		state.unis[i].numCampuses;
 		state.unis[i].numIPs;
 		state.unis[i].numPublications;
-		state.unis[i].numStudents[] = DEFAULT_PLAYERS;
+		state.unis[i].numStudents = DEFAULT_PLAYERS;
 		memset(state.unis[i].numExchangeRate, 0, sizeof(state.unis[i].numExchangeRate[0]) * NUM_DISCIPLINES * NUM_DISCIPLINES);
 	}
 
