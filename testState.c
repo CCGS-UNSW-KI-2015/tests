@@ -126,6 +126,7 @@ void advAssert(Game game, assertInfo info[], int infoLen) {
 			printf(BOLD BLUE  "Discipline            | Students\n");
 			printf(RESET BLUE "THD                   | %d\n", getStudents(game, player, STUDENT_THD));
 			printf(RESET BLUE "BPS                   | %d\n", getStudents(game, player, STUDENT_BPS));
+			printf(RESET BLUE "BQN                   | %d\n", getStudents(game, player, STUDENT_BQN));
 			printf(RESET BLUE "MJ                    | %d\n", getStudents(game, player, STUDENT_MJ));
 			printf(RESET BLUE "MTV                   | %d\n", getStudents(game, player, STUDENT_MTV));
 			printf(RESET BLUE "MMONEY                | %d\n", getStudents(game, player, STUDENT_MMONEY));
