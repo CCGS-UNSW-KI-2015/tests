@@ -181,8 +181,17 @@ void makeAction(Game g, action a) {
 	else if (a.actionCode == BUILD_GO8) {
 		// check if there's a campus by the player
 		// check if there's enough students
-		// Remove the campus, add a GO8 campus and take the cost from the user
-		// add 10 KPI points (20 for building G08, -10 for removing a campus)
+        if (g->playerArray[g->currentTurn].students[STUDENT_MJ] < 2 ||
+            g->playerArray[g->currentTurn % NUM_UNIS].students[STUDENT_MMONEY] < 3) {
+            // None
+        } else {
+            // Remove the campus, add a GO8 campus and take the cost from the user
+            g->playerArray[g->currentTurn % NUM_UNIS].students[STUDENT_MJ] -= 2;
+            g->playerArray[g->currentTurn % NUM_UNIS].students[STUDENT_MMONEY] -= 3;
+            
+            // add 10 KPI points (20 for building G08, -10 for removing a campus)
+            g->playerArray[g->currentTurn % NUM_UNIS].kpiPoints += 10;
+        }
 	}
 	else if (a.actionCode == OBTAIN_ARC) {
 		// check if the location of the player is connected to his/her ARC
