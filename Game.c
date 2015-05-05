@@ -153,6 +153,7 @@ void disposeGame(Game g) {
 void makeAction(Game g, action a) {
 	if (a.actionCode == PASS) {
 		//Do nothing
+		g->currentTurn++;
 	}
 	else if (a.actionCode == BUILD_CAMPUS) {
 		// check if the location is connected to an ARC grant
@@ -343,7 +344,7 @@ int getPublications(Game g, int player){
 }
 
 int getStudents(Game g, int player, int discipline){
-	return g->playerArray[g->currentTurn % NUM_UNIS].students[discipline];
+	return g->playerArray[player].students[discipline];
 }
 
 int getExchangeRate(Game g, int player,
