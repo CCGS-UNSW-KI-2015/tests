@@ -366,6 +366,7 @@ static player newPlayer(int playerID){
 	playerNew.numARCs = 0;
 	playerNew.numPubs = 0;
 	playerNew.numIPs = 0;
+	playerNew.kpiPoints = 0;
 
 	return playerNew;
 }
