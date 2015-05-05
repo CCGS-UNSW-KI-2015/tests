@@ -98,7 +98,7 @@ stateSet initState (stateSet state) {
 		state.unis[i].numCampuses;
 		state.unis[i].numIPs;
 		state.unis[i].numPublications;
-		int disBuffer[NUM_DISCIPLINES] = DEFAULT_DISCIPLINES;
+		int disBuffer[NUM_DISCIPLINES] = DEFAULT_PLAYERS;
 		int j = 0;
 		while (j < NUM_DISCIPLINES) {
 			state.unis[i].numStudents[j] = disBuffer[j];
