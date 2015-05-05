@@ -101,7 +101,7 @@ stateSet initState (stateSet state) {
 		int disBuffer[NUM_DISCIPLINES] = DEFAULT_DISCIPLINES;
 		int j = 0;
 		while (j < NUM_DISCIPLINES) {
-			state.unis[i].students[j] = disBuffer[j];
+			state.unis[i].numStudents[j] = disBuffer[j];
 			j++;
 		}
 		memset(state.unis[i].numExchangeRate, 0, sizeof(state.unis[i].numExchangeRate[0][0]) * NUM_DISCIPLINES * NUM_DISCIPLINES);
