@@ -343,7 +343,7 @@ int getPublications(Game g, int player){
 }
 
 int getStudents(Game g, int player, int discipline){
-	g->playerArray[g->currentTurn % NUM_UNIS].students[discipline];
+	return g->playerArray[g->currentTurn % NUM_UNIS].students[discipline];
 }
 
 int getExchangeRate(Game g, int player,
