@@ -243,7 +243,7 @@ void makeAction(Game g, action a) {
 			// convert the 3 students of disciplineFrom into disciplineTo
 		}
 	}
-};
+}
 
 void throwDice(Game g, int diceScore){
 	//Adv turn
@@ -329,30 +329,86 @@ int isLegalAction(Game g, action a){
 }
 
 int getKPIpoints(Game g, int player){
-	return g->playerArray[player - 1].kpiPoints;
+	int buffer[NUM_DISCIPLINES] = DEFAULT_PLAYERS;
+	int i = 0;
+	while (i < NUM_UNIS) {
+		if (g->playerArray[i].playerID == player) {
+			player = i;
+		}
+		i++;
+	}
+	return g->playerArray[player].kpiPoints;
 }
 
 int getARCs(Game g, int player) {
-	return g->playerArray[player - 1].numARCs;
+	int buffer[NUM_DISCIPLINES] = DEFAULT_PLAYERS;
+	int i = 0;
+	while (i < NUM_UNIS) {
+		if (g->playerArray[i].playerID == player) {
+			player = i;
+		}
+		i++;
+	}
+	return g->playerArray[player].numARCs;
 }
 
 int getGO8s(Game g, int player){
+	int buffer[NUM_DISCIPLINES] = DEFAULT_PLAYERS;
+	int i = 0;
+	while (i < NUM_UNIS) {
+		if (g->playerArray[i].playerID == player) {
+			player = i;
+		}
+		i++;
+	}
 	return 0; // Placeholder
 }
 
 int getCampuses(Game g, int player){
+	int buffer[NUM_DISCIPLINES] = DEFAULT_PLAYERS;
+	int i = 0;
+	while (i < NUM_UNIS) {
+		if (g->playerArray[i].playerID == player) {
+			player = i;
+		}
+		i++;
+	}
 	return 0; // Placeholder
 }
 
 int getIPs(Game g, int player){
-	return g->playerArray[g->currentTurn % NUM_UNIS].numIPs;
+	int buffer[NUM_DISCIPLINES] = DEFAULT_PLAYERS;
+	int i = 0;
+	while (i < NUM_UNIS) {
+		if (g->playerArray[i].playerID == player) {
+			player = i;
+		}
+		i++;
+	}
+	return g->playerArray[player].numIPs;
 }
 
 int getPublications(Game g, int player){
-	return g->playerArray[g->currentTurn % NUM_UNIS].numPubs;
+	int buffer[NUM_DISCIPLINES] = DEFAULT_PLAYERS;
+	int i = 0;
+	while (i < NUM_UNIS) {
+		if (g->playerArray[i].playerID == player) {
+			player = i;
+		}
+		i++;
+	}
+	return g->playerArray[player].numPubs;
 }
 
 int getStudents(Game g, int player, int discipline){
+	int buffer[NUM_DISCIPLINES] = DEFAULT_PLAYERS;
+	int i = 0;
+	while (i < NUM_UNIS) {
+		if (g->playerArray[i].playerID == player) {
+			player = i;
+		}
+		i++;
+	}
 	return g->playerArray[player].students[discipline];
 }
 
