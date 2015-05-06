@@ -114,12 +114,12 @@ void advAssert(Game game, assertInfo info[], int infoLen) {
 			printf(BOLD BLUE  "Player %d\n", player);
 			printf(RESET BLUE "------------------------------------------------\n");
 			printf(BOLD BLUE  "Attribute             | Value\n");
-			printf(RESET BLUE "KPI Points            | %d\n", getKPIpoints(game, i));
-			printf(           "ARCs                  | %d\n", getARCs(game, i));
-			printf(           "GO8s                  | %d\n", getGO8s(game, i));
-			printf(           "Campuses              | %d\n", getCampuses(game, i));
-			printf(           "IPs                   | %d\n", getIPs(game, i));
-			printf(           "Publications          | %d\n", getPublications(game, i));
+			printf(RESET BLUE "KPI Points            | %d\n", getKPIpoints(game, player));
+			printf(           "ARCs                  | %d\n", getARCs(game, player));
+			printf(           "GO8s                  | %d\n", getGO8s(game, player));
+			printf(           "Campuses              | %d\n", getCampuses(game, player));
+			printf(           "IPs                   | %d\n", getIPs(game, player));
+			printf(           "Publications          | %d\n", getPublications(game, player));
 
 			printf(RESET BLUE "------------------------------------------------\n");
 
@@ -233,42 +233,42 @@ void assertState(Game game, stateSet state) {
 
     	info[infoPos].action = "getKPIPoints";
 	    info[infoPos].expected = state.unis[currentUni].numKPIPoints;
-	    info[infoPos].got = getKPIpoints(game, i);
+	    info[infoPos].got = getKPIpoints(game, currentUni);
 	    sprintf(info[infoPos].helpText, "The game did not find the correct number of KPIs for uni number %d", currentUni);
 
 	    infoPos++;
 
 	    info[infoPos].action = "getARCs";
 	    info[infoPos].expected = state.unis[currentUni].numARCs;
-	    info[infoPos].got = getARCs(game, i);
+	    info[infoPos].got = getARCs(game, currentUni);
 	    sprintf(info[infoPos].helpText, "The game did not find the correct number of ARCs for uni number %d", currentUni);
 
 	    infoPos++;
 
 	    info[infoPos].action = "getGO8s";
 	    info[infoPos].expected = state.unis[currentUni].numGroupOfEights;
-	    info[infoPos].got = getGO8s(game, i);
+	    info[infoPos].got = getGO8s(game, currentUni);
 	    sprintf(info[infoPos].helpText, "The game did not find the correct number of GO8s for uni number %d", currentUni);
 
 	    infoPos++;
 
 	    info[infoPos].action = "getCampuses";
 	    info[infoPos].expected = state.unis[currentUni].numCampuses;
-	    info[infoPos].got = getCampuses(game, i);
+	    info[infoPos].got = getCampuses(game, currentUni);
 	    sprintf(info[infoPos].helpText, "The game did not find the correct number of campuses for uni number %d", currentUni);
 
 	    infoPos++;
 
 	    info[infoPos].action = "getIPs";
 	    info[infoPos].expected = state.unis[currentUni].numIPs;
-	    info[infoPos].got = getIPs(game, i);
+	    info[infoPos].got = getIPs(game, currentUni);
 	    sprintf(info[infoPos].helpText, "The game did not find the correct number of IPs for uni number %d", currentUni);
 
 	    infoPos++;
 
 	    info[infoPos].action = "getPublications";
 	    info[infoPos].expected = state.unis[currentUni].numPublications;
-	    info[infoPos].got = getPublications(game, i);
+	    info[infoPos].got = getPublications(game, currentUni);
 	    sprintf(info[infoPos].helpText, "The game did not find the correct number of publications for uni number %d", currentUni);
 
 	    infoPos++;
@@ -277,7 +277,7 @@ void assertState(Game game, stateSet state) {
 	    while (j < NUM_DISCIPLINES) {
 		    info[infoPos].action = "getStudents";
 		    info[infoPos].expected = state.unis[currentUni].numStudents[j];
-		    info[infoPos].got = getStudents(game, i, j);
+		    info[infoPos].got = getStudents(game, currentUni, j);
 		    sprintf(info[infoPos].helpText, "The game did not find the correct number of students for uni number %d and discipline %d", currentUni, j);
 
 		    infoPos++;
@@ -286,7 +286,7 @@ void assertState(Game game, stateSet state) {
 		    while (k < NUM_DISCIPLINES) {
 			    info[infoPos].action = "getExchangeRate";
 			    info[infoPos].expected = state.unis[currentUni].numExchangeRate[j][k];
-			    info[infoPos].got = getExchangeRate(game, i, j, k);
+			    info[infoPos].got = getExchangeRate(game, currentUni, j, k);
 			    sprintf(info[infoPos].helpText, "The game did not find the correct exchange rate for uni number %d, discipline from %d and discipline to %d", currentUni, j, k);
 
 			    infoPos++;
