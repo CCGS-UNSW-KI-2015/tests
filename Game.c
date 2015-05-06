@@ -49,7 +49,7 @@ typedef struct _hex {
 	edge edgeDownLeft;
 	edge edgeDownRight;
 
-} hex;
+} * hex;
 
 typedef struct _vert {
 	int hasUni;
@@ -70,7 +70,7 @@ typedef struct _vert {
 	edge edgeDown;
 	edge edgeSide;
 
-} vert;
+} *vert;
 
 typedef struct _edge {
 	int hasARC;
@@ -83,7 +83,7 @@ typedef struct _edge {
 	vert vertUp;//If level up == right
 	vert vertDown;
 
-} edge;
+} *edge;
 
 typedef struct _player{
 	int playerID;
@@ -126,7 +126,8 @@ static player newPlayer(int playerID);
 //------------Interface functons------------//
 
 Game newGame(int discipline[], int dice[]){
-	Game game = (Game)malloc(sizeof(Game));
+	printf("%d<><><><><><><><><>\n", sizeof(struct _game));
+	Game game = (Game) malloc(sizeof(struct _game));
 	
 	//Setting disciplines and dice vals
 	int i = 0;
@@ -152,8 +153,9 @@ Game newGame(int discipline[], int dice[]){
 	//Setting disciplines
 	int hexNum = 0;
 	while (hexNum < NUM_HEXS) {
-		hex tempHex = (hex) malloc(sizeof(hex));
+		hex tempHex = malloc(sizeof(struct _hex));
 		tempHex->hexDiscipline = game->disciplines[hexNum];
+		tempHex->hexID = hexNum + 1;
 		game->hexArray[hexNum] = tempHex;
 		hexNum++;
 	}
@@ -291,8 +293,20 @@ Game newGame(int discipline[], int dice[]){
 				game->hexArray[hexLink]->hexUpLeft = game->hexArray[hexLink-4];
 				game->hexArray[hexLink]->hexDownLeft = game->hexArray[hexLink-3];
 			} 
-		}	
+		}
+		hexLink++;
 	}	
+	
+	int printCout = 0;
+	while (printCout < NUM_HEXS){
+		printf("Hex ID: %d, upL: %d, upR: %d, downL: %d, downR: %d, down: %d, up: %d\n",
+		       game->hexArray[printCout]->hexID,
+		       game->hexArray[printCout]->hexUpLeft->hexID, game->hexArray[printCout]->hexUpRight->hexID,
+		       game->hexArray[printCout]->hexDownLeft->hexID, game->hexArray[printCout]->hexDownRight->hexID,
+		       game->hexArray[printCout]->hexUp->hexID, game->hexArray[printCout]->hexDown->hexID);
+		printCout++;
+	}
+	
 	return game;
 }
 
