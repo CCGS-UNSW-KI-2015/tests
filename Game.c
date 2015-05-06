@@ -14,7 +14,7 @@
 #define DEFAULT_PLAYERS {0, 3, 3, 1, 1, 1}
 #define NUM_DISCIPLINES 6
 #define NUM_HEXS 19
-#define HEX_BUILD_PRINT 5
+#define HEX_BUILD_PRINT 14
 
 //-----------Structs-----------//
 
@@ -127,7 +127,6 @@ static player newPlayer(int playerID);
 //------------Interface functons------------//
 
 Game newGame(int discipline[], int dice[]){
-	printf("%d<><><><><><><><><>\n", sizeof(struct _game));
 	Game game = (Game) malloc(sizeof(struct _game));
 	
 	//Setting disciplines and dice vals
@@ -356,6 +355,12 @@ Game newGame(int discipline[], int dice[]){
 
 void disposeGame(Game g) {
 	//Free every thing in the hex, vert and edge arrays
+	int hexLoop = 0;
+	while (hexLoop < NUM_HEXS){
+		free(g->hexArray[hexLoop]);
+		g->hexArray[hexLoop] = NULL;
+		hexLoop++;
+	}
 	free(g);
 }
 
