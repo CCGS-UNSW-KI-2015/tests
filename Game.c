@@ -18,9 +18,9 @@
 //-----------Structs-----------//
 
 typedef struct _game * Game;
-typedef struct _hex hex;
-typedef struct _vert vert;
-typedef struct _edge edge;
+typedef struct _hex * hex;
+typedef struct _vert * vert;
+typedef struct _edge * edge;
 typedef struct _player player;
 
 typedef struct _hex {
@@ -28,26 +28,26 @@ typedef struct _hex {
 	int hexDiscipline;
 
 
-	hex *hexUp;
-	hex *hexDown;
-	hex *hexUpLeft;
-	hex *hexUpRight;
-	hex *hexDownLeft;
-	hex *hexDownRight;
+	hex hexUp;
+	hex hexDown;
+	hex hexUpLeft;
+	hex hexUpRight;
+	hex hexDownLeft;
+	hex hexDownRight;
 
-	vert *vertUpLeft;
-	vert *vertUpRight;
-	vert *vertLeft;
-	vert *vertRight;
-	vert *vertDownLeft;
-	vert *vertDownRight;
+	vert vertUpLeft;
+	vert vertUpRight;
+	vert vertLeft;
+	vert vertRight;
+	vert vertDownLeft;
+	vert vertDownRight;
 
-	edge *edgeUp;
-	edge *edgeDown;
-	edge *edgeUpLeft;
-	edge *edgeUpRight;
-	edge *edgeDownLeft;
-	edge *edgeDownRight;
+	edge edgeUp;
+	edge edgeDown;
+	edge edgeUpLeft;
+	edge edgeUpRight;
+	edge edgeDownLeft;
+	edge edgeDownRight;
 
 } hex;
 
@@ -58,17 +58,17 @@ typedef struct _vert {
 	int playerID;
 
 
-	hex *hexLeft;
-	hex *hexRight;
-	hex *hexVertical;
+	hex hexUp;
+	hex hexDown;
+	hex hexSide;
 
-	vert *vertLeft;
-	vert *vertRight;
-	vert *vertVertical;
+	vert vertUp;
+	vert vertDown;
+	vert vertSide;
 
-	edge *edgeLeft;
-	edge *edgeRight;
-	edge *edgeVertical;
+	edge edgeUp;
+	edge edgeDown;
+	edge edgeSide;
 
 } vert;
 
@@ -77,11 +77,11 @@ typedef struct _edge {
 
 	int playerID;
 
-	hex *hexLeft;
-	hex *hexRight;
+	hex hexUp;
+	hex hexDown;
 
-	vert *vertUp;
-	vert *vertDown;
+	vert vertUp;//If level up == right
+	vert vertDown;
 
 } edge;
 
@@ -107,7 +107,7 @@ typedef struct _game {
 	hex hexArray[NUM_HEXS];
 	edge edgeArray[72];
 
-	vert * entryPoint;
+	vert entryPoint;
 
 	player playerArray[3];
 
@@ -152,12 +152,26 @@ Game newGame(int discipline[], int dice[]){
 	//Setting disciplines
 	int hexNum = 0;
 	while (hexNum < NUM_HEXS) {
-		hex tempHex;
-		tempHex.hexDiscipline = game->disciplines[hexNum];
-		game->hexArray[hexHum] = tempHex;
+		hex tempHex = (hex) malloc(sizeof(hex));
+		tempHex->hexDiscipline = game->disciplines[hexNum];
+		game->hexArray[hexNum] = tempHex;
 		hexNum++;
 	}
 	
+	
+	int hexLink = 0;
+	while (hexLink < NUM_HEXS) {
+		if (hexLink > 0 && hexLink < 4) {//First col
+			if (hexLink == 1){
+				game->hexArray[hexNum]->hexUp = game->hexArray[hexNum-1];
+				game->hexArray[hexNum]->hexDown = game->hexArray[hexNum+1];
+			} else if (hexLink ){
+				
+			}
+		}
+		
+		
+	}
 	
 	
 	
@@ -176,6 +190,7 @@ Game newGame(int discipline[], int dice[]){
 }
 
 void disposeGame(Game g) {
+	//Free every thing in the hex, vert and edge arrays
 	free(g);
 }
 
@@ -272,7 +287,7 @@ void makeAction(Game g, action a) {
 			// convert the 3 students of disciplineFrom into disciplineTo
 		}
 	}
-}
+};
 
 void throwDice(Game g, int diceScore){
 	//Adv turn
@@ -358,86 +373,30 @@ int isLegalAction(Game g, action a){
 }
 
 int getKPIpoints(Game g, int player){
-	int buffer[NUM_DISCIPLINES] = DEFAULT_PLAYERS;
-	int i = 0;
-	while (i < NUM_UNIS) {
-		if (g->playerArray[i].playerID == player) {
-			player = i;
-		}
-		i++;
-	}
-	return g->playerArray[player].kpiPoints;
+	return g->playerArray[player - 1].kpiPoints;
 }
 
 int getARCs(Game g, int player) {
-	int buffer[NUM_DISCIPLINES] = DEFAULT_PLAYERS;
-	int i = 0;
-	while (i < NUM_UNIS) {
-		if (g->playerArray[i].playerID == player) {
-			player = i;
-		}
-		i++;
-	}
-	return g->playerArray[player].numARCs;
+	return g->playerArray[player - 1].numARCs;
 }
 
 int getGO8s(Game g, int player){
-	int buffer[NUM_DISCIPLINES] = DEFAULT_PLAYERS;
-	int i = 0;
-	while (i < NUM_UNIS) {
-		if (g->playerArray[i].playerID == player) {
-			player = i;
-		}
-		i++;
-	}
 	return 0; // Placeholder
 }
 
 int getCampuses(Game g, int player){
-	int buffer[NUM_DISCIPLINES] = DEFAULT_PLAYERS;
-	int i = 0;
-	while (i < NUM_UNIS) {
-		if (g->playerArray[i].playerID == player) {
-			player = i;
-		}
-		i++;
-	}
 	return 0; // Placeholder
 }
 
 int getIPs(Game g, int player){
-	int buffer[NUM_DISCIPLINES] = DEFAULT_PLAYERS;
-	int i = 0;
-	while (i < NUM_UNIS) {
-		if (g->playerArray[i].playerID == player) {
-			player = i;
-		}
-		i++;
-	}
-	return g->playerArray[player].numIPs;
+	return g->playerArray[g->currentTurn % NUM_UNIS].numIPs;
 }
 
 int getPublications(Game g, int player){
-	int buffer[NUM_DISCIPLINES] = DEFAULT_PLAYERS;
-	int i = 0;
-	while (i < NUM_UNIS) {
-		if (g->playerArray[i].playerID == player) {
-			player = i;
-		}
-		i++;
-	}
-	return g->playerArray[player].numPubs;
+	return g->playerArray[g->currentTurn % NUM_UNIS].numPubs;
 }
 
 int getStudents(Game g, int player, int discipline){
-	int buffer[NUM_DISCIPLINES] = DEFAULT_PLAYERS;
-	int i = 0;
-	while (i < NUM_UNIS) {
-		if (g->playerArray[i].playerID == player) {
-			player = i;
-		}
-		i++;
-	}
 	return g->playerArray[player].students[discipline];
 }
 
