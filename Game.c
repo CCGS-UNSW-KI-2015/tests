@@ -5,6 +5,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
+#include <string.h>
 
 #include "Game.h"
 
@@ -188,7 +189,7 @@ void makeAction(Game g, action a) {
             // Remove the campus, add a GO8 campus and take the cost from the user
             g->playerArray[g->currentTurn % NUM_UNIS].students[STUDENT_MJ] -= 2;
             g->playerArray[g->currentTurn % NUM_UNIS].students[STUDENT_MMONEY] -= 3;
-            
+
             // add 10 KPI points (20 for building G08, -10 for removing a campus)
             g->playerArray[g->currentTurn % NUM_UNIS].kpiPoints += 10;
         }
@@ -437,3 +438,49 @@ static player newPlayer(int playerID){
 	return playerNew;
 }
 
+// Incomplete code here
+
+int getOriginVertexId() {
+	// PLACEHOLDER. ALBERT SMITH: DO NOT COMPLAIN.
+	return 42;
+}
+
+// int resolvePathA(Game g, path pathToVertex) {
+// 	int origin = getOriginVertexId();
+
+// 	int currentVertex = vert;
+
+// }
+
+vert resolvePathB(Game g, path pathToVertex) {
+	int origin = getOriginVertexId();
+
+	vert currentVertex = g->vertArray[origin];
+
+	int i = 0;
+	int pathLen = strlen(pathToVertex);
+
+	while (i < pathLen) {
+		char currentChar = pathToVertex[i];
+		if (currentChar == "L") {
+			// currentVertex = *(currentVertex.hexLeft);
+		} else if (currentChar == "R") {
+			// currentVertex = *(currentVertex.hexRight);
+		} else if (currentChar == "B") {
+			// currentVertex = *(currentVertex.hexBack);
+		} else {
+			printf("Invalid path supplied: %s\n", pathToVertex);
+			exit(1);
+		}
+
+		i++;
+	}
+
+	i = 0;
+
+	// while (i < 48) { // Replace with num of paths
+
+	// }
+
+	return currentVertex;
+}
