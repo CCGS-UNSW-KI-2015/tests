@@ -14,6 +14,7 @@
 #define DEFAULT_PLAYERS {0, 3, 3, 1, 1, 1}
 #define NUM_DISCIPLINES 6
 #define NUM_HEXS 19
+#define HEX_BUILD_PRINT 5
 
 //-----------Structs-----------//
 
@@ -163,46 +164,59 @@ Game newGame(int discipline[], int dice[]){
 	
 	int hexLink = 0;
 	while (hexLink < NUM_HEXS) {
-		if (hexLink > 0 && hexLink < 4) {//First col
-			if (hexLink == 1){
+		if (hexLink > -1 && hexLink < 3) {//First col
+			if (hexLink == 0){
 				//Vertical
+				game->hexArray[hexLink]->hexUp = NULL;
 				game->hexArray[hexLink]->hexDown = game->hexArray[hexLink+1];
 				//Right
 				game->hexArray[hexLink]->hexUpRight = game->hexArray[hexLink+3];
 				game->hexArray[hexLink]->hexDownRight = game->hexArray[hexLink+4];
 				//Left
+				game->hexArray[hexLink]->hexUpLeft = NULL;
+				game->hexArray[hexLink]->hexDownLeft = NULL;
+			} else if (hexLink == 1){
+				//Vertical
+				game->hexArray[hexLink]->hexUp = game->hexArray[hexLink-1];
+				game->hexArray[hexLink]->hexDown = game->hexArray[hexLink+1];
+				//Right
+				game->hexArray[hexLink]->hexUpRight = game->hexArray[hexLink+3];
+				game->hexArray[hexLink]->hexDownRight = game->hexArray[hexLink+4];
+				//Left
+				game->hexArray[hexLink]->hexUpLeft = NULL;
+				game->hexArray[hexLink]->hexDownLeft = NULL;
 			} else if (hexLink == 2){
 				//Vertical
 				game->hexArray[hexLink]->hexUp = game->hexArray[hexLink-1];
-				game->hexArray[hexLink]->hexDown = game->hexArray[hexLink+1];
+				game->hexArray[hexLink]->hexDown = NULL;
 				//Right
 				game->hexArray[hexLink]->hexUpRight = game->hexArray[hexLink+3];
 				game->hexArray[hexLink]->hexDownRight = game->hexArray[hexLink+4];
 				//Left
-			} else if (hexLink == 3){
-				//Vertical
-				game->hexArray[hexLink]->hexUp = game->hexArray[hexLink-1];
-				//Right
-				game->hexArray[hexLink]->hexUpRight = game->hexArray[hexLink+3];
-				game->hexArray[hexLink]->hexDownRight = game->hexArray[hexLink+4];
-				//Left
+				game->hexArray[hexLink]->hexUpLeft = NULL;
+				game->hexArray[hexLink]->hexDownLeft = NULL;
 			}
-		} else if (hexLink > 3 && hexLink < 8){
-			if (hexLink == 4){
+		} else if (hexLink > 2 && hexLink < 7){
+			if (hexLink == 3){
 				//Vertical
+				game->hexArray[hexLink]->hexUp = NULL;
 				game->hexArray[hexLink]->hexDown = game->hexArray[hexLink+1];
 				//Right
 				game->hexArray[hexLink]->hexUpRight = game->hexArray[hexLink+3];
 				game->hexArray[hexLink]->hexDownRight = game->hexArray[hexLink+4];
 				//Left
+				game->hexArray[hexLink]->hexUpLeft = NULL;
 				game->hexArray[hexLink]->hexDownLeft = game->hexArray[hexLink-4];
-			} else if (hexLink == 7){
+			} else if (hexLink == 6){
 				//Vertical
 				game->hexArray[hexLink]->hexUp = game->hexArray[hexLink-1];
+				game->hexArray[hexLink]->hexDown = NULL;
 				//Right
 				game->hexArray[hexLink]->hexUpRight = game->hexArray[hexLink+3];
+				game->hexArray[hexLink]->hexDownRight = NULL;
 				//Left
 				game->hexArray[hexLink]->hexUpLeft = game->hexArray[hexLink-5];
+				game->hexArray[hexLink]->hexDownLeft = NULL;
 			} else{
 				//Vertical
 				game->hexArray[hexLink]->hexUp = game->hexArray[hexLink-1];
@@ -211,25 +225,30 @@ Game newGame(int discipline[], int dice[]){
 				game->hexArray[hexLink]->hexUpRight = game->hexArray[hexLink+4];
 				game->hexArray[hexLink]->hexDownRight = game->hexArray[hexLink+5];
 				//Left
-				game->hexArray[hexLink]->hexUpLeft = game->hexArray[hexLink-5];
-				game->hexArray[hexLink]->hexDownLeft = game->hexArray[hexLink-4];
+				game->hexArray[hexLink]->hexUpLeft = game->hexArray[hexLink-4];
+				game->hexArray[hexLink]->hexDownLeft = game->hexArray[hexLink-3];
 			} 
-		} else if (hexLink > 7 && hexLink < 13){
-			if (hexLink == 8){
+		} else if (hexLink > 6 && hexLink < 12){
+			if (hexLink == 7){
 				//Vertical
+				game->hexArray[hexLink]->hexUp = NULL;
 				game->hexArray[hexLink]->hexDown = game->hexArray[hexLink+1];
 				//Right
 				game->hexArray[hexLink]->hexUpRight = game->hexArray[hexLink+3];
 				game->hexArray[hexLink]->hexDownRight = game->hexArray[hexLink+4];
 				//Left
+				game->hexArray[hexLink]->hexUpLeft = NULL;
 				game->hexArray[hexLink]->hexDownLeft = game->hexArray[hexLink-4];
-			} else if (hexLink == 12){
+			} else if (hexLink == 11){
 				//Vertical
 				game->hexArray[hexLink]->hexUp = game->hexArray[hexLink-1];
+				game->hexArray[hexLink]->hexDown = NULL;
 				//Right
 				game->hexArray[hexLink]->hexUpRight = game->hexArray[hexLink+4];
+				game->hexArray[hexLink]->hexDownRight = NULL;
 				//Left
 				game->hexArray[hexLink]->hexUpLeft = game->hexArray[hexLink-5];
+				game->hexArray[hexLink]->hexDownLeft = NULL;
 			} else {
 				//Vertical
 				game->hexArray[hexLink]->hexUp = game->hexArray[hexLink-1];
@@ -241,20 +260,24 @@ Game newGame(int discipline[], int dice[]){
 				game->hexArray[hexLink]->hexUpLeft = game->hexArray[hexLink-5];
 				game->hexArray[hexLink]->hexDownLeft = game->hexArray[hexLink-4];
 			} 
-		} else if (hexLink > 12 && hexLink < 17){
-			if (hexLink == 13){
+		} else if (hexLink > 11 && hexLink < 16){
+			if (hexLink == 12){
 				//Vertical
+				game->hexArray[hexLink]->hexUp = NULL;
 				game->hexArray[hexLink]->hexDown = game->hexArray[hexLink+1];
 				//Right
+				game->hexArray[hexLink]->hexUpRight = NULL;
 				game->hexArray[hexLink]->hexDownRight = game->hexArray[hexLink+4];
 				//Left
 				game->hexArray[hexLink]->hexUpLeft = game->hexArray[hexLink-5];
 				game->hexArray[hexLink]->hexDownLeft = game->hexArray[hexLink-4];
-			} else if (hexLink == 16){
+			} else if (hexLink == 15){
 				//Vertical
 				game->hexArray[hexLink]->hexUp = game->hexArray[hexLink-1];
+				game->hexArray[hexLink]->hexDown = NULL;
 				//Right
 				game->hexArray[hexLink]->hexUpRight = game->hexArray[hexLink+4];
+				game->hexArray[hexLink]->hexDownRight = NULL;
 				//Left
 				game->hexArray[hexLink]->hexUpLeft = game->hexArray[hexLink-5];
 				game->hexArray[hexLink]->hexDownLeft = game->hexArray[hexLink-4];
@@ -270,17 +293,23 @@ Game newGame(int discipline[], int dice[]){
 				game->hexArray[hexLink]->hexDownLeft = game->hexArray[hexLink-4];
 			} 			
 		} else {
-			if (hexLink == 17){
+			if (hexLink == 16){
 				//Vertical
+				game->hexArray[hexLink]->hexUp = NULL;
 				game->hexArray[hexLink]->hexDown = game->hexArray[hexLink+1];
 				//Right
+				game->hexArray[hexLink]->hexUpRight = NULL;
+				game->hexArray[hexLink]->hexDownRight = NULL;
 				//Left
 				game->hexArray[hexLink]->hexUpLeft = game->hexArray[hexLink-4];
 				game->hexArray[hexLink]->hexDownLeft = game->hexArray[hexLink-3];
-			} else if (hexLink == 19){
+			} else if (hexLink == 18){
 				//Vertical
 				game->hexArray[hexLink]->hexUp = game->hexArray[hexLink-1];
+				game->hexArray[hexLink]->hexDown = NULL;
 				//Right
+				game->hexArray[hexLink]->hexUpRight = NULL;
+				game->hexArray[hexLink]->hexDownRight = NULL;
 				//Left
 				game->hexArray[hexLink]->hexUpLeft = game->hexArray[hexLink-4];
 				game->hexArray[hexLink]->hexDownLeft = game->hexArray[hexLink-3];
@@ -289,6 +318,8 @@ Game newGame(int discipline[], int dice[]){
 				game->hexArray[hexLink]->hexUp = game->hexArray[hexLink-1];
 				game->hexArray[hexLink]->hexDown = game->hexArray[hexLink+1];
 				//Right
+				game->hexArray[hexLink]->hexUpRight = NULL;
+				game->hexArray[hexLink]->hexDownRight = NULL;
 				//Left
 				game->hexArray[hexLink]->hexUpLeft = game->hexArray[hexLink-4];
 				game->hexArray[hexLink]->hexDownLeft = game->hexArray[hexLink-3];
@@ -297,15 +328,28 @@ Game newGame(int discipline[], int dice[]){
 		hexLink++;
 	}	
 	
-	int printCout = 0;
-	while (printCout < NUM_HEXS){
-		printf("Hex ID: %d, upL: %d, upR: %d, downL: %d, downR: %d, down: %d, up: %d\n",
-		       game->hexArray[printCout]->hexID,
-		       game->hexArray[printCout]->hexUpLeft->hexID, game->hexArray[printCout]->hexUpRight->hexID,
-		       game->hexArray[printCout]->hexDownLeft->hexID, game->hexArray[printCout]->hexDownRight->hexID,
-		       game->hexArray[printCout]->hexUp->hexID, game->hexArray[printCout]->hexDown->hexID);
-		printCout++;
+	printf("Hex ID: %d,", game->hexArray[HEX_BUILD_PRINT]->hexID);
+
+	if (game->hexArray[HEX_BUILD_PRINT]->hexUpLeft != NULL){
+		printf(" upL: %d,", game->hexArray[HEX_BUILD_PRINT]->hexUpLeft->hexID);
 	}
+	if (game->hexArray[HEX_BUILD_PRINT]->hexUpRight != NULL){
+		printf(" upR: %d,", game->hexArray[HEX_BUILD_PRINT]->hexUpRight->hexID);
+	}
+	if (game->hexArray[HEX_BUILD_PRINT]->hexDownLeft != NULL){
+		printf(" downL: %d,", game->hexArray[HEX_BUILD_PRINT]->hexDownLeft->hexID);
+	}
+	if (game->hexArray[HEX_BUILD_PRINT]->hexDownRight != NULL){
+		printf(" downR: %d,", game->hexArray[HEX_BUILD_PRINT]->hexDownRight->hexID);
+	}
+	if (game->hexArray[HEX_BUILD_PRINT]->hexUp != NULL){
+		printf(" up: %d,", game->hexArray[HEX_BUILD_PRINT]->hexUp->hexID);
+	}
+	if (game->hexArray[HEX_BUILD_PRINT]->hexDown != NULL){
+		printf(" down: %d", game->hexArray[HEX_BUILD_PRINT]->hexDown->hexID);
+	}
+
+	printf("\n");
 	
 	return game;
 }

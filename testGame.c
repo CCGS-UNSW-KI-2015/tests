@@ -14,6 +14,8 @@
 int main(int argc, char *argv[]){
 	Game game;
 
+	
+
 	//--------------TESTS-----------//
 
 	int defaultDis[] = DEFAULT_DISCIPLINES;
@@ -60,6 +62,7 @@ int main(int argc, char *argv[]){
 	// Done!
 	printEnd();
 
+	
 
 	return EXIT_SUCCESS;
 }
