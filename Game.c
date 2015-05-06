@@ -157,21 +157,7 @@ Game newGame(int discipline[], int dice[]){
 		game->hexArray[hexHum] = tempHex;
 		hexNum++;
 	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+
 	return game;
 }
 
