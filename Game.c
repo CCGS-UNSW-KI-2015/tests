@@ -292,24 +292,7 @@ Game newGame(int discipline[], int dice[]){
 				game->hexArray[hexLink]->hexDownLeft = game->hexArray[hexLink-3];
 			} 
 		}	
-	}
-	
-	
-	
-}	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+	}	
 	return game;
 }
 
