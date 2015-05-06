@@ -13,6 +13,7 @@
 #define BOARD_SIZE 19
 #define DEFAULT_PLAYERS {0, 3, 3, 1, 1, 1}
 #define NUM_DISCIPLINES 6
+#define NUM_HEXS 19
 
 //-----------Structs-----------//
 
@@ -54,7 +55,7 @@ typedef struct _vert {
 	int hasUni;
 	int hasGO8;
 
-	int teamID;
+	int playerID;
 
 
 	hex *hexLeft;
@@ -74,7 +75,7 @@ typedef struct _vert {
 typedef struct _edge {
 	int hasARC;
 
-	int teamID;
+	int playerID;
 
 	hex *hexLeft;
 	hex *hexRight;
@@ -103,7 +104,7 @@ typedef struct _game {
 	int dice[BOARD_SIZE];
 
 	vert vertArray[48];
-	hex hexArray[19];
+	hex hexArray[NUM_HEXS];
 	edge edgeArray[72];
 
 	vert * entryPoint;
@@ -126,7 +127,8 @@ static player newPlayer(int playerID);
 
 Game newGame(int discipline[], int dice[]){
 	Game game = (Game)malloc(sizeof(Game));
-
+	
+	//Setting disciplines and dice vals
 	int i = 0;
 	while (i < BOARD_SIZE){
 		game->disciplines[i] = discipline[i];
@@ -134,15 +136,42 @@ Game newGame(int discipline[], int dice[]){
 		i++;
 	}
 
+	//Setting inital turn
 	game->currentTurn = -1;
 
-
+	
+	//Initing players and assigning
 	int playerI = 0;
 	while (playerI < 3){
 		game->playerArray[playerI] = newPlayer(playerI + 1);
 		playerI++;
 	}
 
+	//Initing all hexs
+	//Storing in game->hexArray;
+	//Setting disciplines
+	int hexNum = 0;
+	while (hexNum < NUM_HEXS) {
+		hex tempHex;
+		tempHex.hexDiscipline = game->disciplines[hexNum];
+		game->hexArray[hexHum] = tempHex;
+		hexNum++;
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	return game;
 }
 
