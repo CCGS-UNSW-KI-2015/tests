@@ -89,15 +89,15 @@ stateSet initState (stateSet state) {
 
 		i++;
 	}
-	
+
 	i = 0;
 	while (i < universitySize) {
-		state.unis[i].numKPIPoints;
-		state.unis[i].numARCs;
-		state.unis[i].numGroupOfEights;
-		state.unis[i].numCampuses;
-		state.unis[i].numIPs;
-		state.unis[i].numPublications;
+		state.unis[i].numKPIPoints = 0;
+		state.unis[i].numARCs = 0;
+		state.unis[i].numGroupOfEights = 0;
+		state.unis[i].numCampuses = 0;
+		state.unis[i].numIPs = 0;
+		state.unis[i].numPublications = 0;
 		int disBuffer[NUM_DISCIPLINES] = DEFAULT_PLAYERS;
 		int j = 0;
 		while (j < NUM_DISCIPLINES) {
