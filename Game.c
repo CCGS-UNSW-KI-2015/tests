@@ -464,6 +464,20 @@ void throwDice(Game g, int diceScore){
 	//Adv turn
 	g->currentTurn++;
 	//Give resources
+
+	if (diceScore == 7) {
+		int i = 0;
+		int temp = 0;
+		while (i < NUM_UNIS) {
+			temp = g->playerArray[i].students[STUDENT_MTV];
+			g->playerArray[i].students[STUDENT_MTV] = 0;
+			temp += g->playerArray[i].students[STUDENT_MMONEY];
+			g->playerArray[i].students[STUDENT_MMONEY] = 0;
+			g->playerArray[i].students[STUDENT_THD] += temp;
+
+			i++;
+		}
+	}
 }
 
 int getDiscipline(Game g, int regionID){
