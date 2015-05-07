@@ -107,7 +107,7 @@ stateSet initState (stateSet state) {
 			state.unis[i].numStudents[j] = disBuffer[j];
 			j++;
 		}
-		memset(state.unis[i].numExchangeRate, 0, sizeof(state.unis[i].numExchangeRate[0][0]) * NUM_DISCIPLINES * NUM_DISCIPLINES);
+		memset(state.unis[i].numExchangeRate, 3, sizeof(state.unis[i].numExchangeRate[0][0]) * NUM_DISCIPLINES * NUM_DISCIPLINES);
 		i++;
 	}
 
