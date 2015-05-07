@@ -90,6 +90,14 @@ void displayPlayerAssets(Game game, int playerId) {
 	printf("%d campuses\n", getCampuses(game, playerId));
 	printf("%d IPs\n", getIPs(game, playerId));
 	printf("%d publications\n", getPublications(game, playerId));
+	
+	printf("Discipline            | Students\n");
+	printf("THD                   | %d\n", getStudents(game, playerId, STUDENT_THD));
+	printf("BPS                   | %d\n", getStudents(game, playerId, STUDENT_BPS));
+	printf("BQN                   | %d\n", getStudents(game, playerId, STUDENT_BQN));
+	printf("MJ                    | %d\n", getStudents(game, playerId, STUDENT_MJ));
+	printf("MTV                   | %d\n", getStudents(game, playerId, STUDENT_MTV));
+	printf("MMONEY                | %d\n", getStudents(game, playerId, STUDENT_MMONEY));
 }
 
 int displayPlayerInfo(Game game) {
