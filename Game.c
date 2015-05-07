@@ -129,7 +129,7 @@ static player newPlayer(int playerID);
 
 Game newGame(int discipline[], int dice[]){
 	Game game = (Game) malloc(sizeof(struct _game));
-	
+
 	//Setting disciplines and dice vals
 	int i = 0;
 	while (i < BOARD_SIZE){
@@ -141,7 +141,7 @@ Game newGame(int discipline[], int dice[]){
 	//Setting inital turn
 	game->currentTurn = -1;
 
-	
+
 	//Initing players and assigning
 	int playerI = 0;
 	while (playerI < 3){
@@ -160,8 +160,8 @@ Game newGame(int discipline[], int dice[]){
 		game->hexArray[hexNum] = tempHex;
 		hexNum++;
 	}
-	
-	
+
+
 	int hexLink = 0;
 	while (hexLink < NUM_HEXS) {
 		if (hexLink > -1 && hexLink < 3) {//First col
@@ -227,7 +227,7 @@ Game newGame(int discipline[], int dice[]){
 				//Left
 				game->hexArray[hexLink]->hexUpLeft = game->hexArray[hexLink-4];
 				game->hexArray[hexLink]->hexDownLeft = game->hexArray[hexLink-3];
-			} 
+			}
 		} else if (hexLink > 6 && hexLink < 12){
 			if (hexLink == 7){
 				//Vertical
@@ -259,7 +259,7 @@ Game newGame(int discipline[], int dice[]){
 				//Left
 				game->hexArray[hexLink]->hexUpLeft = game->hexArray[hexLink-5];
 				game->hexArray[hexLink]->hexDownLeft = game->hexArray[hexLink-4];
-			} 
+			}
 		} else if (hexLink > 11 && hexLink < 16){
 			if (hexLink == 12){
 				//Vertical
@@ -291,7 +291,7 @@ Game newGame(int discipline[], int dice[]){
 				//Left
 				game->hexArray[hexLink]->hexUpLeft = game->hexArray[hexLink-5];
 				game->hexArray[hexLink]->hexDownLeft = game->hexArray[hexLink-4];
-			} 			
+			}
 		} else {
 			if (hexLink == 16){
 				//Vertical
@@ -323,11 +323,11 @@ Game newGame(int discipline[], int dice[]){
 				//Left
 				game->hexArray[hexLink]->hexUpLeft = game->hexArray[hexLink-4];
 				game->hexArray[hexLink]->hexDownLeft = game->hexArray[hexLink-3];
-			} 
+			}
 		}
 		hexLink++;
-	}	
-	
+	}
+
 	printf("Hex ID: %d,", game->hexArray[HEX_BUILD_PRINT]->hexID);
 
 	if (game->hexArray[HEX_BUILD_PRINT]->hexUpLeft != NULL){
@@ -350,7 +350,7 @@ Game newGame(int discipline[], int dice[]){
 	}
 
 	printf("\n");
-	
+
 	return game;
 }
 
@@ -368,7 +368,6 @@ void disposeGame(Game g) {
 void makeAction(Game g, action a) {
 	if (a.actionCode == PASS) {
 		//Do nothing
-		g->currentTurn++;
 	}
 	else if (a.actionCode == BUILD_CAMPUS) {
 		// check if the location is connected to an ARC grant
@@ -582,7 +581,7 @@ int getPublications(Game g, int player){
 }
 
 int getStudents(Game g, int player, int discipline){
-	return g->playerArray[player].students[discipline];
+	return g->playerArray[player - 1].students[discipline];
 }
 
 int getExchangeRate(Game g, int player,
