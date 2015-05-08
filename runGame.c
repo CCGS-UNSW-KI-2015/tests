@@ -193,7 +193,6 @@ void castPlayerAction(Game game, int playerId) {
 void displayMap(Game game) {
 	char* colorMap = {BLUE, RED, CYAN, YELLOW, GREEN, MAGENTA}
 	
-	printf ("Disciplines and dice rolls:\n");
 	printf (RESET BLUE    "THD, ");
 	printf (RESET RED     "BPS, ");
 	printf (RESET CYAN    "BQN, ");
@@ -201,8 +200,29 @@ void displayMap(Game game) {
 	printf (RESET GREEN   "MTV, ");
 	printf (RESET MAGENTA "MMONEY\n");
 	
-	printf ("", getDiscipline(game, 0));
-	printf ("", getDiscipline(game, 0));
+	printf ("Disciplines and dice rolls:\n");
 	
-	printf (RESET BLUE "Map:");
+	// It's beautiful
+	printf (colorMap[getDiscipline(game, 0)]  "    %d\n", getDiceValue(game, 0));
+	printf (colorMap[getDiscipline(game, 1)]  "  %d  "
+	        colorMap[getDiscipline(game, 2)]  "%d\n", getDiceValue(game, 1), getDiceValue(game, 2));
+	printf (colorMap[getDiscipline(game, 3)]  "%d  "
+	        colorMap[getDiscipline(game, 4)]  "%d  "
+	        colorMap[getDiscipline(game, 5)]  "%d\n", getDiceValue(game, 3), getDiceValue(game, 4), getDiceValue(game, 5));
+	printf (colorMap[getDiscipline(game, 6)]  "  %d   "
+	        colorMap[getDiscipline(game, 7)]  "%d\n\n", getDiceValue(game, 6), getDiceValue(game, 7));
+	printf (colorMap[getDiscipline(game, 8)]  "%d   "
+	        colorMap[getDiscipline(game, 9)]  "%d   "
+	        colorMap[getDiscipline(game, 10)] "%d\n", getDiceValue(game, 8), getDiceValue(game, 9), getDiceValue(game, 10));
+	printf (colorMap[getDiscipline(game, 11)] "  %d   "
+	        colorMap[getDiscipline(game, 12)] "%d\n", getDiceValue(game, 11), getDiceValue(game, 12));
+	printf (colorMap[getDiscipline(game, 13)] "%d   "
+	        colorMap[getDiscipline(game, 14)] "%d   "
+	        colorMap[getDiscipline(game, 15)] "%d\n", getDiceValue(game, 13), getDiceValue(game, 14), getDiceValue(game, 15));
+	printf (colorMap[getDiscipline(game, 16)] "  %d   "
+	        colorMap[getDiscipline(game, 17)] "%d\n", getDiceValue(game, 16), getDiceValue(game, 17));
+	printf (colorMap[getDiscipline(game, 18)] "    %d\n", getDiceValue(game, 18));
+	
+	printf (RESET BLUE "Campuses / GO8s: TODO\n");
+	printf (RESET BLUE "ARCs: TODO\n");
 }
