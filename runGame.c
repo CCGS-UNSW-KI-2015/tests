@@ -195,12 +195,12 @@ void castPlayerAction(Game game, int playerId) {
 void displayMap(Game game) {
 	char* colorMap[NUM_DISCIPLINES] = {BLUE, RED, CYAN, YELLOW, GREEN, MAGENTA};
 
-	printf (RESET BLUE    "THD, ");
+	printf (RESET BLUE    "\nTHD, ");
 	printf (RESET RED     "BPS, ");
 	printf (RESET CYAN    "BQN, ");
 	printf (RESET YELLOW  "MJ, ");
 	printf (RESET GREEN   "MTV, ");
-	printf (RESET MAGENTA "MMONEY\n\n");
+	printf (RESET MAGENTA "MMONEY\n");
 
 	// Disciplines and dice rolls
 	printf (RESET BLUE    "Disciplines and dice rolls:\n");
