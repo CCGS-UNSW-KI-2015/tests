@@ -219,8 +219,8 @@ void displayMap(Game game) {
 	        colorMap[getDiscipline(game, 16)],
 	        getDiceValue(game, 5));
 	printf ("   %s%02d    %s%02d\n",
-	        colorMap[getDiscipline(game, 2)],
-	        getDiceValue(game, 2),
+	        colorMap[getDiscipline(game, 4)],
+	        getDiceValue(game, 4),
 	        colorMap[getDiscipline(game, 13)],
 	        getDiceValue(game, 13));
 	printf ("%s%02d    %s%02d    %s%02d\n",
