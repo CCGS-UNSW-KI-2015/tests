@@ -194,9 +194,15 @@ void displayMap(Game game) {
 	char* colorMap = {BLUE, RED, CYAN, YELLOW, GREEN, MAGENTA}
 	
 	printf ("Disciplines and dice rolls:\n");
-	printf (BLUE "THD, ");
-	printf (BLUE "THD, ");
-	printf (BLUE "THD, ");
+	printf (RESET BLUE    "THD, ");
+	printf (RESET RED     "BPS, ");
+	printf (RESET CYAN    "BQN, ");
+	printf (RESET YELLOW  "MJ, ");
+	printf (RESET GREEN   "MTV, ");
+	printf (RESET MAGENTA "MMONEY\n");
+	
+	printf ("", getDiscipline(game, 0));
+	printf ("", getDiscipline(game, 0));
 	
 	printf (RESET BLUE "Map:");
 }
