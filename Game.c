@@ -387,25 +387,37 @@ static void buildVerts(Game game){
 			vertNum = hexLink + 3;
 			game->hexArray[hexLink]->vertUpLeft = getVert(game, vertNum);
 			getVert(game, vertNum)->hexDown = game->hexArray[vertNum];
-			getVert(game, vertNum)->vertUp = getVert(game, vertNum + 3);
-			getVert(game, vertNum)->vertDown = getVert(game, vertNum + 4);
+			getVert(game, vertNum)->vertUp = getVert(game, vertNum - 4);
+			getVert(game, vertNum)->vertDown = getVert(game, vertNum - 3);
 			getVert(game, vertNum)->vertSide = getVert(game, vertNum + 4);
 
 			vertNum = hexLink + 7;
 			game->hexArray[hexLink]->vertUpRight = getVert(game, vertNum);
 			getVert(game, vertNum)->hexDown = game->hexArray[hexLink];
+			getVert(game, vertNum)->vertUp = getVert(game, vertNum + 4);
+			getVert(game, vertNum)->vertDown = getVert(game, vertNum + 5);
+			getVert(game, vertNum)->vertSide = getVert(game, vertNum - 4);
 
 			vertNum = hexLink + 12;
 			game->hexArray[hexLink]->vertRight = getVert(game, vertNum);
 			getVert(game, vertNum)->hexSide = game->hexArray[hexLink];
+			getVert(game, vertNum)->vertUp = getVert(game, vertNum - 5);
+			getVert(game, vertNum)->vertDown = getVert(game, vertNum - 4);
+			getVert(game, vertNum)->vertSide = getVert(game, vertNum + 5);
 
 			vertNum = hexLink + 8;
 			game->hexArray[hexLink]->vertDownRight = getVert(game, vertNum);
 			getVert(game, vertNum)->hexUp = game->hexArray[hexLink];
+			getVert(game, vertNum)->vertUp = getVert(game, vertNum + 4);
+			getVert(game, vertNum)->vertDown = getVert(game, vertNum + 5);
+			getVert(game, vertNum)->vertSide = getVert(game, vertNum + 5);
 
 			vertNum = hexLink + 4;
 			game->hexArray[hexLink]->vertDownLeft = getVert(game, vertNum);
 			getVert(game, vertNum)->hexUp = game->hexArray[hexLink];
+			getVert(game, vertNum)->vertUp = getVert(game, vertNum - 4);
+			getVert(game, vertNum)->vertDown = getVert(game, vertNum - 3);
+			getVert(game, vertNum)->vertSide = getVert(game, vertNum + 4);
 		}
 		else if (hexLink > 2 && hexLink < 7){
 			game->hexArray[hexLink]->vertLeft = game->vertArray[hexLink + 4];
