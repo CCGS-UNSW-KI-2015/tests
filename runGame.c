@@ -21,6 +21,7 @@ void displayDiceResults(Game game, int diceRoll);
 void displayPlayerAssets(Game game, int playerId);
 int displayPlayerInfo(Game game);
 void castPlayerAction(Game game, int playerId);
+void displayMap(Game game);
 
 int main(int argc, char *argv[]) {
 	Game game;
@@ -71,6 +72,7 @@ void displayGameInfo(Game game) {
 	printf(BOLD BLUE "This will be turn number: %d\n", getTurnNumber(game) + 1);
 	printf(RESET BLUE "Player with the most ARCs:         %d\n", getMostARCs(game));
 	printf("Player with the most publications: %d\n", getMostPublications(game));
+	displayMap(game);
 }
 
 void displayDiceResults(Game game, int diceRoll) {
@@ -186,4 +188,15 @@ void castPlayerAction(Game game, int playerId) {
 
 	printf(RESET CYAN "\nYou now have:\n");
 	displayPlayerAssets(game, playerId);
+}
+
+void displayMap(Game game) {
+	char* colorMap = {BLUE, RED, CYAN, YELLOW, GREEN, MAGENTA}
+	
+	printf ("Disciplines and dice rolls:\n");
+	printf (BLUE "THD, ");
+	printf (BLUE "THD, ");
+	printf (BLUE "THD, ");
+	
+	printf (RESET BLUE "Map:");
 }
