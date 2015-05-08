@@ -15,6 +15,8 @@
 
 #define RESET   "\x1b[0m"
 
+#define NUM_DISCIPLINES 6
+
 int rollDice();
 void displayGameInfo(Game game);
 void displayDiceResults(Game game, int diceRoll);
