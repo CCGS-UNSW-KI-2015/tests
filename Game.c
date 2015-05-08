@@ -15,6 +15,7 @@
 #define DEFAULT_PLAYERS {0, 3, 3, 1, 1, 1}
 #define NUM_DISCIPLINES 6
 #define NUM_HEXS 19
+#define NUM_VERTS 48
 #define HEX_BUILD_PRINT 14
 
 //-----------Structs-----------//
@@ -105,7 +106,7 @@ typedef struct _game {
 	int disciplines[BOARD_SIZE];
 	int dice[BOARD_SIZE];
 
-	vert vertArray[48];
+	vert vertArray[NUM_VERTS];
 	hex hexArray[NUM_HEXS];
 	edge edgeArray[72];
 
@@ -118,6 +119,8 @@ typedef struct _game {
 //------------Local Functions--------------//
 
 static player newPlayer(int playerID);
+static void buildHexMap(Game game);
+static void buildVerts(Game game);
 
 
 //------------Main-------------//
@@ -128,7 +131,7 @@ static player newPlayer(int playerID);
 //------------Interface functons------------//
 
 Game newGame(int discipline[], int dice[]){
-	Game game = (Game) malloc(sizeof(struct _game));
+	Game game = (Game)malloc(sizeof(struct _game));
 
 	//Setting disciplines and dice vals
 	int i = 0;
@@ -149,6 +152,12 @@ Game newGame(int discipline[], int dice[]){
 		playerI++;
 	}
 
+	buildHexMap(game);
+
+	return game;
+}
+
+static void buildHexMap(Game game){
 	//Initing all hexs
 	//Storing in game->hexArray;
 	//Setting disciplines
@@ -161,168 +170,181 @@ Game newGame(int discipline[], int dice[]){
 		hexNum++;
 	}
 
-
 	int hexLink = 0;
 	while (hexLink < NUM_HEXS) {
 		if (hexLink > -1 && hexLink < 3) {//First col
 			if (hexLink == 0){
 				//Vertical
 				game->hexArray[hexLink]->hexUp = NULL;
-				game->hexArray[hexLink]->hexDown = game->hexArray[hexLink+1];
+				game->hexArray[hexLink]->hexDown = game->hexArray[hexLink + 1];
 				//Right
-				game->hexArray[hexLink]->hexUpRight = game->hexArray[hexLink+3];
-				game->hexArray[hexLink]->hexDownRight = game->hexArray[hexLink+4];
-				//Left
-				game->hexArray[hexLink]->hexUpLeft = NULL;
-				game->hexArray[hexLink]->hexDownLeft = NULL;
-			} else if (hexLink == 1){
-				//Vertical
-				game->hexArray[hexLink]->hexUp = game->hexArray[hexLink-1];
-				game->hexArray[hexLink]->hexDown = game->hexArray[hexLink+1];
-				//Right
-				game->hexArray[hexLink]->hexUpRight = game->hexArray[hexLink+3];
-				game->hexArray[hexLink]->hexDownRight = game->hexArray[hexLink+4];
-				//Left
-				game->hexArray[hexLink]->hexUpLeft = NULL;
-				game->hexArray[hexLink]->hexDownLeft = NULL;
-			} else if (hexLink == 2){
-				//Vertical
-				game->hexArray[hexLink]->hexUp = game->hexArray[hexLink-1];
-				game->hexArray[hexLink]->hexDown = NULL;
-				//Right
-				game->hexArray[hexLink]->hexUpRight = game->hexArray[hexLink+3];
-				game->hexArray[hexLink]->hexDownRight = game->hexArray[hexLink+4];
+				game->hexArray[hexLink]->hexUpRight = game->hexArray[hexLink + 3];
+				game->hexArray[hexLink]->hexDownRight = game->hexArray[hexLink + 4];
 				//Left
 				game->hexArray[hexLink]->hexUpLeft = NULL;
 				game->hexArray[hexLink]->hexDownLeft = NULL;
 			}
-		} else if (hexLink > 2 && hexLink < 7){
+			else if (hexLink == 1){
+				//Vertical
+				game->hexArray[hexLink]->hexUp = game->hexArray[hexLink - 1];
+				game->hexArray[hexLink]->hexDown = game->hexArray[hexLink + 1];
+				//Right
+				game->hexArray[hexLink]->hexUpRight = game->hexArray[hexLink + 3];
+				game->hexArray[hexLink]->hexDownRight = game->hexArray[hexLink + 4];
+				//Left
+				game->hexArray[hexLink]->hexUpLeft = NULL;
+				game->hexArray[hexLink]->hexDownLeft = NULL;
+			}
+			else if (hexLink == 2){
+				//Vertical
+				game->hexArray[hexLink]->hexUp = game->hexArray[hexLink - 1];
+				game->hexArray[hexLink]->hexDown = NULL;
+				//Right
+				game->hexArray[hexLink]->hexUpRight = game->hexArray[hexLink + 3];
+				game->hexArray[hexLink]->hexDownRight = game->hexArray[hexLink + 4];
+				//Left
+				game->hexArray[hexLink]->hexUpLeft = NULL;
+				game->hexArray[hexLink]->hexDownLeft = NULL;
+			}
+		}
+		else if (hexLink > 2 && hexLink < 7){
 			if (hexLink == 3){
 				//Vertical
 				game->hexArray[hexLink]->hexUp = NULL;
-				game->hexArray[hexLink]->hexDown = game->hexArray[hexLink+1];
+				game->hexArray[hexLink]->hexDown = game->hexArray[hexLink + 1];
 				//Right
-				game->hexArray[hexLink]->hexUpRight = game->hexArray[hexLink+3];
-				game->hexArray[hexLink]->hexDownRight = game->hexArray[hexLink+4];
+				game->hexArray[hexLink]->hexUpRight = game->hexArray[hexLink + 3];
+				game->hexArray[hexLink]->hexDownRight = game->hexArray[hexLink + 4];
 				//Left
 				game->hexArray[hexLink]->hexUpLeft = NULL;
-				game->hexArray[hexLink]->hexDownLeft = game->hexArray[hexLink-4];
-			} else if (hexLink == 6){
+				game->hexArray[hexLink]->hexDownLeft = game->hexArray[hexLink - 4];
+			}
+			else if (hexLink == 6){
 				//Vertical
-				game->hexArray[hexLink]->hexUp = game->hexArray[hexLink-1];
+				game->hexArray[hexLink]->hexUp = game->hexArray[hexLink - 1];
 				game->hexArray[hexLink]->hexDown = NULL;
 				//Right
-				game->hexArray[hexLink]->hexUpRight = game->hexArray[hexLink+3];
+				game->hexArray[hexLink]->hexUpRight = game->hexArray[hexLink + 3];
 				game->hexArray[hexLink]->hexDownRight = NULL;
 				//Left
-				game->hexArray[hexLink]->hexUpLeft = game->hexArray[hexLink-5];
+				game->hexArray[hexLink]->hexUpLeft = game->hexArray[hexLink - 5];
 				game->hexArray[hexLink]->hexDownLeft = NULL;
-			} else{
-				//Vertical
-				game->hexArray[hexLink]->hexUp = game->hexArray[hexLink-1];
-				game->hexArray[hexLink]->hexDown = game->hexArray[hexLink+1];
-				//Right
-				game->hexArray[hexLink]->hexUpRight = game->hexArray[hexLink+4];
-				game->hexArray[hexLink]->hexDownRight = game->hexArray[hexLink+5];
-				//Left
-				game->hexArray[hexLink]->hexUpLeft = game->hexArray[hexLink-4];
-				game->hexArray[hexLink]->hexDownLeft = game->hexArray[hexLink-3];
 			}
-		} else if (hexLink > 6 && hexLink < 12){
+			else{
+				//Vertical
+				game->hexArray[hexLink]->hexUp = game->hexArray[hexLink - 1];
+				game->hexArray[hexLink]->hexDown = game->hexArray[hexLink + 1];
+				//Right
+				game->hexArray[hexLink]->hexUpRight = game->hexArray[hexLink + 4];
+				game->hexArray[hexLink]->hexDownRight = game->hexArray[hexLink + 5];
+				//Left
+				game->hexArray[hexLink]->hexUpLeft = game->hexArray[hexLink - 4];
+				game->hexArray[hexLink]->hexDownLeft = game->hexArray[hexLink - 3];
+			}
+		}
+		else if (hexLink > 6 && hexLink < 12){
 			if (hexLink == 7){
 				//Vertical
 				game->hexArray[hexLink]->hexUp = NULL;
-				game->hexArray[hexLink]->hexDown = game->hexArray[hexLink+1];
+				game->hexArray[hexLink]->hexDown = game->hexArray[hexLink + 1];
 				//Right
-				game->hexArray[hexLink]->hexUpRight = game->hexArray[hexLink+3];
-				game->hexArray[hexLink]->hexDownRight = game->hexArray[hexLink+4];
+				game->hexArray[hexLink]->hexUpRight = game->hexArray[hexLink + 3];
+				game->hexArray[hexLink]->hexDownRight = game->hexArray[hexLink + 4];
 				//Left
 				game->hexArray[hexLink]->hexUpLeft = NULL;
-				game->hexArray[hexLink]->hexDownLeft = game->hexArray[hexLink-4];
-			} else if (hexLink == 11){
+				game->hexArray[hexLink]->hexDownLeft = game->hexArray[hexLink - 4];
+			}
+			else if (hexLink == 11){
 				//Vertical
-				game->hexArray[hexLink]->hexUp = game->hexArray[hexLink-1];
+				game->hexArray[hexLink]->hexUp = game->hexArray[hexLink - 1];
 				game->hexArray[hexLink]->hexDown = NULL;
 				//Right
-				game->hexArray[hexLink]->hexUpRight = game->hexArray[hexLink+4];
+				game->hexArray[hexLink]->hexUpRight = game->hexArray[hexLink + 4];
 				game->hexArray[hexLink]->hexDownRight = NULL;
 				//Left
-				game->hexArray[hexLink]->hexUpLeft = game->hexArray[hexLink-5];
+				game->hexArray[hexLink]->hexUpLeft = game->hexArray[hexLink - 5];
 				game->hexArray[hexLink]->hexDownLeft = NULL;
-			} else {
-				//Vertical
-				game->hexArray[hexLink]->hexUp = game->hexArray[hexLink-1];
-				game->hexArray[hexLink]->hexDown = game->hexArray[hexLink+1];
-				//Right
-				game->hexArray[hexLink]->hexUpRight = game->hexArray[hexLink+4];
-				game->hexArray[hexLink]->hexDownRight = game->hexArray[hexLink+5];
-				//Left
-				game->hexArray[hexLink]->hexUpLeft = game->hexArray[hexLink-5];
-				game->hexArray[hexLink]->hexDownLeft = game->hexArray[hexLink-4];
 			}
-		} else if (hexLink > 11 && hexLink < 16){
+			else {
+				//Vertical
+				game->hexArray[hexLink]->hexUp = game->hexArray[hexLink - 1];
+				game->hexArray[hexLink]->hexDown = game->hexArray[hexLink + 1];
+				//Right
+				game->hexArray[hexLink]->hexUpRight = game->hexArray[hexLink + 4];
+				game->hexArray[hexLink]->hexDownRight = game->hexArray[hexLink + 5];
+				//Left
+				game->hexArray[hexLink]->hexUpLeft = game->hexArray[hexLink - 5];
+				game->hexArray[hexLink]->hexDownLeft = game->hexArray[hexLink - 4];
+			}
+		}
+		else if (hexLink > 11 && hexLink < 16){
 			if (hexLink == 12){
 				//Vertical
 				game->hexArray[hexLink]->hexUp = NULL;
-				game->hexArray[hexLink]->hexDown = game->hexArray[hexLink+1];
+				game->hexArray[hexLink]->hexDown = game->hexArray[hexLink + 1];
 				//Right
 				game->hexArray[hexLink]->hexUpRight = NULL;
-				game->hexArray[hexLink]->hexDownRight = game->hexArray[hexLink+4];
+				game->hexArray[hexLink]->hexDownRight = game->hexArray[hexLink + 4];
 				//Left
-				game->hexArray[hexLink]->hexUpLeft = game->hexArray[hexLink-5];
-				game->hexArray[hexLink]->hexDownLeft = game->hexArray[hexLink-4];
-			} else if (hexLink == 15){
+				game->hexArray[hexLink]->hexUpLeft = game->hexArray[hexLink - 5];
+				game->hexArray[hexLink]->hexDownLeft = game->hexArray[hexLink - 4];
+			}
+			else if (hexLink == 15){
 				//Vertical
-				game->hexArray[hexLink]->hexUp = game->hexArray[hexLink-1];
+				game->hexArray[hexLink]->hexUp = game->hexArray[hexLink - 1];
 				game->hexArray[hexLink]->hexDown = NULL;
 				//Right
-				game->hexArray[hexLink]->hexUpRight = game->hexArray[hexLink+4];
+				game->hexArray[hexLink]->hexUpRight = game->hexArray[hexLink + 4];
 				game->hexArray[hexLink]->hexDownRight = NULL;
 				//Left
-				game->hexArray[hexLink]->hexUpLeft = game->hexArray[hexLink-5];
-				game->hexArray[hexLink]->hexDownLeft = game->hexArray[hexLink-4];
-			} else {
-				//Vertical
-				game->hexArray[hexLink]->hexUp = game->hexArray[hexLink-1];
-				game->hexArray[hexLink]->hexDown = game->hexArray[hexLink+1];
-				//Right
-				game->hexArray[hexLink]->hexUpRight = game->hexArray[hexLink+3];
-				game->hexArray[hexLink]->hexDownRight = game->hexArray[hexLink+4];
-				//Left
-				game->hexArray[hexLink]->hexUpLeft = game->hexArray[hexLink-5];
-				game->hexArray[hexLink]->hexDownLeft = game->hexArray[hexLink-4];
+				game->hexArray[hexLink]->hexUpLeft = game->hexArray[hexLink - 5];
+				game->hexArray[hexLink]->hexDownLeft = game->hexArray[hexLink - 4];
 			}
-		} else {
+			else {
+				//Vertical
+				game->hexArray[hexLink]->hexUp = game->hexArray[hexLink - 1];
+				game->hexArray[hexLink]->hexDown = game->hexArray[hexLink + 1];
+				//Right
+				game->hexArray[hexLink]->hexUpRight = game->hexArray[hexLink + 3];
+				game->hexArray[hexLink]->hexDownRight = game->hexArray[hexLink + 4];
+				//Left
+				game->hexArray[hexLink]->hexUpLeft = game->hexArray[hexLink - 5];
+				game->hexArray[hexLink]->hexDownLeft = game->hexArray[hexLink - 4];
+			}
+		}
+		else {
 			if (hexLink == 16){
 				//Vertical
 				game->hexArray[hexLink]->hexUp = NULL;
-				game->hexArray[hexLink]->hexDown = game->hexArray[hexLink+1];
+				game->hexArray[hexLink]->hexDown = game->hexArray[hexLink + 1];
 				//Right
 				game->hexArray[hexLink]->hexUpRight = NULL;
 				game->hexArray[hexLink]->hexDownRight = NULL;
 				//Left
-				game->hexArray[hexLink]->hexUpLeft = game->hexArray[hexLink-4];
-				game->hexArray[hexLink]->hexDownLeft = game->hexArray[hexLink-3];
-			} else if (hexLink == 18){
+				game->hexArray[hexLink]->hexUpLeft = game->hexArray[hexLink - 4];
+				game->hexArray[hexLink]->hexDownLeft = game->hexArray[hexLink - 3];
+			}
+			else if (hexLink == 18){
 				//Vertical
-				game->hexArray[hexLink]->hexUp = game->hexArray[hexLink-1];
+				game->hexArray[hexLink]->hexUp = game->hexArray[hexLink - 1];
 				game->hexArray[hexLink]->hexDown = NULL;
 				//Right
 				game->hexArray[hexLink]->hexUpRight = NULL;
 				game->hexArray[hexLink]->hexDownRight = NULL;
 				//Left
-				game->hexArray[hexLink]->hexUpLeft = game->hexArray[hexLink-4];
-				game->hexArray[hexLink]->hexDownLeft = game->hexArray[hexLink-3];
-			} else {
+				game->hexArray[hexLink]->hexUpLeft = game->hexArray[hexLink - 4];
+				game->hexArray[hexLink]->hexDownLeft = game->hexArray[hexLink - 3];
+			}
+			else {
 				//Vertical
-				game->hexArray[hexLink]->hexUp = game->hexArray[hexLink-1];
-				game->hexArray[hexLink]->hexDown = game->hexArray[hexLink+1];
+				game->hexArray[hexLink]->hexUp = game->hexArray[hexLink - 1];
+				game->hexArray[hexLink]->hexDown = game->hexArray[hexLink + 1];
 				//Right
 				game->hexArray[hexLink]->hexUpRight = NULL;
 				game->hexArray[hexLink]->hexDownRight = NULL;
 				//Left
-				game->hexArray[hexLink]->hexUpLeft = game->hexArray[hexLink-4];
-				game->hexArray[hexLink]->hexDownLeft = game->hexArray[hexLink-3];
+				game->hexArray[hexLink]->hexUpLeft = game->hexArray[hexLink - 4];
+				game->hexArray[hexLink]->hexDownLeft = game->hexArray[hexLink - 3];
 			}
 		}
 		hexLink++;
@@ -350,8 +372,21 @@ Game newGame(int discipline[], int dice[]){
 	}
 
 	printf("\n");
+}
 
-	return game;
+static void buildVerts(Game game){
+	//Initing all hexs
+	//Storing in game->hexArray;
+	//Setting disciplines
+	int vertNum = 0;
+	while (vertNum < NUM_VERTS) {
+		vert tempVert = malloc(sizeof(struct _vert));
+		tempVert->hasUni = FALSE;
+		tempVert->hasGO8 = FALSE;
+		tempVert->playerID = NO_ONE;
+		game->vertArray[vertNum] = tempVert;
+		vertNum++;
+	}
 }
 
 void disposeGame(Game g) {
