@@ -200,7 +200,7 @@ void displayMap(Game game) {
 	printf (RESET CYAN    "BQN, ");
 	printf (RESET YELLOW  "MJ, ");
 	printf (RESET GREEN   "MTV, ");
-	printf (RESET MAGENTA "MMONEY\n");
+	printf (RESET MAGENTA "MMONEY\n\n");
 	
 	printf (RESET BLUE    "Disciplines and dice rolls:\n");
 	
@@ -247,7 +247,7 @@ void displayMap(Game game) {
 	        getDiceValue(game, 16),
 	        colorMap[getDiscipline(game, 17)],
 	        getDiceValue(game, 17));
-	printf ("      %s%02d\n", colorMap[getDiscipline(game, 18)], getDiceValue(game, 18));
+	printf ("      %s%02d\n\n", colorMap[getDiscipline(game, 18)], getDiceValue(game, 18));
 	
 	printf (RESET BLUE "Campuses / GO8s: TODO\n");
 	printf (RESET BLUE "ARCs: TODO\n");
