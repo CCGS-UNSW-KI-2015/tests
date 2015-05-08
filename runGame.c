@@ -115,7 +115,7 @@ void castPlayerAction(Game game, int playerId) {
 	while (complete == 0) {
 		int discardAction = 0;
 
-		printf(BOLD YELLOW "\nEnter action code: " RESET YELLOW);
+		printf(BOLD YELLOW "\nEnter action code (or 9 to end turn): " RESET YELLOW);
 		int actionCode = -1;
 
 		scanf("%d", &actionCode);
@@ -159,6 +159,9 @@ void castPlayerAction(Game game, int playerId) {
 				playerAction.disciplineTo < 0) {
 				discardAction = 1;
 			}
+		} else if (actionCode == 9) {
+			printf(BOLD GREEN "Player turn completed!\n");
+			complete = 1;
 		} else {
 			printf(BOLD RED "You entered an invalid action code! Try again.\n");
 			printf("This is an input sink, press a letter on your keyboard\n");
@@ -168,7 +171,7 @@ void castPlayerAction(Game game, int playerId) {
 			discardAction = 1;
 		}
 
-		if (discardAction == 0) {
+		if (discardAction == 0 && complete == 0) {
 			printf(BOLD CYAN "You have selected the action: %s\n", confirmationMessage);
 			printf(BOLD YELLOW "Confirm (y/n)? " RESET YELLOW);
 			char response;
@@ -177,13 +180,12 @@ void castPlayerAction(Game game, int playerId) {
 			if (response == 'y') {
 				makeAction(game, playerAction);
 				printf(BOLD GREEN "Action completed!\n");
-				complete = 1;
+
+				printf(RESET CYAN "\nYou now have:\n");
+				displayPlayerAssets(game, playerId);
 			} else {
 				printf(BOLD RED "Action cancelled!\n");
 			}
 		}
 	}
-
-	printf(RESET CYAN "\nYou now have:\n");
-	displayPlayerAssets(game, playerId);
 }
