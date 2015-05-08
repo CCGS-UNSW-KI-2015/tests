@@ -15,12 +15,15 @@
 
 #define RESET   "\x1b[0m"
 
+#define NUM_DISCIPLINES 6
+
 int rollDice();
 void displayGameInfo(Game game);
 void displayDiceResults(Game game, int diceRoll);
 void displayPlayerAssets(Game game, int playerId);
 int displayPlayerInfo(Game game);
 void castPlayerAction(Game game, int playerId);
+void displayMap(Game game);
 
 int main(int argc, char *argv[]) {
 	Game game;
@@ -71,6 +74,7 @@ void displayGameInfo(Game game) {
 	printf(BOLD BLUE "This will be turn number: %d\n", getTurnNumber(game) + 1);
 	printf(RESET BLUE "Player with the most ARCs:         %d\n", getMostARCs(game));
 	printf("Player with the most publications: %d\n", getMostPublications(game));
+	displayMap(game);
 }
 
 void displayDiceResults(Game game, int diceRoll) {
@@ -188,4 +192,112 @@ void castPlayerAction(Game game, int playerId) {
 			}
 		}
 	}
+}
+
+void displayMap(Game game) {
+	char* colorMap[NUM_DISCIPLINES] = {BLUE, RED, CYAN, YELLOW, GREEN, MAGENTA};
+
+	printf (RESET BLUE    "\nTHD, ");
+	printf (RESET RED     "BPS, ");
+	printf (RESET CYAN    "BQN, ");
+	printf (RESET YELLOW  "MJ, ");
+	printf (RESET GREEN   "MTV, ");
+	printf (RESET MAGENTA "MMONEY\n");
+
+	// Disciplines and dice rolls
+	printf (RESET BLUE    "Disciplines and dice rolls:\n");
+
+	// It's beautiful
+	printf ("      %s%02d\n", colorMap[getDiscipline(game, 7)], getDiceValue(game, 7));
+	printf ("   %s%02d    %s%02d\n",
+	        colorMap[getDiscipline(game, 3)],
+	        getDiceValue(game, 3),
+	        colorMap[getDiscipline(game, 12)],
+	        getDiceValue(game, 12));
+	printf ("%s%02d    %s%02d    %s%02d\n",
+	        colorMap[getDiscipline(game, 0)],
+	        getDiceValue(game, 0),
+	        colorMap[getDiscipline(game, 8)],
+	        getDiceValue(game, 8),
+	        colorMap[getDiscipline(game, 16)],
+	        getDiceValue(game, 16));
+	printf ("   %s%02d    %s%02d\n",
+	        colorMap[getDiscipline(game, 4)],
+	        getDiceValue(game, 4),
+	        colorMap[getDiscipline(game, 13)],
+	        getDiceValue(game, 13));
+	printf ("%s%02d    %s%02d    %s%02d\n",
+	        colorMap[getDiscipline(game, 1)],
+	        getDiceValue(game, 1),
+	        colorMap[getDiscipline(game, 9)],
+	        getDiceValue(game, 9),
+	        colorMap[getDiscipline(game, 17)],
+	        getDiceValue(game, 17));
+	printf ("   %s%02d    %s%02d\n",
+	        colorMap[getDiscipline(game, 5)],
+	        getDiceValue(game, 5),
+	        colorMap[getDiscipline(game, 14)],
+	        getDiceValue(game, 14));
+	printf ("%s%02d    %s%02d    %s%02d\n",
+	        colorMap[getDiscipline(game, 2)],
+	        getDiceValue(game, 2),
+	        colorMap[getDiscipline(game, 10)],
+	        getDiceValue(game, 10),
+	        colorMap[getDiscipline(game, 18)],
+	        getDiceValue(game, 18));
+	printf ("   %s%02d    %s%02d\n",
+	        colorMap[getDiscipline(game, 6)],
+	        getDiceValue(game, 6),
+	        colorMap[getDiscipline(game, 15)],
+	        getDiceValue(game, 15));
+	printf ("      %s%02d\n\n", colorMap[getDiscipline(game, 11)], getDiceValue(game, 11));
+
+	// Campuses and GO8s
+	printf (RESET BLUE "Campuses / GO8s:\n");
+
+	printf ("      %s%02d\n", colorMap[getDiscipline(game, 7)], getDiceValue(game, 7));
+	printf ("   %s%02d    %s%02d\n",
+	        colorMap[getDiscipline(game, 3)],
+	        getDiceValue(game, 3),
+	        colorMap[getDiscipline(game, 12)],
+	        getDiceValue(game, 12));
+	printf ("%s%02d    %s%02d    %s%02d\n",
+	        colorMap[getDiscipline(game, 0)],
+	        getDiceValue(game, 0),
+	        colorMap[getDiscipline(game, 8)],
+	        getDiceValue(game, 8),
+	        colorMap[getDiscipline(game, 16)],
+	        getDiceValue(game, 16));
+	printf ("   %s%02d    %s%02d\n",
+	        colorMap[getDiscipline(game, 4)],
+	        getDiceValue(game, 4),
+	        colorMap[getDiscipline(game, 13)],
+	        getDiceValue(game, 13));
+	printf ("%s%02d    %s%02d    %s%02d\n",
+	        colorMap[getDiscipline(game, 1)],
+	        getDiceValue(game, 1),
+	        colorMap[getDiscipline(game, 9)],
+	        getDiceValue(game, 9),
+	        colorMap[getDiscipline(game, 17)],
+	        getDiceValue(game, 17));
+	printf ("   %s%02d    %s%02d\n",
+	        colorMap[getDiscipline(game, 5)],
+	        getDiceValue(game, 5),
+	        colorMap[getDiscipline(game, 14)],
+	        getDiceValue(game, 14));
+	printf ("%s%02d    %s%02d    %s%02d\n",
+	        colorMap[getDiscipline(game, 2)],
+	        getDiceValue(game, 2),
+	        colorMap[getDiscipline(game, 10)],
+	        getDiceValue(game, 10),
+	        colorMap[getDiscipline(game, 18)],
+	        getDiceValue(game, 18));
+	printf ("   %s%02d    %s%02d\n",
+	        colorMap[getDiscipline(game, 6)],
+	        getDiceValue(game, 6),
+	        colorMap[getDiscipline(game, 15)],
+	        getDiceValue(game, 15));
+	printf ("      %s%02d\n\n", colorMap[getDiscipline(game, 11)], getDiceValue(game, 11));
+
+	printf (RESET BLUE "ARCs: TODO\n");
 }
