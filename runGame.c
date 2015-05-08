@@ -205,8 +205,8 @@ void displayMap(Game game) {
 	printf (RESET BLUE    "Disciplines and dice rolls:\n");
 	
 	// It's beautiful
-	printf ("     %s%02d\n", colorMap[getDiscipline(game, 0)], getDiceValue(game, 0));
-	printf ("   %s%02d  %s%02d\n",
+	printf ("      %s%02d\n", colorMap[getDiscipline(game, 0)], getDiceValue(game, 0));
+	printf ("   %s%02d    %s%02d\n",
 	        colorMap[getDiscipline(game, 1)],
 	        getDiceValue(game, 1),
 	        colorMap[getDiscipline(game, 2)],
@@ -218,7 +218,7 @@ void displayMap(Game game) {
 	        getDiceValue(game, 4),
 	        colorMap[getDiscipline(game, 5)],
 	        getDiceValue(game, 5));
-	printf ("   %s%02d   %s%02d\n\n",
+	printf ("   %s%02d    %s%02d\n",
 	        colorMap[getDiscipline(game, 6)],
 	        getDiceValue(game, 6),
 	        colorMap[getDiscipline(game, 7)],
@@ -230,7 +230,7 @@ void displayMap(Game game) {
 	        getDiceValue(game, 9),
 	        colorMap[getDiscipline(game, 10)],
 	        getDiceValue(game, 10));
-	printf ("  %s%02d    %s%02d\n",
+	printf ("   %s%02d    %s%02d\n",
 	        colorMap[getDiscipline(game, 11)],
 	        getDiceValue(game, 11),
 	        colorMap[getDiscipline(game, 12)],
@@ -247,7 +247,7 @@ void displayMap(Game game) {
 	        getDiceValue(game, 16),
 	        colorMap[getDiscipline(game, 17)],
 	        getDiceValue(game, 17));
-	printf ("     %s%02d\n", colorMap[getDiscipline(game, 18)], getDiceValue(game, 18));
+	printf ("      %s%02d\n", colorMap[getDiscipline(game, 18)], getDiceValue(game, 18));
 	
 	printf (RESET BLUE "Campuses / GO8s: TODO\n");
 	printf (RESET BLUE "ARCs: TODO\n");
