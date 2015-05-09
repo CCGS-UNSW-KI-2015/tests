@@ -639,29 +639,22 @@ void disposeGame(Game g) {
 
 void makeAction(Game g, action a) {
 	if (a.actionCode == PASS) {
-		//Do nothing
+        if (isLegalAction(g, a)) {
+            g.currentTurn++;
+        }
 	}
 	else if (a.actionCode == BUILD_CAMPUS) {
-		// check if the location is connected to an ARC grant
-		// TODO
-
 		// check if there's enough students
-		if (g->playerArray[g->currentTurn].students[STUDENT_BPS] < 1 ||
-			g->playerArray[g->currentTurn % NUM_UNIS].students[STUDENT_BQN] < 1 ||
-			g->playerArray[g->currentTurn % NUM_UNIS].students[STUDENT_MJ] < 1 ||
-			g->playerArray[g->currentTurn % NUM_UNIS].students[STUDENT_MTV] < 1) {
-			//None
-		}
-		else {
-			// Add a campus and take the cost from the user
-			// TODO - add the campus
-			g->playerArray[g->currentTurn % NUM_UNIS].students[STUDENT_BPS]--;
-			g->playerArray[g->currentTurn % NUM_UNIS].students[STUDENT_BQN]--;
-			g->playerArray[g->currentTurn % NUM_UNIS].students[STUDENT_MJ]--;
-			g->playerArray[g->currentTurn % NUM_UNIS].students[STUDENT_MTV]--;
-
-			// also add 10 KPI points
-			g->playerArray[g->currentTurn % NUM_UNIS].kpiPoints += 10;
+		if (isLegalAction(g, a)) {
+            // Add a campus and take the cost from the user
+            // TODO - add the campus
+            g->playerArray[g->currentTurn % NUM_UNIS].students[STUDENT_BPS]--;
+            g->playerArray[g->currentTurn % NUM_UNIS].students[STUDENT_BQN]--;
+            g->playerArray[g->currentTurn % NUM_UNIS].students[STUDENT_MJ]--;
+            g->playerArray[g->currentTurn % NUM_UNIS].students[STUDENT_MTV]--;
+            
+            // also add 10 KPI points
+            g->playerArray[g->currentTurn % NUM_UNIS].kpiPoints += 10;
 		}
 	}
 	else if (a.actionCode == BUILD_GO8) {
@@ -671,7 +664,9 @@ void makeAction(Game g, action a) {
             g->playerArray[g->currentTurn % NUM_UNIS].students[STUDENT_MMONEY] < 3) {
             // None
         } else {
-            // Remove the campus, add a GO8 campus and take the cost from the user
+            // TODO - Remove the campus, add a GO8 campus
+            
+            // take the cost from the user
             g->playerArray[g->currentTurn % NUM_UNIS].students[STUDENT_MJ] -= 2;
             g->playerArray[g->currentTurn % NUM_UNIS].students[STUDENT_MMONEY] -= 3;
 
@@ -686,26 +681,21 @@ void makeAction(Game g, action a) {
 		// Add 2 KPI points
 	}
 	else if (a.actionCode == START_SPINOFF) {
-		// check if there's enough students
+		// check if it's a legal action
 		// 1/3 of the chance will be OBTAIN_IP_PATENT
 		// if not, then OBTAIN_PUBLICATION
-		if (g->playerArray[g->currentTurn % NUM_UNIS].students[STUDENT_MJ] < 1 ||
-			g->playerArray[g->currentTurn % NUM_UNIS].students[STUDENT_MTV] < 1 ||
-			g->playerArray[g->currentTurn % NUM_UNIS].students[STUDENT_MMONEY] < 1) {
-			//None
-		}
-		else {
-			// Create a sort-of-almost-random number
-			srand((unsigned int)time(NULL));//Simpler
-			int r = rand() % 3;
-			if (r == 0) {
-				a.actionCode = OBTAIN_IP_PATENT;
-				makeAction(g, a);
-			}
-			else {
-				a.actionCode = OBTAIN_PUBLICATION;
-				makeAction(g, a);
-			}
+		if (isLegalAction(g, a)) {
+            // Create a sort-of-almost-random number
+            srand((unsigned int)time(NULL));//Simpler
+            int r = rand() % 3;
+            if (r == 0) {
+                a.actionCode = OBTAIN_IP_PATENT;
+                makeAction(g, a);
+            }
+            else {
+                a.actionCode = OBTAIN_PUBLICATION;
+                makeAction(g, a);
+            }
 		}
 	}
 	else if (a.actionCode == OBTAIN_PUBLICATION) {
@@ -719,15 +709,10 @@ void makeAction(Game g, action a) {
 		g->playerArray[g->currentTurn % NUM_UNIS].kpiPoints += 10;
 	}
 	else if (a.actionCode == RETRAIN_STUDENTS) {
-		// see if (disciplineFrom != STUDENT_THD)
-		if (a.disciplineFrom == STUDENT_THD) {
-			//None
-		}
-		else {
-			// Use getExchangeRate()
-			// see if there's enough students
-			// convert the 3 students of disciplineFrom into disciplineTo
-		}
+        if (isLegalAction(g, a)) {
+            g->playerArray[g->currentTurn % NUM_UNIS].students[a.disciplineFrom] -= 3;
+            g->playerArray[g->currentTurn % NUM_UNIS].students[a.disciplineTo]++;
+        }
 	}
 };
 
@@ -751,14 +736,17 @@ void throwDice(Game g, int diceScore){
 	}
 }
 
+// Completed
 int getDiscipline(Game g, int regionID){
 	return g->disciplines[regionID];
 }
 
+// Completed
 int getDiceValue(Game g, int regionID){
 	return g->dice[regionID];
 }
 
+// Completed
 int getMostARCs(Game g){
 	int uniWithARCs = NO_ONE;
 	int mostARCs = 0;
@@ -785,6 +773,7 @@ int getMostARCs(Game g){
 	return uniWithARCs;
 }
 
+// Completed
 int getMostPublications(Game g){
 	int uniWithPubs = NO_ONE;
 	int mostPubs = 0;
@@ -801,10 +790,12 @@ int getMostPublications(Game g){
 	return uniWithPubs;
 }
 
+// Completed
 int getTurnNumber(Game g){
 	return g->currentTurn;
 }
 
+// Completed
 int getWhoseTurn(Game g){
 	int returnValue;
 	if (g->currentTurn == -1) {
@@ -825,13 +816,79 @@ int getARC(Game g, path pathToEdge){
 }
 
 int isLegalAction(Game g, action a){
+    if (a.actionCode == PASS) {
+        return TRUE;
+    }
+    else if (a.actionCode == BUILD_CAMPUS) {
+        // check if there's enough students
+        if (g->playerArray[g->currentTurn].students[STUDENT_BPS] < 1 ||
+            g->playerArray[g->currentTurn % NUM_UNIS].students[STUDENT_BQN] < 1 ||
+            g->playerArray[g->currentTurn % NUM_UNIS].students[STUDENT_MJ] < 1 ||
+            g->playerArray[g->currentTurn % NUM_UNIS].students[STUDENT_MTV] < 1) {
+            return FALSE;
+        // TODO - check if the campus is connected to an ARC grant
+        } else if () {
+            return FALSE;
+        }
+        else {
+            return TRUE;
+        }
+    }
+    else if (a.actionCode == BUILD_GO8) {
+        // check if there's enough students
+        if (g->playerArray[g->currentTurn].students[STUDENT_MJ] < 2 ||
+            g->playerArray[g->currentTurn % NUM_UNIS].students[STUDENT_MMONEY] < 3) {
+            return FALSE;
+        // TODO - check if there's a campus by the player
+        } else if () {
+            
+        } else {
+            return TRUE;
+        }
+    }
+    else if (a.actionCode == OBTAIN_ARC) {
+        // check if the location of the player is connected to his/her ARC
+        // check if there's enough students
+        // Add arc and take the cost from the user
+        // Add 2 KPI points
+    }
+    else if (a.actionCode == START_SPINOFF) {
+        if (g->playerArray[g->currentTurn % NUM_UNIS].students[STUDENT_MJ] < 1 ||
+            g->playerArray[g->currentTurn % NUM_UNIS].students[STUDENT_MTV] < 1 ||
+            g->playerArray[g->currentTurn % NUM_UNIS].students[STUDENT_MMONEY] < 1) {
+            return FALSE;
+        }
+        else {
+            return TRUE;
+        }
+    }
+    else if (a.actionCode == OBTAIN_PUBLICATION) {
+        // OBTAIN_PUBLICATION and OBTAIN_IP_PATENT are always illegal unless called by START_SPINOFF
+        return FALSE;
+    }
+    else if (a.actionCode == OBTAIN_IP_PATENT) {
+        return FALSE;
+    }
+    else if (a.actionCode == RETRAIN_STUDENTS) {
+        // see if (disciplineFrom != STUDENT_THD)
+        if (a.disciplineFrom == STUDENT_THD) {
+            return FALSE;
+        } else if (g->playerArray[g->currentTurn % NUM_UNIS].students[a.disciplineFrom] < 3) {
+            return FALSE;
+        }
+        else {
+            return TRUE;
+        }
+    }
 	return 0; // Placeholder
 }
 
+// Completed
 int getKPIpoints(Game g, int player){
 	return g->playerArray[player - 1].kpiPoints;
 }
 
+// Completed
 int getARCs(Game g, int player) {
 	return g->playerArray[player - 1].numARCs;
 }
@@ -844,14 +901,17 @@ int getCampuses(Game g, int player){
 	return 0; // Placeholder
 }
 
+// Completed
 int getIPs(Game g, int player){
 	return g->playerArray[g->currentTurn % NUM_UNIS].numIPs;
 }
 
+// Completed
 int getPublications(Game g, int player){
 	return g->playerArray[g->currentTurn % NUM_UNIS].numPubs;
 }
 
+// Completed
 int getStudents(Game g, int player, int discipline){
 	return g->playerArray[player - 1].students[discipline];
 }
