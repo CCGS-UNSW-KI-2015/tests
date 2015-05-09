@@ -380,220 +380,219 @@ static void buildVerts(Game game){
 		vertNum++;
 	}
 
-	/* Commented out while it's unfinished
-	int hexLink = 0;
-	while (hexLink < NUM_HEXS) {
-		int vertNum = 0;
-		if (hexLink > -1 && hexLink < 3) {//First col
-			vertNum = hexLink + 0;
-			game->hexArray[hexLink]->vertLeft = getVert(game, vertNum);
-			getVert(game, vertNum)->hexSide = game->hexArray[vertNum];
-			linkVertOffsets(game, vertNum, 3, 4, -50);
-			/*getVert(game, vertNum)->vertUp = getVert(game, vertNum + 3);
-			getVert(game, vertNum)->vertDown = getVert(game, vertNum + 4);
-			//getVert(game, vertNum)->vertSide = getVert(game, vertNum + 4);*/
+	// Commented out while it's unfinished
+	//int hexLink = 0;
+	//while (hexLink < NUM_HEXS) {
+	//	int vertNum = 0;
+	//	if (hexLink > -1 && hexLink < 3) {//First col
+	//		vertNum = hexLink + 0;
+	//		game->hexArray[hexLink]->vertLeft = getVert(game, vertNum);
+	//		getVert(game, vertNum)->hexSide = game->hexArray[vertNum];
+	//		linkVertOffsets(game, vertNum, 3, 4, -50);
+	//		/*getVert(game, vertNum)->vertUp = getVert(game, vertNum + 3);
+	//		getVert(game, vertNum)->vertDown = getVert(game, vertNum + 4);
+	//		//getVert(game, vertNum)->vertSide = getVert(game, vertNum + 4);*/
 
-			vertNum = hexLink + 3;
-			game->hexArray[hexLink]->vertUpLeft = getVert(game, vertNum);
-			getVert(game, vertNum)->hexDown = game->hexArray[vertNum];
-			linkVertOffsets(game, vertNum, -4, -3, 4);
-			/*getVert(game, vertNum)->vertUp = getVert(game, vertNum - 4);
-			getVert(game, vertNum)->vertDown = getVert(game, vertNum - 3);
-			getVert(game, vertNum)->vertSide = getVert(game, vertNum + 4);*/
+	//		vertNum = hexLink + 3;
+	//		game->hexArray[hexLink]->vertUpLeft = getVert(game, vertNum);
+	//		getVert(game, vertNum)->hexDown = game->hexArray[vertNum];
+	//		linkVertOffsets(game, vertNum, -4, -3, 4);
+	//		/*getVert(game, vertNum)->vertUp = getVert(game, vertNum - 4);
+	//		getVert(game, vertNum)->vertDown = getVert(game, vertNum - 3);
+	//		getVert(game, vertNum)->vertSide = getVert(game, vertNum + 4);*/
 
-			vertNum = hexLink + 7;
-			game->hexArray[hexLink]->vertUpRight = getVert(game, vertNum);
-			getVert(game, vertNum)->hexDown = game->hexArray[hexLink];
-			linkVertOffsets(game, vertNum, 4, 5, -4);
-			/*getVert(game, vertNum)->vertUp = getVert(game, vertNum + 4);
-			getVert(game, vertNum)->vertDown = getVert(game, vertNum + 5);
-			getVert(game, vertNum)->vertSide = getVert(game, vertNum - 4);*/
+	//		vertNum = hexLink + 7;
+	//		game->hexArray[hexLink]->vertUpRight = getVert(game, vertNum);
+	//		getVert(game, vertNum)->hexDown = game->hexArray[hexLink];
+	//		linkVertOffsets(game, vertNum, 4, 5, -4);
+	//		/*getVert(game, vertNum)->vertUp = getVert(game, vertNum + 4);
+	//		getVert(game, vertNum)->vertDown = getVert(game, vertNum + 5);
+	//		getVert(game, vertNum)->vertSide = getVert(game, vertNum - 4);*/
 
-			vertNum = hexLink + 12;
-			game->hexArray[hexLink]->vertRight = getVert(game, vertNum);
-			getVert(game, vertNum)->hexSide = game->hexArray[hexLink];
-			linkVertOffsets(game, vertNum, -5, -4, 5);
-			/*getVert(game, vertNum)->vertUp = getVert(game, vertNum - 5);
-			getVert(game, vertNum)->vertDown = getVert(game, vertNum - 4);
-			getVert(game, vertNum)->vertSide = getVert(game, vertNum + 5);*/
+	//		vertNum = hexLink + 12;
+	//		game->hexArray[hexLink]->vertRight = getVert(game, vertNum);
+	//		getVert(game, vertNum)->hexSide = game->hexArray[hexLink];
+	//		linkVertOffsets(game, vertNum, -5, -4, 5);
+	//		/*getVert(game, vertNum)->vertUp = getVert(game, vertNum - 5);
+	//		getVert(game, vertNum)->vertDown = getVert(game, vertNum - 4);
+	//		getVert(game, vertNum)->vertSide = getVert(game, vertNum + 5);*/
 
-			vertNum = hexLink + 8;
-			game->hexArray[hexLink]->vertDownRight = getVert(game, vertNum);
-			getVert(game, vertNum)->hexUp = game->hexArray[hexLink];
-			linkVertOffsets(game, vertNum, 4, 5, 5);
-			/*getVert(game, vertNum)->vertUp = getVert(game, vertNum + 4);
-			getVert(game, vertNum)->vertDown = getVert(game, vertNum + 5);
-			getVert(game, vertNum)->vertSide = getVert(game, vertNum + 5);*/
+	//		vertNum = hexLink + 8;
+	//		game->hexArray[hexLink]->vertDownRight = getVert(game, vertNum);
+	//		getVert(game, vertNum)->hexUp = game->hexArray[hexLink];
+	//		linkVertOffsets(game, vertNum, 4, 5, 5);
+	//		/*getVert(game, vertNum)->vertUp = getVert(game, vertNum + 4);
+	//		getVert(game, vertNum)->vertDown = getVert(game, vertNum + 5);
+	//		getVert(game, vertNum)->vertSide = getVert(game, vertNum + 5);*/
 
-			vertNum = hexLink + 4;
-			game->hexArray[hexLink]->vertDownLeft = getVert(game, vertNum);
-			getVert(game, vertNum)->hexUp = game->hexArray[hexLink];
-			linkVertOffsets(game, vertNum, -4, -3, 4);
-			/*getVert(game, vertNum)->vertUp = getVert(game, vertNum - 4);
-			getVert(game, vertNum)->vertDown = getVert(game, vertNum - 3);
-			getVert(game, vertNum)->vertSide = getVert(game, vertNum + 4);*/
-		}
-		else if (hexLink > 2 && hexLink < 7){
-			vertNum = hexLink + 4;
-			game->hexArray[hexLink]->vertLeft = getVert(game, vertNum);
-			getVert(game, vertNum)->hexSide = game->hexArray[hexLink];
-			linkVertOffsets(game, vertNum, 4, 5, -4);
-			/*getVert(game, vertNum)->vertUp = getVert(game, vertNum + 4);
-			getVert(game, vertNum)->vertDown = getVert(game, vertNum + 5);
-			getVert(game, vertNum)->vertSide = getVert(game, vertNum - 4);*/
+	//		vertNum = hexLink + 4;
+	//		game->hexArray[hexLink]->vertDownLeft = getVert(game, vertNum);
+	//		getVert(game, vertNum)->hexUp = game->hexArray[hexLink];
+	//		linkVertOffsets(game, vertNum, -4, -3, 4);
+	//		/*getVert(game, vertNum)->vertUp = getVert(game, vertNum - 4);
+	//		getVert(game, vertNum)->vertDown = getVert(game, vertNum - 3);
+	//		getVert(game, vertNum)->vertSide = getVert(game, vertNum + 4);*/
+	//	}
+	//	else if (hexLink > 2 && hexLink < 7){
+	//		vertNum = hexLink + 4;
+	//		game->hexArray[hexLink]->vertLeft = getVert(game, vertNum);
+	//		getVert(game, vertNum)->hexSide = game->hexArray[hexLink];
+	//		linkVertOffsets(game, vertNum, 4, 5, -4);
+	//		/*getVert(game, vertNum)->vertUp = getVert(game, vertNum + 4);
+	//		getVert(game, vertNum)->vertDown = getVert(game, vertNum + 5);
+	//		getVert(game, vertNum)->vertSide = getVert(game, vertNum - 4);*/
 
-			vertNum = hexLink + 8;
-			game->hexArray[hexLink]->vertUpLeft = getVert(game, vertNum);
-			getVert(game, vertNum)->hexDown = game->hexArray[hexLink];
-			linkVertOffsets(game, vertNum, -5, -4, 5);
-			/*getVert(game, vertNum)->vertUp = getVert(game, vertNum - 5);
-			getVert(game, vertNum)->vertDown = getVert(game, vertNum - 4);
-			getVert(game, vertNum)->vertSide = getVert(game, vertNum + 5);*/
+	//		vertNum = hexLink + 8;
+	//		game->hexArray[hexLink]->vertUpLeft = getVert(game, vertNum);
+	//		getVert(game, vertNum)->hexDown = game->hexArray[hexLink];
+	//		linkVertOffsets(game, vertNum, -5, -4, 5);
+	//		/*getVert(game, vertNum)->vertUp = getVert(game, vertNum - 5);
+	//		getVert(game, vertNum)->vertDown = getVert(game, vertNum - 4);
+	//		getVert(game, vertNum)->vertSide = getVert(game, vertNum + 5);*/
 
-			vertNum = hexLink + 13;
-			game->hexArray[hexLink]->vertUpRight = getVert(game, vertNum);
-			getVert(game, vertNum)->hexDown = game->hexArray[hexLink];
-			linkVertOffsets(game, vertNum, 5, 6, -5);
-			/*getVert(game, vertNum)->vertUp = getVert(game, vertNum + 5);
-			getVert(game, vertNum)->vertDown = getVert(game, vertNum + 6);
-			getVert(game, vertNum)->vertSide = getVert(game, vertNum - 5);*/
+	//		vertNum = hexLink + 13;
+	//		game->hexArray[hexLink]->vertUpRight = getVert(game, vertNum);
+	//		getVert(game, vertNum)->hexDown = game->hexArray[hexLink];
+	//		linkVertOffsets(game, vertNum, 5, 6, -5);
+	//		/*getVert(game, vertNum)->vertUp = getVert(game, vertNum + 5);
+	//		getVert(game, vertNum)->vertDown = getVert(game, vertNum + 6);
+	//		getVert(game, vertNum)->vertSide = getVert(game, vertNum - 5);*/
 
-			vertNum = hexLink + 19;
-			game->hexArray[hexLink]->vertRight = getVert(game, vertNum);
-			getVert(game, vertNum)->hexSide = game->hexArray[hexLink];
-			linkVertOffsets(game, vertNum, -6, -5, 6);
-			/*getVert(game, vertNum)->vertUp = getVert(game, vertNum - 6);
-			getVert(game, vertNum)->vertDown = getVert(game, vertNum - 5);
-			getVert(game, vertNum)->vertSide = getVert(game, vertNum + 6);*/
+	//		vertNum = hexLink + 19;
+	//		game->hexArray[hexLink]->vertRight = getVert(game, vertNum);
+	//		getVert(game, vertNum)->hexSide = game->hexArray[hexLink];
+	//		linkVertOffsets(game, vertNum, -6, -5, 6);
+	//		/*getVert(game, vertNum)->vertUp = getVert(game, vertNum - 6);
+	//		getVert(game, vertNum)->vertDown = getVert(game, vertNum - 5);
+	//		getVert(game, vertNum)->vertSide = getVert(game, vertNum + 6);*/
 
-			vertNum = hexLink + 14;
-			game->hexArray[hexLink]->vertDownRight = getVert(game, vertNum);
-			getVert(game, vertNum)->hexUp = game->hexArray[hexLink];
-			linkVertOffsets(game, vertNum, 5, -5, 6);
-			/*getVert(game, vertNum)->vertUp = getVert(game, vertNum + 5);
-			getVert(game, vertNum)->vertDown = getVert(game, vertNum - 5);
-			getVert(game, vertNum)->vertSide = getVert(game, vertNum + 6);*/
+	//		vertNum = hexLink + 14;
+	//		game->hexArray[hexLink]->vertDownRight = getVert(game, vertNum);
+	//		getVert(game, vertNum)->hexUp = game->hexArray[hexLink];
+	//		linkVertOffsets(game, vertNum, 5, -5, 6);
+	//		/*getVert(game, vertNum)->vertUp = getVert(game, vertNum + 5);
+	//		getVert(game, vertNum)->vertDown = getVert(game, vertNum - 5);
+	//		getVert(game, vertNum)->vertSide = getVert(game, vertNum + 6);*/
 
-			vertNum = hexLink + 9;
-			game->hexArray[hexLink]->vertDownLeft = getVert(game, vertNum);
-			getVert(game, vertNum)->hexUp = game->hexArray[hexLink];
-			linkVertOffsets(game, vertNum, -5, -4, 5);
-			/*getVert(game, vertNum)->vertUp = getVert(game, vertNum - 5);
-			getVert(game, vertNum)->vertDown = getVert(game, vertNum - 4);
-			getVert(game, vertNum)->vertSide = getVert(game, vertNum + 5);*/
-		}
-		else if (hexLink > 6 && hexLink < 12){
-			vertNum = hexLink + 9;
-			game->hexArray[hexLink]->vertLeft = getVert(game, vertNum);
-			getVert(game, vertNum)->hexSide = game->hexArray[hexLink];
-			getVert(game, vertNum)->hexUp = game->hexArray[hexLink];
-			linkVertOffsets(game, vertNum, 5, 6, -5);
-			/*getVert(game, vertNum)->vertUp = getVert(game, vertNum + 5);
-			getVert(game, vertNum)->vertDown = getVert(game, vertNum + 6);
-			getVert(game, vertNum)->vertSide = getVert(game, vertNum - 5);*/
+	//		vertNum = hexLink + 9;
+	//		game->hexArray[hexLink]->vertDownLeft = getVert(game, vertNum);
+	//		getVert(game, vertNum)->hexUp = game->hexArray[hexLink];
+	//		linkVertOffsets(game, vertNum, -5, -4, 5);
+	//		/*getVert(game, vertNum)->vertUp = getVert(game, vertNum - 5);
+	//		getVert(game, vertNum)->vertDown = getVert(game, vertNum - 4);
+	//		getVert(game, vertNum)->vertSide = getVert(game, vertNum + 5);*/
+	//	}
+	//	else if (hexLink > 6 && hexLink < 12){
+	//		vertNum = hexLink + 9;
+	//		game->hexArray[hexLink]->vertLeft = getVert(game, vertNum);
+	//		getVert(game, vertNum)->hexSide = game->hexArray[hexLink];
+	//		getVert(game, vertNum)->hexUp = game->hexArray[hexLink];
+	//		linkVertOffsets(game, vertNum, 5, 6, -5);
+	//		/*getVert(game, vertNum)->vertUp = getVert(game, vertNum + 5);
+	//		getVert(game, vertNum)->vertDown = getVert(game, vertNum + 6);
+	//		getVert(game, vertNum)->vertSide = getVert(game, vertNum - 5);*/
 
-			vertNum = hexLink + 14;
-			game->hexArray[hexLink]->vertUpLeft = getVert(game, vertNum);
-			getVert(game, vertNum)->hexDown = game->hexArray[hexLink];
-			linkVertOffsets(game, vertNum, -5, -4, 6);
-			/*getVert(game, vertNum)->vertUp = getVert(game, vertNum - 5);
-			getVert(game, vertNum)->vertDown = getVert(game, vertNum - 4);
-			getVert(game, vertNum)->vertSide = getVert(game, vertNum + 6);*/
+	//		vertNum = hexLink + 14;
+	//		game->hexArray[hexLink]->vertUpLeft = getVert(game, vertNum);
+	//		getVert(game, vertNum)->hexDown = game->hexArray[hexLink];
+	//		linkVertOffsets(game, vertNum, -5, -4, 6);
+	//		/*getVert(game, vertNum)->vertUp = getVert(game, vertNum - 5);
+	//		getVert(game, vertNum)->vertDown = getVert(game, vertNum - 4);
+	//		getVert(game, vertNum)->vertSide = getVert(game, vertNum + 6);*/
 
-			vertNum = hexLink + 20;
-			game->hexArray[hexLink]->vertUpRight = getVert(game, vertNum);
-			getVert(game, vertNum)->hexDown = game->hexArray[hexLink];
-			linkVertOffsets(game, vertNum, 5, 6, -6);
-			/*getVert(game, vertNum)->vertUp = getVert(game, vertNum + 5);
-			getVert(game, vertNum)->vertDown = getVert(game, vertNum + 6);
-			getVert(game, vertNum)->vertSide = getVert(game, vertNum - 6);*/
+	//		vertNum = hexLink + 20;
+	//		game->hexArray[hexLink]->vertUpRight = getVert(game, vertNum);
+	//		getVert(game, vertNum)->hexDown = game->hexArray[hexLink];
+	//		linkVertOffsets(game, vertNum, 5, 6, -6);
+	//		/*getVert(game, vertNum)->vertUp = getVert(game, vertNum + 5);
+	//		getVert(game, vertNum)->vertDown = getVert(game, vertNum + 6);
+	//		getVert(game, vertNum)->vertSide = getVert(game, vertNum - 6);*/
 
-			vertNum = hexLink + 26;
-			game->hexArray[hexLink]->vertRight = getVert(game, vertNum);
-			getVert(game, vertNum)->hexSide = game->hexArray[hexLink];
-			linkVertOffsets(game, vertNum, -6, -5, 5);
-			/*getVert(game, vertNum)->vertUp = getVert(game, vertNum - 6);
-			getVert(game, vertNum)->vertDown = getVert(game, vertNum - 5);
-			getVert(game, vertNum)->vertSide = getVert(game, vertNum + 5);*/
+	//		vertNum = hexLink + 26;
+	//		game->hexArray[hexLink]->vertRight = getVert(game, vertNum);
+	//		getVert(game, vertNum)->hexSide = game->hexArray[hexLink];
+	//		linkVertOffsets(game, vertNum, -6, -5, 5);
+	//		/*getVert(game, vertNum)->vertUp = getVert(game, vertNum - 6);
+	//		getVert(game, vertNum)->vertDown = getVert(game, vertNum - 5);
+	//		getVert(game, vertNum)->vertSide = getVert(game, vertNum + 5);*/
 
-			vertNum = hexLink + 21;
-			game->hexArray[hexLink]->vertDownRight = getVert(game, vertNum);
-			getVert(game, vertNum)->hexUp = game->hexArray[hexLink];
-			linkVertOffsets(game, vertNum, 5, 6, -6);
-			/*getVert(game, vertNum)->vertUp = getVert(game, vertNum + 5);
-			getVert(game, vertNum)->vertDown = getVert(game, vertNum + 6);
-			getVert(game, vertNum)->vertSide = getVert(game, vertNum - 6);*/
+	//		vertNum = hexLink + 21;
+	//		game->hexArray[hexLink]->vertDownRight = getVert(game, vertNum);
+	//		getVert(game, vertNum)->hexUp = game->hexArray[hexLink];
+	//		linkVertOffsets(game, vertNum, 5, 6, -6);
+	//		/*getVert(game, vertNum)->vertUp = getVert(game, vertNum + 5);
+	//		getVert(game, vertNum)->vertDown = getVert(game, vertNum + 6);
+	//		getVert(game, vertNum)->vertSide = getVert(game, vertNum - 6);*/
 
-			vertNum = hexLink + 15;
-			game->hexArray[hexLink]->vertDownLeft = getVert(game, vertNum);
-			getVert(game, vertNum)->hexUp = game->hexArray[hexLink];
-			linkVertOffsets(game, vertNum, -5, -4, 6);
-		}
-		else if (hexLink > 11 && hexLink < 16){
-			vertNum = hexLink + 16;
-			game->hexArray[hexLink]->vertLeft = getVert(game, vertNum);
-			getVert(game, vertNum)->hexSide = game->hexArray[hexLink];
-			linkVertOffsets(game, vertNum, 5, 6, -6);
+	//		vertNum = hexLink + 15;
+	//		game->hexArray[hexLink]->vertDownLeft = getVert(game, vertNum);
+	//		getVert(game, vertNum)->hexUp = game->hexArray[hexLink];
+	//		linkVertOffsets(game, vertNum, -5, -4, 6);
+	//	}
+	//	else if (hexLink > 11 && hexLink < 16){
+	//		vertNum = hexLink + 16;
+	//		game->hexArray[hexLink]->vertLeft = getVert(game, vertNum);
+	//		getVert(game, vertNum)->hexSide = game->hexArray[hexLink];
+	//		linkVertOffsets(game, vertNum, 5, 6, -6);
 
-			vertNum = hexLink + 21;
-			game->hexArray[hexLink]->vertUpLeft = getVert(game, vertNum);
-			getVert(game, vertNum)->hexDown = game->hexArray[hexLink];
-			linkVertOffsets(game, vertNum, -5, -4, 5);
+	//		vertNum = hexLink + 21;
+	//		game->hexArray[hexLink]->vertUpLeft = getVert(game, vertNum);
+	//		getVert(game, vertNum)->hexDown = game->hexArray[hexLink];
+	//		linkVertOffsets(game, vertNum, -5, -4, 5);
 
-			vertNum = hexLink + 26;
-			game->hexArray[hexLink]->vertUpRight = getVert(game, vertNum);
-			getVert(game, vertNum)->hexDown = game->hexArray[hexLink];
-			linkVertOffsets(game, vertNum, 4, 5, -4);
+	//		vertNum = hexLink + 26;
+	//		game->hexArray[hexLink]->vertUpRight = getVert(game, vertNum);
+	//		getVert(game, vertNum)->hexDown = game->hexArray[hexLink];
+	//		linkVertOffsets(game, vertNum, 4, 5, -4);
 
-			vertNum = hexLink + 31;
-			game->hexArray[hexLink]->vertRight = getVert(game, vertNum);
-			getVert(game, vertNum)->hexSide = game->hexArray[hexLink];
-			linkVertOffsets(game, vertNum, -5, -4, 4);
+	//		vertNum = hexLink + 31;
+	//		game->hexArray[hexLink]->vertRight = getVert(game, vertNum);
+	//		getVert(game, vertNum)->hexSide = game->hexArray[hexLink];
+	//		linkVertOffsets(game, vertNum, -5, -4, 4);
 
-			vertNum = hexLink + 27;
-			game->hexArray[hexLink]->vertDownRight = getVert(game, vertNum);
-			getVert(game, vertNum)->hexUp = game->hexArray[hexLink];
-			linkVertOffsets(game, vertNum, 4, 5, -4);
+	//		vertNum = hexLink + 27;
+	//		game->hexArray[hexLink]->vertDownRight = getVert(game, vertNum);
+	//		getVert(game, vertNum)->hexUp = game->hexArray[hexLink];
+	//		linkVertOffsets(game, vertNum, 4, 5, -4);
 
-			vertNum = hexLink + 22;
-			game->hexArray[hexLink]->vertDownLeft = getVert(game, vertNum);
-			getVert(game, vertNum)->hexUp = game->hexArray[hexLink];
-			linkVertOffsets(game, vertNum, -5, -4, 5);
-		}
-		else {
-			vertNum = hexLink + 16;
-			game->hexArray[hexLink]->vertLeft = getVert(game, vertNum);
-			getVert(game, vertNum)->hexSide = game->hexArray[hexLink];
-			linkVertOffsets(game, vertNum, 5, 6, -6);
+	//		vertNum = hexLink + 22;
+	//		game->hexArray[hexLink]->vertDownLeft = getVert(game, vertNum);
+	//		getVert(game, vertNum)->hexUp = game->hexArray[hexLink];
+	//		linkVertOffsets(game, vertNum, -5, -4, 5);
+	//	}
+	//	else {
+	//		vertNum = hexLink + 16;
+	//		game->hexArray[hexLink]->vertLeft = getVert(game, vertNum);
+	//		getVert(game, vertNum)->hexSide = game->hexArray[hexLink];
+	//		linkVertOffsets(game, vertNum, 5, 6, -6);
 
-			vertNum = hexLink + 21;
-			game->hexArray[hexLink]->vertUpLeft = getVert(game, vertNum);
-			getVert(game, vertNum)->hexDown = game->hexArray[hexLink];
-			linkVertOffsets(game, vertNum, -5, -4, 5);
+	//		vertNum = hexLink + 21;
+	//		game->hexArray[hexLink]->vertUpLeft = getVert(game, vertNum);
+	//		getVert(game, vertNum)->hexDown = game->hexArray[hexLink];
+	//		linkVertOffsets(game, vertNum, -5, -4, 5);
 
-			vertNum = hexLink + 26;
-			game->hexArray[hexLink]->vertUpRight = getVert(game, vertNum);
-			getVert(game, vertNum)->hexDown = game->hexArray[hexLink];
-			linkVertOffsets(game, vertNum, 4, 5, -4);
+	//		vertNum = hexLink + 26;
+	//		game->hexArray[hexLink]->vertUpRight = getVert(game, vertNum);
+	//		getVert(game, vertNum)->hexDown = game->hexArray[hexLink];
+	//		linkVertOffsets(game, vertNum, 4, 5, -4);
 
-			vertNum = hexLink + 31;
-			game->hexArray[hexLink]->vertRight = getVert(game, vertNum);
-			getVert(game, vertNum)->hexSide = game->hexArray[hexLink];
-			linkVertOffsets(game, vertNum, -5, -4, 4);
+	//		vertNum = hexLink + 31;
+	//		game->hexArray[hexLink]->vertRight = getVert(game, vertNum);
+	//		getVert(game, vertNum)->hexSide = game->hexArray[hexLink];
+	//		linkVertOffsets(game, vertNum, -5, -4, 4);
 
-			vertNum = hexLink + 27;
-			game->hexArray[hexLink]->vertDownRight = getVert(game, vertNum);
-			getVert(game, vertNum)->hexUp = game->hexArray[hexLink];
-			linkVertOffsets(game, vertNum, 4, 5, -4);
+	//		vertNum = hexLink + 27;
+	//		game->hexArray[hexLink]->vertDownRight = getVert(game, vertNum);
+	//		getVert(game, vertNum)->hexUp = game->hexArray[hexLink];
+	//		linkVertOffsets(game, vertNum, 4, 5, -4);
 
-			vertNum = hexLink + 22;
-			game->hexArray[hexLink]->vertDownLeft = getVert(game, vertNum);
-			getVert(game, vertNum)->hexUp = game->hexArray[hexLink];
-			linkVertOffsets(game, vertNum, -5, -4, 5);
-		}
-		hexLink++;
-	}
-	*/
+	//		vertNum = hexLink + 22;
+	//		game->hexArray[hexLink]->vertDownLeft = getVert(game, vertNum);
+	//		getVert(game, vertNum)->hexUp = game->hexArray[hexLink];
+	//		linkVertOffsets(game, vertNum, -5, -4, 5);
+	//	}
+	//	hexLink++;
+	//}
 }
 
 //------------Interface functons------------//
