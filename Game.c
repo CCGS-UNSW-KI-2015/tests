@@ -372,6 +372,7 @@ static void buildVerts(Game game){
 		vertNum++;
 	}
 
+	/* Commented out while it's unfinished
 	int hexLink = 0;
 	while (hexLink < NUM_HEXS) {
 		int vertNum = 0;
@@ -462,6 +463,7 @@ static void buildVerts(Game game){
 		}
 		hexLink++;
 	}
+	*/
 }
 
 //------------Interface functons------------//
