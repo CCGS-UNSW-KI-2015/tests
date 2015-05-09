@@ -11,7 +11,6 @@
 
 //----------#defines----------//
 
-#define BOARD_SIZE 19
 #define DEFAULT_PLAYERS {0, 3, 3, 1, 1, 1}
 #define NUM_DISCIPLINES 6
 #define NUM_HEXS 19
@@ -103,8 +102,8 @@ typedef struct _player{
 typedef struct _game {
 	int currentTurn;
 
-	int disciplines[BOARD_SIZE];
-	int dice[BOARD_SIZE];
+	int disciplines[NUM_REGIONS];
+	int dice[NUM_REGIONS];
 
 	vert vertArray[NUM_VERTS];
 	hex hexArray[NUM_HEXS];
@@ -381,6 +380,7 @@ static void buildVerts(Game game){
 		vertNum++;
 	}
 
+	/* Commented out while it's unfinished
 	int hexLink = 0;
 	while (hexLink < NUM_HEXS) {
 		int vertNum = 0;
@@ -593,6 +593,7 @@ static void buildVerts(Game game){
 		}
 		hexLink++;
 	}
+	*/
 }
 
 //------------Interface functons------------//
@@ -603,7 +604,7 @@ Game newGame(int discipline[], int dice[]){
 
 	//Setting disciplines and dice vals
 	int i = 0;
-	while (i < BOARD_SIZE){
+	while (i < NUM_REGIONS){
 		game->disciplines[i] = discipline[i];
 		game->dice[i] = dice[i];
 		i++;

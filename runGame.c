@@ -119,7 +119,7 @@ void castPlayerAction(Game game, int playerId) {
 	while (complete == 0) {
 		int discardAction = 0;
 
-		printf(BOLD YELLOW "\nEnter action code: " RESET YELLOW);
+		printf(BOLD YELLOW "\nEnter action code (or 9 to end turn): " RESET YELLOW);
 		int actionCode = -1;
 
 		scanf("%d", &actionCode);
@@ -163,6 +163,9 @@ void castPlayerAction(Game game, int playerId) {
 				playerAction.disciplineTo < 0) {
 				discardAction = 1;
 			}
+		} else if (actionCode == 9) {
+			printf(BOLD GREEN "Player turn completed!\n");
+			complete = 1;
 		} else {
 			printf(BOLD RED "You entered an invalid action code! Try again.\n");
 			printf("This is an input sink, press a letter on your keyboard\n");
@@ -172,7 +175,7 @@ void castPlayerAction(Game game, int playerId) {
 			discardAction = 1;
 		}
 
-		if (discardAction == 0) {
+		if (discardAction == 0 && complete == 0) {
 			printf(BOLD CYAN "You have selected the action: %s\n", confirmationMessage);
 			printf(BOLD YELLOW "Confirm (y/n)? " RESET YELLOW);
 			char response;
@@ -181,74 +184,76 @@ void castPlayerAction(Game game, int playerId) {
 			if (response == 'y') {
 				makeAction(game, playerAction);
 				printf(BOLD GREEN "Action completed!\n");
-				complete = 1;
+
+				printf(RESET CYAN "\nYou now have:\n");
+				displayPlayerAssets(game, playerId);
 			} else {
 				printf(BOLD RED "Action cancelled!\n");
 			}
 		}
 	}
-
-	printf(RESET CYAN "\nYou now have:\n");
-	displayPlayerAssets(game, playerId);
 }
 
 void displayMap(Game game) {
 	char* colorMap[NUM_DISCIPLINES] = {BLUE, RED, CYAN, YELLOW, GREEN, MAGENTA};
-	
-	printf (RESET BLUE    "THD, ");
+
+	printf (RESET BLUE    "\nTHD, ");
 	printf (RESET RED     "BPS, ");
 	printf (RESET CYAN    "BQN, ");
 	printf (RESET YELLOW  "MJ, ");
 	printf (RESET GREEN   "MTV, ");
-	printf (RESET MAGENTA "MMONEY\n\n");
-	
+	printf (RESET MAGENTA "MMONEY\n");
+
+	// Disciplines and dice rolls
 	printf (RESET BLUE    "Disciplines and dice rolls:\n");
-	
+
 	// It's beautiful
-	printf ("      %s%02d\n", colorMap[getDiscipline(game, 0)], getDiceValue(game, 0));
+	printf ("      %s%02d\n", colorMap[getDiscipline(game, 7)], getDiceValue(game, 7));
 	printf ("   %s%02d    %s%02d\n",
-	        colorMap[getDiscipline(game, 1)],
-	        getDiceValue(game, 1),
-	        colorMap[getDiscipline(game, 2)],
-	        getDiceValue(game, 2));
-	printf ("%s%02d    %s%02d    %s%02d\n",
 	        colorMap[getDiscipline(game, 3)],
 	        getDiceValue(game, 3),
-	        colorMap[getDiscipline(game, 4)],
-	        getDiceValue(game, 4),
-	        colorMap[getDiscipline(game, 5)],
-	        getDiceValue(game, 5));
-	printf ("   %s%02d    %s%02d\n",
-	        colorMap[getDiscipline(game, 6)],
-	        getDiceValue(game, 6),
-	        colorMap[getDiscipline(game, 7)],
-	        getDiceValue(game, 7));
-	printf ("%s%02d    %s%02d    %s%02d\n",
-	        colorMap[getDiscipline(game, 8)],
-	        getDiceValue(game, 8),
-	        colorMap[getDiscipline(game, 9)],
-	        getDiceValue(game, 9),
-	        colorMap[getDiscipline(game, 10)],
-	        getDiceValue(game, 10));
-	printf ("   %s%02d    %s%02d\n",
-	        colorMap[getDiscipline(game, 11)],
-	        getDiceValue(game, 11),
 	        colorMap[getDiscipline(game, 12)],
 	        getDiceValue(game, 12));
 	printf ("%s%02d    %s%02d    %s%02d\n",
-	        colorMap[getDiscipline(game, 13)],
-	        getDiceValue(game, 13),
-	        colorMap[getDiscipline(game, 14)],
-	        getDiceValue(game, 14),
-	        colorMap[getDiscipline(game, 15)],
-	        getDiceValue(game, 15));
+	        colorMap[getDiscipline(game, 0)],
+	        getDiceValue(game, 0),
+	        colorMap[getDiscipline(game, 8)],
+	        getDiceValue(game, 8),
+	        colorMap[getDiscipline(game, 16)],
+	        getDiceValue(game, 16));
 	printf ("   %s%02d    %s%02d\n",
-	        colorMap[getDiscipline(game, 16)], 
-	        getDiceValue(game, 16),
+	        colorMap[getDiscipline(game, 4)],
+	        getDiceValue(game, 4),
+	        colorMap[getDiscipline(game, 13)],
+	        getDiceValue(game, 13));
+	printf ("%s%02d    %s%02d    %s%02d\n",
+	        colorMap[getDiscipline(game, 1)],
+	        getDiceValue(game, 1),
+	        colorMap[getDiscipline(game, 9)],
+	        getDiceValue(game, 9),
 	        colorMap[getDiscipline(game, 17)],
 	        getDiceValue(game, 17));
-	printf ("      %s%02d\n\n", colorMap[getDiscipline(game, 18)], getDiceValue(game, 18));
-	
+	printf ("   %s%02d    %s%02d\n",
+	        colorMap[getDiscipline(game, 5)],
+	        getDiceValue(game, 5),
+	        colorMap[getDiscipline(game, 14)],
+	        getDiceValue(game, 14));
+	printf ("%s%02d    %s%02d    %s%02d\n",
+	        colorMap[getDiscipline(game, 2)],
+	        getDiceValue(game, 2),
+	        colorMap[getDiscipline(game, 10)],
+	        getDiceValue(game, 10),
+	        colorMap[getDiscipline(game, 18)],
+	        getDiceValue(game, 18));
+	printf ("   %s%02d    %s%02d\n",
+	        colorMap[getDiscipline(game, 6)],
+	        getDiceValue(game, 6),
+	        colorMap[getDiscipline(game, 15)],
+	        getDiceValue(game, 15));
+	printf ("      %s%02d\n\n", colorMap[getDiscipline(game, 11)], getDiceValue(game, 11));
+
+	// Campuses and GO8s
 	printf (RESET BLUE "Campuses / GO8s: TODO\n");
+
 	printf (RESET BLUE "ARCs: TODO\n");
 }
