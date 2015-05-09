@@ -136,8 +136,9 @@ static vert getVert(Game game, int index){
 	if (index > NUM_VERTS || index < 0){
 		//Out of range - returns NULL
 	} else {
-		game->vertArray[index];
+		vertPtr = game->vertArray[index];
 	}
+	return vertPtr;
 }
 
 //------------Building Map Functions--------//
@@ -420,23 +421,47 @@ static void buildVerts(Game game){
 			getVert(game, vertNum)->vertSide = getVert(game, vertNum + 4);
 		}
 		else if (hexLink > 2 && hexLink < 7){
-			game->hexArray[hexLink]->vertLeft = game->vertArray[hexLink + 4];
-			game->vertArray[hexLink + 4]->hexSide = game->hexArray[hexLink];
+			vertNum = hexLink + 4;
+			game->hexArray[hexLink]->vertLeft = getVert(game, vertNum);
+			getVert(game, vertNum)->hexSide = game->hexArray[hexLink];
+			getVert(game, vertNum)->vertUp = getVert(game, vertNum + 4);
+			getVert(game, vertNum)->vertDown = getVert(game, vertNum + 5);
+			getVert(game, vertNum)->vertSide = getVert(game, vertNum - 4);
 
-			game->hexArray[hexLink]->vertUpLeft = game->vertArray[hexLink + 8];
-			game->vertArray[hexLink + 8]->hexDown = game->hexArray[hexLink];
+			vertNum = hexLink + 8;
+			game->hexArray[hexLink]->vertUpLeft = getVert(game, vertNum);
+			getVert(game, vertNum)->hexDown = game->hexArray[hexLink];
+			getVert(game, vertNum)->vertUp = getVert(game, vertNum - 5);
+			getVert(game, vertNum)->vertDown = getVert(game, vertNum - 4);
+			getVert(game, vertNum)->vertSide = getVert(game, vertNum + 5);
 
-			game->hexArray[hexLink]->vertUpRight = game->vertArray[hexLink + 13];
-			game->vertArray[hexLink + 13]->hexDown = game->hexArray[hexLink];
+			vertNum = hexLink + 13;
+			game->hexArray[hexLink]->vertUpRight = getVert(game, vertNum);
+			getVert(game, vertNum)->hexDown = game->hexArray[hexLink];
+			getVert(game, vertNum)->vertUp = getVert(game, vertNum + 5);
+			getVert(game, vertNum)->vertDown = getVert(game, vertNum + 6);
+			getVert(game, vertNum)->vertSide = getVert(game, vertNum - 5);
 
-			game->hexArray[hexLink]->vertRight = game->vertArray[hexLink + 19];
-			game->vertArray[hexLink + 19]->hexSide = game->hexArray[hexLink];
+			vertNum = hexLink + 19;
+			game->hexArray[hexLink]->vertRight = getVert(game, vertNum);
+			getVert(game, vertNum)->hexSide = game->hexArray[hexLink];
+			getVert(game, vertNum)->vertUp = getVert(game, vertNum - 6);
+			getVert(game, vertNum)->vertDown = getVert(game, vertNum - 5);
+			getVert(game, vertNum)->vertSide = getVert(game, vertNum + 6);
 
-			game->hexArray[hexLink]->vertDownRight = game->vertArray[hexLink + 14];
-			game->vertArray[hexLink + 14]->hexUp = game->hexArray[hexLink];
+			vertNum = hexLink + 14;
+			game->hexArray[hexLink]->vertDownRight = getVert(game, vertNum);
+			getVert(game, vertNum)->hexUp = game->hexArray[hexLink];
+			getVert(game, vertNum)->vertUp = getVert(game, vertNum + 5);
+			getVert(game, vertNum)->vertDown = getVert(game, vertNum - 5);
+			getVert(game, vertNum)->vertSide = getVert(game, vertNum + 6);
 
-			game->hexArray[hexLink]->vertDownLeft = game->vertArray[hexLink + 9];
-			game->vertArray[hexLink + 9]->hexUp = game->hexArray[hexLink];
+			vertNum = hexLink + 9;
+			game->hexArray[hexLink]->vertDownLeft = getVert(game, vertNum);
+			getVert(game, vertNum)->hexUp = game->hexArray[hexLink];
+			getVert(game, vertNum)->vertUp = getVert(game, vertNum - 5);
+			getVert(game, vertNum)->vertDown = getVert(game, vertNum - 4);
+			getVert(game, vertNum)->vertSide = getVert(game, vertNum + 5);
 		}
 		else if (hexLink > 6 && hexLink < 12){
 			game->hexArray[hexLink]->vertLeft = game->vertArray[hexLink + 9];
