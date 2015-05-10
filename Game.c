@@ -710,7 +710,7 @@ void makeAction(Game g, action a) {
 	}
 	else if (a.actionCode == RETRAIN_STUDENTS) {
         if (isLegalAction(g, a)) {
-            g->playerArray[g->currentTurn % NUM_UNIS].students[a.disciplineFrom] -= 3;
+            g->playerArray[g->currentTurn % NUM_UNIS].students[a.disciplineFrom] -= getExchangeRate(g, g->playerArray[g->currentTurn % NUM_UNIS], a.disciplineFrom, a.disciplineTo);
             g->playerArray[g->currentTurn % NUM_UNIS].students[a.disciplineTo]++;
         }
 	}
@@ -873,7 +873,7 @@ int isLegalAction(Game g, action a){
         // see if (disciplineFrom != STUDENT_THD)
         if (a.disciplineFrom == STUDENT_THD) {
             return FALSE;
-        } else if (g->playerArray[g->currentTurn % NUM_UNIS].students[a.disciplineFrom] < 3) {
+        } else if (g->playerArray[g->currentTurn % NUM_UNIS].students[a.disciplineFrom] < getExchangeRate(g, g->playerArray[g->currentTurn % NUM_UNIS], a.disciplineFrom, a.disciplineTo)) {
             return FALSE;
         }
         else {
@@ -921,6 +921,7 @@ int getExchangeRate(Game g, int player,
 	return 0; // Placeholder
 }
 
+// Completed
 static player newPlayer(int playerID){
 	player playerNew;
 
