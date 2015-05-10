@@ -626,6 +626,7 @@ Game newGame(int discipline[], int dice[]){
 	return game;
 }
 
+// Completed
 void disposeGame(Game g) {
 	//Free every thing in the hex, vert and edge arrays
 	int hexLoop = 0;
@@ -637,6 +638,7 @@ void disposeGame(Game g) {
 	free(g);
 }
 
+// Incomplete
 void makeAction(Game g, action a) {
 	if (a.actionCode == PASS) {
         if (isLegalAction(g, a)) {
@@ -807,14 +809,17 @@ int getWhoseTurn(Game g){
 	return returnValue;
 }
 
+// Incomplete
 int getCampus(Game g, path pathToVertex){
 	return 0; // Placeholder so it compiles
 }
 
+// Incomplete
 int getARC(Game g, path pathToEdge){
 	return 0; // Placeholder
 }
 
+// Still incomplete
 int isLegalAction(Game g, action a){
     if (a.actionCode == PASS) {
         return TRUE;
@@ -893,10 +898,12 @@ int getARCs(Game g, int player) {
 	return g->playerArray[player - 1].numARCs;
 }
 
+// Incomplete - should we make a new player variable called numGO8s?
 int getGO8s(Game g, int player){
 	return 0; // Placeholder
 }
 
+// Incomplete - should we make a new player variable called numCampuses?
 int getCampuses(Game g, int player){
 	return 0; // Placeholder
 }
@@ -916,6 +923,7 @@ int getStudents(Game g, int player, int discipline){
 	return g->playerArray[player - 1].students[discipline];
 }
 
+// Incomplete
 int getExchangeRate(Game g, int player,
 	int disciplineFrom, int disciplineTo){
 	return 0; // Placeholder
@@ -943,7 +951,6 @@ static player newPlayer(int playerID){
 }
 
 // Incomplete code here
-
 int getOriginVertexId() {
 	// PLACEHOLDER. ALBERT SMITH: DO NOT COMPLAIN.
 	return 42;
