@@ -71,7 +71,6 @@ typedef struct _vert {
 	edge edgeUp;
 	edge edgeDown;
 	edge edgeSide;
-
 } *vert;
 
 typedef struct _edge {

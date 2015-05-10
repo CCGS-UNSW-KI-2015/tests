@@ -132,6 +132,7 @@ void castPlayerAction(Game game, int playerId) {
 
 		if (actionCode == PASS) {
 			sprintf(confirmationMessage, "Pass");
+		        complete = 1;
 		} else if (actionCode == BUILD_CAMPUS) {
 			printf(BOLD YELLOW "Enter path to build campus: " RESET YELLOW);
 			scanf("%s", playerAction.destination);
@@ -253,7 +254,24 @@ void displayMap(Game game) {
 	printf ("      %s%02d\n\n", colorMap[getDiscipline(game, 11)], getDiceValue(game, 11));
 
 	// Campuses and GO8s
-	printf (RESET BLUE "Campuses / GO8s: TODO\n");
+	printf (RESET BLUE  "Campuses / GO8s:\n");
+	printf (RESET RED   "Player One, ");
+	printf (RESET GREEN "Player Two, ");
+	printf (RESET BLUE  "Player Three\n");
+
+
+	/*    * *
+           * *   * *
+        * *   * *   * *
+       *   * *   * *   *
+        * *   * *   * *
+       *   * *   * *   *
+        * *   * *   * *
+       *   * *   * *   *
+        * *   * *   * *
+           * *   * *
+              * *
+       */
 
 	printf (RESET BLUE "ARCs: TODO\n");
 }
