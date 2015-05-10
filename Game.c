@@ -640,9 +640,9 @@ void disposeGame(Game g) {
 // Incomplete
 void makeAction(Game g, action a) {
 	if (a.actionCode == PASS) {
-        if (isLegalAction(g, a)) {
-            g.currentTurn++;
-        }
+	        if (isLegalAction(g, a)) {
+        	    g.currentTurn++;
+        	}
 	}
 	else if (a.actionCode == BUILD_CAMPUS) {
 		// check if there's enough students
