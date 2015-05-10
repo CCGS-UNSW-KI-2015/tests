@@ -255,11 +255,14 @@ void displayMap(Game game) {
 	printf ("      %s%02d\n\n", colorMap[getDiscipline(game, 11)], getDiceValue(game, 11));
 
 	// Campuses and GO8s
-	printf (RESET BLUE  "Campuses / GO8s:\n");
 	printf (RESET RED   "Player One, ");
 	printf (RESET GREEN "Player Two, ");
-	printf (RESET BLUE  "Player Three\n");
-
+	printf (RESET CYAN  "Player Three\n");
+	printf (RESET BLUE  "C means Campus, G means GO8\n");
+	
+	printf (            "Campuses / GO8s: TODO\n");
+	
+	// When resolvePath() is working, this should be implemented.
 
 	/*    * *
            * *   * *
