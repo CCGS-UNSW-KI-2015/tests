@@ -131,6 +131,7 @@ void castPlayerAction(Game game, int playerId) {
 		playerAction.actionCode = actionCode;
 
 		if (actionCode == PASS) {
+			printf(BOLD GREEN "You have passed, player turn completed!\n");
 			sprintf(confirmationMessage, "Pass");
 		        complete = 1;
 		} else if (actionCode == BUILD_CAMPUS) {
