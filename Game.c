@@ -641,8 +641,8 @@ void disposeGame(Game g) {
 void makeAction(Game g, action a) {
 	if (a.actionCode == PASS) {
 	        if (isLegalAction(g, a)) {
-        	    g.currentTurn++;
-        	}
+        	    g->currentTurn++;
+       		}
 	}
 	else if (a.actionCode == BUILD_CAMPUS) {
 		// check if there's enough students
@@ -711,7 +711,7 @@ void makeAction(Game g, action a) {
 	}
 	else if (a.actionCode == RETRAIN_STUDENTS) {
         if (isLegalAction(g, a)) {
-            g->playerArray[g->currentTurn % NUM_UNIS].students[a.disciplineFrom] -= getExchangeRate(g, g->playerArray[g->currentTurn % NUM_UNIS], a.disciplineFrom, a.disciplineTo);
+            g->playerArray[g->currentTurn % NUM_UNIS].students[a.disciplineFrom] -= getExchangeRate(g, g->playerArray[g->currentTurn % NUM_UNIS].playerID, a.disciplineFrom, a.disciplineTo);
             g->playerArray[g->currentTurn % NUM_UNIS].students[a.disciplineTo]++;
         }
 	}
@@ -831,7 +831,7 @@ int isLegalAction(Game g, action a){
             g->playerArray[g->currentTurn % NUM_UNIS].students[STUDENT_MTV] < 1) {
             return FALSE;
         // TODO - check if the campus is connected to an ARC grant
-        } else if () {
+        } else if (FALSE) { // Placeholder
             return FALSE;
         }
         else {
@@ -844,8 +844,8 @@ int isLegalAction(Game g, action a){
             g->playerArray[g->currentTurn % NUM_UNIS].students[STUDENT_MMONEY] < 3) {
             return FALSE;
         // TODO - check if there's a campus by the player
-        } else if () {
-            
+        } else if (FALSE) {//Placeholder
+            return FALSE; // Placeholder
         } else {
             return TRUE;
         }
@@ -877,7 +877,7 @@ int isLegalAction(Game g, action a){
         // see if (disciplineFrom != STUDENT_THD)
         if (a.disciplineFrom == STUDENT_THD) {
             return FALSE;
-        } else if (g->playerArray[g->currentTurn % NUM_UNIS].students[a.disciplineFrom] < getExchangeRate(g, g->playerArray[g->currentTurn % NUM_UNIS], a.disciplineFrom, a.disciplineTo)) {
+        } else if (g->playerArray[g->currentTurn % NUM_UNIS].students[a.disciplineFrom] < getExchangeRate(g, g->playerArray[g->currentTurn % NUM_UNIS].playerID, a.disciplineFrom, a.disciplineTo)) {
             return FALSE;
         }
         else {
