@@ -149,7 +149,7 @@ void advAssert(Game game, assertInfo info[], int infoLen) {
 
 		printf(RESET CYAN "------------ Premature End of Tests ------------\n");
 		printf(RESET "\n");
-		exit(0);
+		exit(1);
 	}
 }
 
