@@ -639,6 +639,8 @@ void disposeGame(Game g) {
 
 // Incomplete
 void makeAction(Game g, action a) {
+	player currentPlayer = g->playerArray[g->currentTurn % NUM_UNIS];
+
 	if (a.actionCode == PASS) {
 	        if (isLegalAction(g, a)) {
         	    g->currentTurn++;
@@ -649,30 +651,30 @@ void makeAction(Game g, action a) {
 		if (isLegalAction(g, a)) {
             // Add a campus and take the cost from the user
             // TODO - add the campus
-            g->playerArray[g->currentTurn % NUM_UNIS].students[STUDENT_BPS]--;
-            g->playerArray[g->currentTurn % NUM_UNIS].students[STUDENT_BQN]--;
-            g->playerArray[g->currentTurn % NUM_UNIS].students[STUDENT_MJ]--;
-            g->playerArray[g->currentTurn % NUM_UNIS].students[STUDENT_MTV]--;
-            
+            currentPlayer.students[STUDENT_BPS]--;
+            currentPlayer.students[STUDENT_BQN]--;
+            currentPlayer.students[STUDENT_MJ]--;
+            currentPlayer.students[STUDENT_MTV]--;
+
             // also add 10 KPI points
-            g->playerArray[g->currentTurn % NUM_UNIS].kpiPoints += 10;
+            currentPlayer.kpiPoints += 10;
 		}
 	}
 	else if (a.actionCode == BUILD_GO8) {
 		// check if there's a campus by the player
 		// check if there's enough students
         if (g->playerArray[g->currentTurn].students[STUDENT_MJ] < 2 ||
-            g->playerArray[g->currentTurn % NUM_UNIS].students[STUDENT_MMONEY] < 3) {
+            currentPlayer.students[STUDENT_MMONEY] < 3) {
             // None
         } else {
             // TODO - Remove the campus, add a GO8 campus
-            
+
             // take the cost from the user
-            g->playerArray[g->currentTurn % NUM_UNIS].students[STUDENT_MJ] -= 2;
-            g->playerArray[g->currentTurn % NUM_UNIS].students[STUDENT_MMONEY] -= 3;
+            currentPlayer.students[STUDENT_MJ] -= 2;
+            currentPlayer.students[STUDENT_MMONEY] -= 3;
 
             // add 10 KPI points (20 for building G08, -10 for removing a campus)
-            g->playerArray[g->currentTurn % NUM_UNIS].kpiPoints += 10;
+            currentPlayer.kpiPoints += 10;
         }
 	}
 	else if (a.actionCode == OBTAIN_ARC) {
@@ -701,18 +703,18 @@ void makeAction(Game g, action a) {
 	}
 	else if (a.actionCode == OBTAIN_PUBLICATION) {
 		// increase the number of publications by 1
-		g->playerArray[g->currentTurn % NUM_UNIS].numPubs++;
+		currentPlayer.numPubs++;
 	}
 	else if (a.actionCode == OBTAIN_IP_PATENT) {
 		// increase the number of IP patents by 1
 		// increase the KPI points by 10
-		g->playerArray[g->currentTurn % NUM_UNIS].numIPs++;
-		g->playerArray[g->currentTurn % NUM_UNIS].kpiPoints += 10;
+		currentPlayer.numIPs++;
+		currentPlayer.kpiPoints += 10;
 	}
 	else if (a.actionCode == RETRAIN_STUDENTS) {
         if (isLegalAction(g, a)) {
-            g->playerArray[g->currentTurn % NUM_UNIS].students[a.disciplineFrom] -= getExchangeRate(g, g->playerArray[g->currentTurn % NUM_UNIS].playerID, a.disciplineFrom, a.disciplineTo);
-            g->playerArray[g->currentTurn % NUM_UNIS].students[a.disciplineTo]++;
+            currentPlayer.students[a.disciplineFrom] -= getExchangeRate(g, currentPlayer.playerID, a.disciplineFrom, a.disciplineTo);
+            currentPlayer.students[a.disciplineTo]++;
         }
 	}
 };
