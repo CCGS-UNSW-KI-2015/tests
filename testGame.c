@@ -6,7 +6,6 @@
 #include <stdlib.h>
 #include <assert.h>
 #include <string.h>
-
 #include "testState.h"
 
 #define DEFAULT_PLAYERS {0, 3, 3, 1, 1, 1}
