@@ -17,6 +17,17 @@
 #define NUM_VERTS 53
 #define HEX_BUILD_PRINT 14
 
+#define ORIGIN_VERT_ID 21
+#define PREV_DIR_UP 1
+#define PREV_DIR_DOWN 2
+#define PREV_DIR_SIDE 3
+#define LEFT 'L'
+#define RIGHT 'R'
+#define BACK 'B'
+#define LEFT_I 0
+#define RIGHT_I 1
+#define BACK_I 2
+
 //-----------Structs-----------//
 
 typedef struct _game * Game;
@@ -59,6 +70,7 @@ typedef struct _vert {
 
 	int playerID;
 
+	int vertIndex;
 
 	hex hexUp;
 	hex hexDown;
@@ -127,6 +139,8 @@ static void linkVertOffsets(Game game, int vertNum, int up, int down, int side);
 //Getting a vert or edge
 static vert getVertAtPath(Game game, path pathToVert);
 static edge getEdgeAtPath(Game game, path pathToEdge);
+/*Finds the next vert knowing which vert is which direction. Updates prev direction*/
+static vert getNextVert(Game game, vert verts[3], int tureDir[3], char letter, int *dir);
 
 //------------Main-------------//
 
@@ -148,6 +162,221 @@ static void linkVertOffsets(Game game, int vertNum, int up, int down, int side){
 	getVert(game, vertNum)->vertUp = getVert(game, vertNum + up);
 	getVert(game, vertNum)->vertDown = getVert(game, vertNum + down);
 	getVert(game, vertNum)->vertSide = getVert(game, vertNum + side);
+}
+
+//------Getting vert/edge functions-------//
+
+static vert getNextVert(Game game, vert verts[3], int tureDir[3], char letter, int *dir){
+	vert returnVert;
+	if (letter == LEFT){
+		returnVert = verts[LEFT_I];
+		*dir = tureDir[LEFT_I];
+	} else if (letter == RIGHT) {
+		returnVert = verts[RIGHT_I];
+		*dir = tureDir[RIGHT_I];
+	} else {
+		returnVert = verts[BACK_I];
+		*dir = tureDir[BACK_I];
+	}
+}
+
+static vert getVertAtPath(Game game, path pathToVert){
+	vert prevVert;
+	vert currVert;
+	vert nextVert;
+	int prevVertDir; // Last link taken
+
+	currVert = getVert(game, ORIGIN_VERT_ID);
+	prevVert->vertIndex = ORIGIN_VERT_ID - 1;
+	prevVertDir = PREV_DIR_DOWN;
+
+	//Loop over path
+	char currentLetter;
+	int pos = 0;
+
+	currentLetter = pathToVert[pos];
+	pos++;
+
+	while (currentLetter != 0){
+		vert verts[3];
+		int trueDir[3];
+
+		if (prevVertDir == PREV_DIR_DOWN){
+			if (prevVert->vertIndex < currVert->vertIndex){
+				//Came from left, left = side, right = down, back == prev
+				verts[LEFT_I] = currVert->vertSide;
+				verts[RIGHT_I] = currVert->vertDown;
+
+				trueDir[LEFT_I] = PREV_DIR_SIDE;
+				trueDir[RIGHT_I] = PREV_DIR_DOWN;
+				trueDir[BACK_I] = PREV_DIR_UP;
+			} else {
+				//Came from right; left = down, right = side, back == prev
+				verts[LEFT_I] = currVert->vertDown;
+				verts[RIGHT_I] = currVert->vertSide;
+
+				trueDir[LEFT_I] = PREV_DIR_DOWN;
+				trueDir[RIGHT_I] = PREV_DIR_SIDE;
+				trueDir[BACK_I] = PREV_DIR_UP;
+			}
+		} else if (prevVertDir == PREV_DIR_SIDE) {
+			if (prevVert->vertIndex < currVert->vertIndex){
+				//Came from left, left = up, right = down, back = prev
+				verts[LEFT_I] = currVert->vertUp;
+				verts[RIGHT_I] = currVert->vertDown;
+
+				trueDir[LEFT_I] = PREV_DIR_UP;
+				trueDir[RIGHT_I] = PREV_DIR_DOWN;
+				trueDir[BACK_I] = PREV_DIR_SIDE;
+			}
+			else {
+				//Came from right; left = down, right = up, back = prev
+				verts[LEFT_I] = currVert->vertDown;
+				verts[RIGHT_I] = currVert->vertSide;
+
+				trueDir[LEFT_I] = PREV_DIR_DOWN;
+				trueDir[RIGHT_I] = PREV_DIR_UP;
+				trueDir[BACK_I] = PREV_DIR_SIDE;
+			}
+		} else if (prevVertDir == PREV_DIR_UP) {
+			if (prevVert->vertIndex < currVert->vertIndex){
+				//Came from left, left = up, right = side, back = prev
+				verts[LEFT_I] = currVert->vertUp;
+				verts[RIGHT_I] = currVert->vertSide;
+
+				trueDir[LEFT_I] = PREV_DIR_UP;
+				trueDir[RIGHT_I] = PREV_DIR_SIDE;
+				trueDir[BACK_I] = PREV_DIR_DOWN;
+			}
+			else {
+				//Came from right; left = side, right = up, back = prev
+				verts[LEFT_I] = currVert->vertSide;
+				verts[RIGHT_I] = currVert->vertUp;
+
+				trueDir[LEFT_I] = PREV_DIR_SIDE;
+				trueDir[RIGHT_I] = PREV_DIR_UP;
+				trueDir[BACK_I] = PREV_DIR_DOWN;
+			}
+		}
+
+		verts[BACK_I] = prevVert;
+
+		nextVert = getNextVert(game, verts, trueDir, currentLetter, &prevVertDir);
+		prevVert = currVert;
+		currVert = nextVert;
+
+		currentLetter = pathToVert[pos];
+		pos++;
+
+	}
+
+	return currVert;
+}
+
+static edge getEdgeAtPath(Game game, path pathToEdge){
+	//------------NOTE SAME AS getVertAtPath() BUT FINDS THE EDGE AT THE END------------//
+	vert prevVert;
+	vert currVert;
+	vert nextVert;
+	int prevVertDir; // Last link taken
+
+	currVert = getVert(game, ORIGIN_VERT_ID);
+	prevVert->vertIndex = ORIGIN_VERT_ID - 1;
+	prevVertDir = PREV_DIR_DOWN;
+
+	//Loop over path
+	char currentLetter;
+	int pos = 0;
+
+	currentLetter = pathToEdge[pos];
+	pos++;
+
+	while (currentLetter != 0){
+		vert verts[3];
+		int trueDir[3];
+
+		if (prevVertDir == PREV_DIR_DOWN){
+			if (prevVert->vertIndex < currVert->vertIndex){
+				//Came from left, left = side, right = down, back == prev
+				verts[LEFT_I] = currVert->vertSide;
+				verts[RIGHT_I] = currVert->vertDown;
+
+				trueDir[LEFT_I] = PREV_DIR_SIDE;
+				trueDir[RIGHT_I] = PREV_DIR_DOWN;
+				trueDir[BACK_I] = PREV_DIR_UP;
+			}
+			else {
+				//Came from right; left = down, right = side, back == prev
+				verts[LEFT_I] = currVert->vertDown;
+				verts[RIGHT_I] = currVert->vertSide;
+
+				trueDir[LEFT_I] = PREV_DIR_DOWN;
+				trueDir[RIGHT_I] = PREV_DIR_SIDE;
+				trueDir[BACK_I] = PREV_DIR_UP;
+			}
+		}
+		else if (prevVertDir == PREV_DIR_SIDE) {
+			if (prevVert->vertIndex < currVert->vertIndex){
+				//Came from left, left = up, right = down, back = prev
+				verts[LEFT_I] = currVert->vertUp;
+				verts[RIGHT_I] = currVert->vertDown;
+
+				trueDir[LEFT_I] = PREV_DIR_UP;
+				trueDir[RIGHT_I] = PREV_DIR_DOWN;
+				trueDir[BACK_I] = PREV_DIR_SIDE;
+			}
+			else {
+				//Came from right; left = down, right = up, back = prev
+				verts[LEFT_I] = currVert->vertDown;
+				verts[RIGHT_I] = currVert->vertSide;
+
+				trueDir[LEFT_I] = PREV_DIR_DOWN;
+				trueDir[RIGHT_I] = PREV_DIR_UP;
+				trueDir[BACK_I] = PREV_DIR_SIDE;
+			}
+		}
+		else if (prevVertDir == PREV_DIR_UP) {
+			if (prevVert->vertIndex < currVert->vertIndex){
+				//Came from left, left = up, right = side, back = prev
+				verts[LEFT_I] = currVert->vertUp;
+				verts[RIGHT_I] = currVert->vertSide;
+
+				trueDir[LEFT_I] = PREV_DIR_UP;
+				trueDir[RIGHT_I] = PREV_DIR_SIDE;
+				trueDir[BACK_I] = PREV_DIR_DOWN;
+			}
+			else {
+				//Came from right; left = side, right = up, back = prev
+				verts[LEFT_I] = currVert->vertSide;
+				verts[RIGHT_I] = currVert->vertUp;
+
+				trueDir[LEFT_I] = PREV_DIR_SIDE;
+				trueDir[RIGHT_I] = PREV_DIR_UP;
+				trueDir[BACK_I] = PREV_DIR_DOWN;
+			}
+		}
+
+		verts[BACK_I] = prevVert;
+
+		nextVert = getNextVert(game, verts, trueDir, currentLetter, &prevVertDir);
+		prevVert = currVert;
+		currVert = nextVert;
+
+		currentLetter = pathToEdge[pos];
+		pos++;
+
+	}
+
+	//Last bit to get the edge
+	edge edgeToReturn;
+	if (prevVertDir == PREV_DIR_UP){
+		edgeToReturn = currVert->edgeUp;
+	} else if (prevVertDir == PREV_DIR_SIDE){
+		edgeToReturn = currVert->edgeSide;
+	} else {
+		edgeToReturn = currVert->edgeDown;
+	}
+	return edgeToReturn;
 }
 
 //------------Building Map Functions--------//
@@ -379,6 +608,7 @@ static void buildVerts(Game game){
 		tempVert->hasUni = FALSE;
 		tempVert->hasGO8 = FALSE;
 		tempVert->playerID = NO_ONE;
+		tempVert->vertIndex = vertNum;
 		game->vertArray[vertNum] = tempVert;
 		vertNum++;
 	}
@@ -488,7 +718,6 @@ static void buildVerts(Game game){
 			vertNum = hexLink + 9;
 			game->hexArray[hexLink]->vertLeft = getVert(game, vertNum);
 			getVert(game, vertNum)->hexSide = game->hexArray[hexLink];
-			getVert(game, vertNum)->hexUp = game->hexArray[hexLink];
 			linkVertOffsets(game, vertNum, 5, 6, -5);
 			/*getVert(game, vertNum)->vertUp = getVert(game, vertNum + 5);
 			getVert(game, vertNum)->vertDown = getVert(game, vertNum + 6);
