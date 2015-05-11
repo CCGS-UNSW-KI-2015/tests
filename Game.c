@@ -973,15 +973,15 @@ vert resolvePathB(Game g, path pathToVertex) {
 
 	while (i < pathLen) {
 		char currentChar = pathToVertex[i];
-		if (currentChar == "L") {
+		if (currentChar == 'L') {
 			// currentVertex = *(currentVertex.hexLeft);
-		} else if (currentChar == "R") {
+		} else if (currentChar == 'R') {
 			// currentVertex = *(currentVertex.hexRight);
-		} else if (currentChar == "B") {
+		} else if (currentChar == 'B') {
 			// currentVertex = *(currentVertex.hexBack);
 		} else {
 			printf("Invalid path supplied: %s\n", pathToVertex);
-			exit(1);
+			exit(1); // RAGEQUIT
 		}
 
 		i++;
