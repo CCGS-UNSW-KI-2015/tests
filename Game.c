@@ -124,6 +124,10 @@ static void buildVerts(Game game);
 static vert getVert(Game game, int index);
 static void linkVertOffsets(Game game, int vertNum, int up, int down, int side);
 
+//Getting a vert or edge
+static vert getVertAtPath(Game game, path pathToVert);
+static edge getEdgeAtPath(Game game, path pathToEdge);
+
 //------------Main-------------//
 
 
