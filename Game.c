@@ -905,10 +905,20 @@ void disposeGame(Game g) {
 	}
 
 	free(g);
+
+	//Dispose of edges
+
 }
 
 // Incomplete
 void makeAction(Game g, action a) {
+	/*
+	
+	
+		YOU CAN ASSUME THAT THE ACTION IS VALID - SEE Game.h
+	
+	
+	*/
 	player currentPlayer = g->playerArray[g->currentTurn % NUM_UNIS];
 
 	if (a.actionCode == PASS) {
@@ -1009,7 +1019,8 @@ void throwDice(Game g, int diceScore){
 		}
 	}
 	//Give resources
-
+		//Find hexs that have dice value == diceScore
+		//Added rescourese to players that have unis/GO8s in on the adjacant verts
 }
 
 // Completed
