@@ -740,6 +740,8 @@ void throwDice(Game g, int diceScore){
 			i++;
 		}
 	}
+	//Give resources
+
 }
 
 // Completed
@@ -955,6 +957,8 @@ static player newPlayer(int playerID){
 }
 
 // Incomplete code here
+
+/*
 int getOriginVertexId() {
 	// PLACEHOLDER. ALBERT SMITH: DO NOT COMPLAIN.
 	return 42;
@@ -999,3 +1003,4 @@ vert resolvePathB(Game g, path pathToVertex) {
 
 	return currentVertex;
 }
+*/
