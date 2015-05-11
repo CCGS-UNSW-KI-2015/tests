@@ -65,8 +65,8 @@ typedef struct _hex {
 } * hex;
 
 typedef struct _vert {
-	int hasUni;
-	int hasGO8;
+	//These will store the campus code or VACANT_VERTEX look at #defines in .h
+	int contents;
 
 	int playerID;
 
@@ -86,7 +86,7 @@ typedef struct _vert {
 } *vert;
 
 typedef struct _edge {
-	int hasARC;
+	int contents;
 
 	int playerID;
 
@@ -104,6 +104,8 @@ typedef struct _player{
 	int numARCs;
 	int numPubs;
 	int numIPs;
+	int numGO8s;
+	int numUnis;
 	int students[NUM_DISCIPLINES];
 
 	int kpiPoints;
@@ -164,6 +166,26 @@ static void linkVertOffsets(Game game, int vertNum, int up, int down, int side){
 	getVert(game, vertNum)->vertSide = getVert(game, vertNum + side);
 }
 
+static player newPlayer(int playerID){
+	player playerNew;
+
+	playerNew.playerID = playerID;
+
+	int buffer[NUM_DISCIPLINES] = DEFAULT_PLAYERS;
+	int i = 0;
+	while (i < NUM_DISCIPLINES) {
+		playerNew.students[i] = buffer[i];
+		i++;
+	}
+
+	playerNew.numARCs = 0;
+	playerNew.numPubs = 0;
+	playerNew.numIPs = 0;
+	playerNew.kpiPoints = 0;
+
+	return playerNew;
+}
+
 //------Getting vert/edge functions-------//
 
 static vert getNextVert(Game game, vert verts[3], int tureDir[3], char letter, int *dir){
@@ -178,10 +200,12 @@ static vert getNextVert(Game game, vert verts[3], int tureDir[3], char letter, i
 		returnVert = verts[BACK_I];
 		*dir = tureDir[BACK_I];
 	}
+	return returnVert;
 }
 
 static vert getVertAtPath(Game game, path pathToVert){
-	vert prevVert;
+	vert prevVert = (vert)malloc(sizeof(struct _vert));
+	vert toFree = prevVert;
 	vert currVert;
 	vert nextVert;
 	int prevVertDir; // Last link taken
@@ -270,12 +294,16 @@ static vert getVertAtPath(Game game, path pathToVert){
 
 	}
 
+	free(toFree);
+	toFree = NULL;
+
 	return currVert;
 }
 
 static edge getEdgeAtPath(Game game, path pathToEdge){
 	//------------NOTE SAME AS getVertAtPath() BUT FINDS THE EDGE AT THE END------------//
-	vert prevVert;
+	vert prevVert = (vert)malloc(sizeof(struct _vert));
+	vert toFree = prevVert;
 	vert currVert;
 	vert nextVert;
 	int prevVertDir; // Last link taken
@@ -366,6 +394,9 @@ static edge getEdgeAtPath(Game game, path pathToEdge){
 		pos++;
 
 	}
+
+	free(toFree);
+	toFree = NULL;
 
 	//Last bit to get the edge
 	edge edgeToReturn;
@@ -605,8 +636,7 @@ static void buildVerts(Game game){
 	int vertNum = 0;
 	while (vertNum < NUM_VERTS) {
 		vert tempVert = malloc(sizeof(struct _vert));
-		tempVert->hasUni = FALSE;
-		tempVert->hasGO8 = FALSE;
+		tempVert->contents = VACANT_VERTEX;
 		tempVert->playerID = NO_ONE;
 		tempVert->vertIndex = vertNum;
 		game->vertArray[vertNum] = tempVert;
@@ -828,7 +858,7 @@ static void buildVerts(Game game){
 
 //------------Interface functons------------//
 
-
+// Incomplete
 Game newGame(int discipline[], int dice[]){
 	Game game = (Game)malloc(sizeof(struct _game));
 
@@ -857,7 +887,7 @@ Game newGame(int discipline[], int dice[]){
 	return game;
 }
 
-// Completed
+// Incomplete - ish
 void disposeGame(Game g) {
 	//Free every thing in the hex, vert and edge arrays
 	int hexLoop = 0;
@@ -866,6 +896,14 @@ void disposeGame(Game g) {
 		g->hexArray[hexLoop] = NULL;
 		hexLoop++;
 	}
+
+	int vertLoop = 0;
+	while (vertLoop < NUM_VERTS){
+		free(g->vertArray[vertLoop]);
+		g->vertArray[vertLoop] = NULL;
+		hexLoop++;
+	}
+
 	free(g);
 }
 
@@ -951,6 +989,7 @@ void makeAction(Game g, action a) {
 	}
 };
 
+//Incomplete
 void throwDice(Game g, int diceScore){
 	//Adv turn
 	g->currentTurn++;
@@ -1044,14 +1083,23 @@ int getWhoseTurn(Game g){
 	return returnValue;
 }
 
-// Incomplete
+// Completed
 int getCampus(Game g, path pathToVertex){
-	return 0; // Placeholder so it compiles
+	//Get vert using local function
+	vert vertToReturn = getVertAtPath(g, pathToVertex);
+
+	//Return val from vert
+	return vertToReturn->contents; // Placeholder so it compiles
 }
 
-// Incomplete
+// Completed - ish 
+// Needs edges to be initalised
 int getARC(Game g, path pathToEdge){
-	return 0; // Placeholder
+	/*
+	edge edgeToReturn = getEdgeAtPath(g, pathToEdge);
+
+	return edgeToReturn->contents;*/
+	return 0;
 }
 
 // Still incomplete
@@ -1133,14 +1181,14 @@ int getARCs(Game g, int player) {
 	return g->playerArray[player - 1].numARCs;
 }
 
-// Incomplete - should we make a new player variable called numGO8s?
+// Completed
 int getGO8s(Game g, int player){
-	return 0; // Placeholder
+	return g->playerArray[player - 1].numGO8s;
 }
 
-// Incomplete - should we make a new player variable called numCampuses?
+// Completed
 int getCampuses(Game g, int player){
-	return 0; // Placeholder
+	return g->playerArray[player - 1].numUnis;
 }
 
 // Completed
@@ -1159,77 +1207,6 @@ int getStudents(Game g, int player, int discipline){
 }
 
 // Incomplete
-int getExchangeRate(Game g, int player,
-	int disciplineFrom, int disciplineTo){
+int getExchangeRate(Game g, int player, int disciplineFrom, int disciplineTo){
 	return 0; // Placeholder
 }
-
-// Completed
-static player newPlayer(int playerID){
-	player playerNew;
-
-	playerNew.playerID = playerID;
-
-	int buffer[NUM_DISCIPLINES] = DEFAULT_PLAYERS;
-	int i = 0;
-	while (i < NUM_DISCIPLINES) {
-		playerNew.students[i] = buffer[i];
-		i++;
-	}
-
-	playerNew.numARCs = 0;
-	playerNew.numPubs = 0;
-	playerNew.numIPs = 0;
-	playerNew.kpiPoints = 0;
-
-	return playerNew;
-}
-
-// Incomplete code here
-
-/*
-int getOriginVertexId() {
-	// PLACEHOLDER. ALBERT SMITH: DO NOT COMPLAIN.
-	return 42;
-}
-
-// int resolvePathA(Game g, path pathToVertex) {
-// 	int origin = getOriginVertexId();
-
-// 	int currentVertex = vert;
-
-// }
-
-vert resolvePathB(Game g, path pathToVertex) {
-	int origin = getOriginVertexId();
-
-	vert currentVertex = g->vertArray[origin];
-
-	int i = 0;
-	int pathLen = strlen(pathToVertex);
-
-	while (i < pathLen) {
-		char currentChar = pathToVertex[i];
-		if (currentChar == 'L') {
-			// currentVertex = *(currentVertex.hexLeft);
-		} else if (currentChar == 'R') {
-			// currentVertex = *(currentVertex.hexRight);
-		} else if (currentChar == 'B') {
-			// currentVertex = *(currentVertex.hexBack);
-		} else {
-			printf("Invalid path supplied: %s\n", pathToVertex);
-			exit(1); // RAGEQUIT
-		}
-
-		i++;
-	}
-
-	i = 0;
-
-	// while (i < 48) { // Replace with num of paths
-
-	// }
-
-	return currentVertex;
-}
-*/
