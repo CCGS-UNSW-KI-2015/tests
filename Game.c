@@ -957,6 +957,31 @@ Game newGame(int discipline[], int dice[]){
     game->startC1 = getVert(game, VERT_C1_INDEX);
     game->startC2 = getVert(game, VERT_C2_INDEX);
     
+	game->startA1->contents = CAMPUS_A;
+	game->startA1->hasUni = TRUE;
+	game->startA1->playerID = CAMPUS_A - 1;
+	game->startA2->contents = CAMPUS_A;
+	game->startA2->hasUni = TRUE;
+	game->startA2->playerID = CAMPUS_A - 1;
+
+	game->startB1->contents = CAMPUS_B;
+	game->startB1->hasUni = TRUE;
+	game->startB1->playerID = CAMPUS_B - 1;
+	game->startB2->contents = CAMPUS_B;
+	game->startB2->hasUni = TRUE;
+	game->startB2->playerID = CAMPUS_B - 1;
+
+	game->startC1->contents = CAMPUS_C;
+	game->startC1->hasUni = TRUE;
+	game->startC1->playerID = CAMPUS_C - 1;
+	game->startC2->contents = CAMPUS_C;
+	game->startC2->hasUni = TRUE;
+	game->startC2->playerID = CAMPUS_C - 1;
+
+	getPlayer(game, UNI_A)->kpiPoints = 10;
+	getPlayer(game, UNI_B)->kpiPoints = 10;
+	getPlayer(game, UNI_C)->kpiPoints = 10;
+
     return game;
 }
 
