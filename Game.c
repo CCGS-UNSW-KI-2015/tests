@@ -208,7 +208,7 @@ static void linkVertOffsets(Game game, int vertNum, int up, int down, int side){
 }
 
 static player newPlayer(int playerID){
-    player playerNew;
+	player playerNew = (player) malloc(sizeof(struct _player));
     
     playerNew->playerID = playerID;
     
@@ -962,6 +962,13 @@ Game newGame(int discipline[], int dice[]){
 // Incomplete - ish
 void disposeGame(Game g) {
     //Free every thing in the hex, vert and edge arrays
+	int playerLoop = 0;
+	while (playerLoop < NUM_UNIS){
+		free(g->hexArray[playerLoop]);
+		g->playerArray[playerLoop] = NULL;
+		playerLoop++;
+	}
+
     int hexLoop = 0;
     while (hexLoop < NUM_HEXS){
         free(g->hexArray[hexLoop]);
@@ -999,13 +1006,9 @@ void makeAction(Game g, action a) {
         
         // Add a campus
         vert campus = getVertAtPath(g, a.destination);
-<<<<<<< HEAD
         currentPlayer->numUnis++;
         campus->playerID = currentPlayer->playerID;
-=======
-        currentPlayer.numUnis++;
-        campus->playerID = currentPlayer.playerID;
->>>>>>> bbd641ef2e5e21ce2cfd864a0ec008206ca7f78e
+
 		campus->hasUni = TRUE;
 		campus->hasGO8 = FALSE;
         // If there's a better way to do this, let me know.
@@ -1065,7 +1068,7 @@ void makeAction(Game g, action a) {
     }
     else if (a.actionCode == OBTAIN_PUBLICATION) {
 
-		player mostPubs = getPlayerWithMostPubs(g);
+		player mostPubs = g->mostPubs;
 
         // increase the number of publications by 1
         currentPlayer->numPubs++;
