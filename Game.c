@@ -28,6 +28,30 @@
 #define RIGHT_I 1
 #define BACK_I 2
 
+#define VERT_A1_INDEX 21
+#define VERT_A2_INDEX 32
+#define VERT_B1_INDEX 0
+#define VERT_B2_INDEX 50
+#define VERT_C1_INDEX 6
+#define VERT_C2_INDEX 
+
+#define VERT_CONV_MTV1_INDEX 11
+#define VERT_CONV_MTV2_INDEX 16
+#define VERT_CONV_MMONEY1_INDEX 33
+#define VERT_CONV_MMONEY2_INDEX 38
+#define VERT_CONV_BPS1_INDEX 10
+#define VERT_CONV_BPS2_INDEX 15
+#define VERT_CONV_MJ1_INDEX 42
+#define VERT_CONV_MJ2_INDEX 46
+#define VERT_CONV_BQN1_INDEX 52
+#define VERT_CONV_BQN2_INDEX 49
+#define VERT_CONV_ALL1_INDEX 0
+#define VERT_CONV_ALL2_INDEX 3
+#define VERT_CONV_ALL3_INDEX 1
+#define VERT_CONV_ALL4_INDEX 5
+#define VERT_CONV_ALL5_INDEX 26
+#define VERT_CONV_ALL6_INDEX 32
+
 //-----------Structs-----------//
 
 typedef struct _game * Game;
@@ -123,6 +147,13 @@ typedef struct _game {
 	edge edgeArray[72];
 
 	vert entryPoint;
+
+	vert startA1;
+	vert startA2;
+	vert startB1;
+	vert startB2;
+	vert startC1;
+	vert startC2;
 
 	player playerArray[3];
 
@@ -884,6 +915,13 @@ Game newGame(int discipline[], int dice[]){
 	buildHexMap(game);
 	buildVerts(game);
 
+	game->startA1 = getVert(game, VERT_A1_INDEX);
+	game->startA2 = getVert(game, VERT_A2_INDEX);
+	game->startB1 = getVert(game, VERT_B1_INDEX);
+	game->startB2 = getVert(game, VERT_B2_INDEX);
+	game->startC1 = getVert(game, VERT_C1_INDEX);
+	game->startC2 = getVert(game, VERT_C2_INDEX);
+
 	return game;
 }
 
@@ -1005,6 +1043,10 @@ void throwDice(Game g, int diceScore){
 	g->currentTurn++;
 	//Give resources
 
+	//Give resources
+	//Find hexs that have dice value == diceScore
+	//Added rescourese to players that have unis/GO8s in on the adjacant verts
+
 	if (diceScore == 7) {
 		int i = 0;
 		int temp = 0;
@@ -1018,9 +1060,7 @@ void throwDice(Game g, int diceScore){
 			i++;
 		}
 	}
-	//Give resources
-		//Find hexs that have dice value == diceScore
-		//Added rescourese to players that have unis/GO8s in on the adjacant verts
+	
 }
 
 // Completed
@@ -1219,5 +1259,50 @@ int getStudents(Game g, int player, int discipline){
 
 // Incomplete
 int getExchangeRate(Game g, int player, int disciplineFrom, int disciplineTo){
+	int hasBPSExchange = FALSE;
+	int hasMJExchange = FALSE;
+	int hasBQNExchange = FALSE;
+	int hasMMONEYExchange = FALSE;
+	int hasMTVExchange = FALSE;
+	int hasAllExchange = FALSE;
+
+	//Check which verts the player owns
+	if (getVert(g, VERT_CONV_BPS1_INDEX)->playerID == player || 
+		getVert(g, VERT_CONV_BPS2_INDEX)->playerID == player){
+		hasBPSExchange = TRUE;
+	}
+
+	if (getVert(g, VERT_CONV_MMONEY1_INDEX)->playerID == player ||
+		getVert(g, VERT_CONV_MMONEY2_INDEX)->playerID == player){
+		hasMMONEYExchange = TRUE;
+	}
+
+	if (getVert(g, VERT_CONV_MTV1_INDEX)->playerID == player ||
+		getVert(g, VERT_CONV_MTV2_INDEX)->playerID == player){
+		hasMTVExchange = TRUE;
+	}
+
+	if (getVert(g, VERT_CONV_BQN1_INDEX)->playerID == player ||
+		getVert(g, VERT_CONV_BQN2_INDEX)->playerID == player){
+		hasMTVExchange = TRUE;
+	}
+
+	if (getVert(g, VERT_CONV_MJ1_INDEX)->playerID == player ||
+		getVert(g, VERT_CONV_MJ2_INDEX)->playerID == player){
+		hasMTVExchange = TRUE;
+	}
+
+	if (getVert(g, VERT_CONV_ALL1_INDEX)->playerID == player ||
+		getVert(g, VERT_CONV_ALL2_INDEX)->playerID == player ||
+		getVert(g, VERT_CONV_ALL3_INDEX)->playerID == player ||
+		getVert(g, VERT_CONV_ALL4_INDEX)->playerID == player ||
+		getVert(g, VERT_CONV_ALL5_INDEX)->playerID == player ||
+		getVert(g, VERT_CONV_ALL6_INDEX)->playerID == player){
+		hasAllExchange = TRUE;
+	}
+
+
+
+
 	return 0; // Placeholder
 }
