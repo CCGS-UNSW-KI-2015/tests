@@ -54,99 +54,99 @@
 
 //-----------Structs-----------//
 
-typedef struct _game * Game;
-typedef struct _hex * hex;
-typedef struct _vert * vert;
-typedef struct _edge * edge;
-typedef struct _player player;
+ typedef struct _game * Game;
+ typedef struct _hex * hex;
+ typedef struct _vert * vert;
+ typedef struct _edge * edge;
+ typedef struct _player player;
 
-typedef struct _hex {
-	int hexID; // 1-19 starting with 1 at top left
-	int hexDiscipline;
+ typedef struct _hex {
+	 int hexID; // 1-19 starting with 1 at top left
+	 int hexDiscipline;
 
 
-	hex hexUp;
-	hex hexDown;
-	hex hexUpLeft;
-	hex hexUpRight;
-	hex hexDownLeft;
-	hex hexDownRight;
+	 hex hexUp;
+	 hex hexDown;
+	 hex hexUpLeft;
+	 hex hexUpRight;
+	 hex hexDownLeft;
+	 hex hexDownRight;
 
-	vert vertUpLeft;
-	vert vertUpRight;
-	vert vertLeft;
-	vert vertRight;
-	vert vertDownLeft;
-	vert vertDownRight;
+	 vert vertUpLeft;
+	 vert vertUpRight;
+	 vert vertLeft;
+	 vert vertRight;
+	 vert vertDownLeft;
+	 vert vertDownRight;
 
-	edge edgeUp;
-	edge edgeDown;
-	edge edgeUpLeft;
-	edge edgeUpRight;
-	edge edgeDownLeft;
-	edge edgeDownRight;
+	 edge edgeUp;
+	 edge edgeDown;
+	 edge edgeUpLeft;
+	 edge edgeUpRight;
+	 edge edgeDownLeft;
+	 edge edgeDownRight;
 
-} * hex;
+ } * hex;
 
-typedef struct _vert {
-	//These will store the campus code or VACANT_VERTEX look at #defines in .h
-	int contents;
+ typedef struct _vert {
+	 //These will store the campus code or VACANT_VERTEX look at #defines in .h
+	 int contents;
 
-	int playerID;
+	 int playerID;
 
-	int vertIndex;
+	 int vertIndex;
 
-	hex hexUp;
-	hex hexDown;
-	hex hexSide;
+	 hex hexUp;
+	 hex hexDown;
+	 hex hexSide;
 
-	vert vertUp;
-	vert vertDown;
-	vert vertSide;
+	 vert vertUp;
+	 vert vertDown;
+	 vert vertSide;
 
-	edge edgeUp;
-	edge edgeDown;
-	edge edgeSide;
-} *vert;
+	 edge edgeUp;
+	 edge edgeDown;
+	 edge edgeSide;
+ } *vert;
 
-typedef struct _edge {
-	int contents;
+ typedef struct _edge {
+	 int contents;
 
-	int playerID;
+	 int playerID;
 
-	hex hexUp;
-	hex hexDown;
+	 hex hexUp;
+	 hex hexDown;
 
-	vert vertUp;//If level up == right
-	vert vertDown;
+	 vert vertUp;//If level up == right
+	 vert vertDown;
 
-} *edge;
+ } *edge;
 
-typedef struct _player{
-	int playerID;
+ typedef struct _player{
+	 int playerID;
 
-	int numARCs;
-	int numPubs;
-	int numIPs;
-	int numGO8s;
-	int numUnis;
-	int students[NUM_DISCIPLINES];
+	 int numARCs;
+	 int numPubs;
+	 int numIPs;
+	 int numGO8s;
+	 int numUnis;
+	 int students[NUM_DISCIPLINES];
 
-	int kpiPoints;
+	 int kpiPoints;
 
-} player;
+ } player;
 
-typedef struct _game {
-	int currentTurn;
+ typedef struct _game {
+	 int currentTurn;
 
-	int disciplines[NUM_REGIONS];
-	int dice[NUM_REGIONS];
+	 int disciplines[NUM_REGIONS];
+	 int dice[NUM_REGIONS];
 
-	vert vertArray[NUM_VERTS];
-	hex hexArray[NUM_HEXS];
-	edge edgeArray[72];
+	 vert vertArray[NUM_VERTS];
+	 hex hexArray[NUM_HEXS];
+	 edge edgeArray[72];
 
-	vert entryPoint;
+	 vert entryPoint;
 
 	vert startA1;
 	vert startA2;
@@ -155,19 +155,19 @@ typedef struct _game {
 	vert startC1;
 	vert startC2;
 
-	player playerArray[3];
+    player playerArray[3];
 
-} *Game;
+ } *Game;
 
-//------------Local Functions--------------//
+ //------------Local Functions--------------//
 
-static player newPlayer(int playerID);
-static void buildHexMap(Game game);
-static void buildVerts(Game game);
+ static player newPlayer(int playerID);
+ static void buildHexMap(Game game);
+ static void buildVerts(Game game);
 
-//Range Checked
-static vert getVert(Game game, int index);
-static void linkVertOffsets(Game game, int vertNum, int up, int down, int side);
+ //Range Checked
+ static vert getVert(Game game, int index);
+ static void linkVertOffsets(Game game, int vertNum, int up, int down, int side);
 
 //Getting a vert or edge
 static vert getVertAtPath(Game game, path pathToVert);
@@ -951,49 +951,45 @@ void disposeGame(Game g) {
 // Incomplete
 void makeAction(Game g, action a) {
 	/*
-	
-	
-		YOU CAN ASSUME THAT THE ACTION IS VALID - SEE Game.h
-	
-	
+
+
+	YOU CAN ASSUME THAT THE ACTION IS VALID - SEE Game.h
+
+
 	*/
 	player currentPlayer = g->playerArray[g->currentTurn % NUM_UNIS];
 
 	if (a.actionCode == PASS) {
-	        if (isLegalAction(g, a)) {
-        	    g->currentTurn++;
-       		}
+		// Do nothing - runGame.c increments the turn number
 	}
 	else if (a.actionCode == BUILD_CAMPUS) {
-		// check if there's enough students
-		if (isLegalAction(g, a)) {
-            // Add a campus and take the cost from the user
-            // TODO - add the campus
-            currentPlayer.students[STUDENT_BPS]--;
-            currentPlayer.students[STUDENT_BQN]--;
-            currentPlayer.students[STUDENT_MJ]--;
-            currentPlayer.students[STUDENT_MTV]--;
+		// Take the cost from the user
+		currentPlayer.students[STUDENT_BPS]--;
+		currentPlayer.students[STUDENT_BQN]--;
+		currentPlayer.students[STUDENT_MJ]--;
+		currentPlayer.students[STUDENT_MTV]--;
 
-            // also add 10 KPI points
-            currentPlayer.kpiPoints += 10;
-		}
+		// Add a campus
+		vert campus = getVertAtPath(g, a.destination);
+		campus.playerID = currentPlayer.playerID;
+		// If there's a better way to do this, let me know.
+		campus.contents = (g->currentTurn % NUM_UNIS) + 1;
+
+		// also add 10 KPI points
+		currentPlayer.kpiPoints += 10;
 	}
 	else if (a.actionCode == BUILD_GO8) {
-		// check if there's a campus by the player
-		// check if there's enough students
-        if (g->playerArray[g->currentTurn].students[STUDENT_MJ] < 2 ||
-            currentPlayer.students[STUDENT_MMONEY] < 3) {
-            // None
-        } else {
-            // TODO - Remove the campus, add a GO8 campus
+		// remove the campus, add a GO8 campus
+		vert go8 = getVertAtPath(g, a.destination);
+		// I also want a better way to do this.
+		go8.contents += NUM_UNIS;
 
-            // take the cost from the user
-            currentPlayer.students[STUDENT_MJ] -= 2;
-            currentPlayer.students[STUDENT_MMONEY] -= 3;
+		// take the cost from the user
+		currentPlayer.students[STUDENT_MJ] -= 2;
+		currentPlayer.students[STUDENT_MMONEY] -= 3;
 
-            // add 10 KPI points (20 for building G08, -10 for removing a campus)
-            currentPlayer.kpiPoints += 10;
-        }
+		// add 10 KPI points (20 for building G08, -10 for removing a campus)
+		currentPlayer.kpiPoints += 10;
 	}
 	else if (a.actionCode == OBTAIN_ARC) {
 		// check if the location of the player is connected to his/her ARC
@@ -1005,18 +1001,17 @@ void makeAction(Game g, action a) {
 		// check if it's a legal action
 		// 1/3 of the chance will be OBTAIN_IP_PATENT
 		// if not, then OBTAIN_PUBLICATION
-		if (isLegalAction(g, a)) {
-            // Create a sort-of-almost-random number
-            srand((unsigned int)time(NULL));//Simpler
-            int r = rand() % 3;
-            if (r == 0) {
-                a.actionCode = OBTAIN_IP_PATENT;
-                makeAction(g, a);
-            }
-            else {
-                a.actionCode = OBTAIN_PUBLICATION;
-                makeAction(g, a);
-            }
+
+		// Create a sort-of-almost-random number
+		srand((unsigned int)time(NULL));//Simpler
+		int r = rand() % 3;
+		if (r == 0) {
+			a.actionCode = OBTAIN_IP_PATENT;
+			makeAction(g, a);
+		}
+		else {
+			a.actionCode = OBTAIN_PUBLICATION;
+			makeAction(g, a);
 		}
 	}
 	else if (a.actionCode == OBTAIN_PUBLICATION) {
@@ -1030,12 +1025,10 @@ void makeAction(Game g, action a) {
 		currentPlayer.kpiPoints += 10;
 	}
 	else if (a.actionCode == RETRAIN_STUDENTS) {
-        if (isLegalAction(g, a)) {
-            currentPlayer.students[a.disciplineFrom] -= getExchangeRate(g, currentPlayer.playerID, a.disciplineFrom, a.disciplineTo);
-            currentPlayer.students[a.disciplineTo]++;
-        }
+		currentPlayer.students[a.disciplineFrom] -= getExchangeRate(g, currentPlayer.playerID, a.disciplineFrom, a.disciplineTo);
+		currentPlayer.students[a.disciplineTo]++;
 	}
-};
+}
 
 //Incomplete
 void throwDice(Game g, int diceScore){
@@ -1306,3 +1299,4 @@ int getExchangeRate(Game g, int player, int disciplineFrom, int disciplineTo){
 
 	return 0; // Placeholder
 }
+========
