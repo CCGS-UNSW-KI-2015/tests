@@ -264,9 +264,9 @@ void displayMap(Game game) {
 
 	printf (            "Campuses / GO8s: TODO\n");
 
-	printf ("      %s%c %s%c\n", getCampusColor(game, "LRRRRR"), printCampus(game, "LRRRRR"),
+	printf ("       %s%c %s%c\n", getCampusColor(game, "LRRRRR"), printCampus(game, "LRRRRR"),
 		getCampusColor(game, "L"), printCampus(game, "L"));
-	printf ("   %s%c %s%c   %s%c %s%c\n", getCampusColor(game, "RR"), printCampus(game, "RR"),
+	printf ("    %s%c %s%c   %s%c %s%c\n", getCampusColor(game, "RR"), printCampus(game, "RR"),
 		getCampusColor(game, "R"), printCampus(game, "R"),
 		getCampusColor(game, "LR"), printCampus(game, "LR"),
 		getCampusColor(game, "LRL"), printCampus(game, "LRL"));
@@ -282,6 +282,12 @@ void displayMap(Game game) {
 		getCampusColor(game, "LRRL"), printCampus(game, "LRRL"),
 		getCampusColor(game, "LRLRR"), printCampus(game, "LRLRR"),
 		getCampusColor(game, "LRLRLR"), printCampus(game, "LRLRLR"));
+	printf (" %s%c %s%c   %s%c %s%c   %s%c %s%c\n", getCampusColor(game, "RRLRLL"), printCampus(game, "RRLRLL"),
+		getCampusColor(game, "RRLLR"), printCampus(game, "RRLLR"),
+		getCampusColor(game, "RLRL"), printCampus(game, "RLRL"),
+		getCampusColor(game, "RLRLL"), printCampus(game, "RLRLL"),
+		getCampusColor(game, "LRLRRL"), printCampus(game, "LRLRRL"),
+		getCampusColor(game, "LRLRLRR"), printCampus(game, "LRLRLRR"));
 	// TODO - Continue
 
 	/*    * *
