@@ -113,9 +113,7 @@ typedef struct _vert {
 
 typedef struct _edge {
     int contents;
-    
-    int playerID;
-    
+        
     hex hexUp;
     hex hexDown;
     
@@ -1001,6 +999,7 @@ void makeAction(Game g, action a) {
         
         // Add a campus
         vert campus = getVertAtPath(g, a.destination);
+        currentPlayer->numUnis++;
         campus->playerID = currentPlayer->playerID;
 		campus->hasUni = TRUE;
 		campus->hasGO8 = FALSE;
@@ -1033,7 +1032,6 @@ void makeAction(Game g, action a) {
         // Add arc
         edge arc = getEdgeAtPath(g, a.destination);
         arc->contents = currentPlayer->playerID;
-		arc->playerID = currentPlayer->playerID;
         currentPlayer->numARCs++;
         
         // Take the cost from the user
@@ -1226,18 +1224,24 @@ int getARC(Game g, path pathToEdge){
 
 // Still incomplete
 int isLegalAction(Game g, action a){
+    
+    player currentPlayer = g->playerArray[g->currentTurn % NUM_UNIS];
+
     if (a.actionCode == PASS) {
         return TRUE;
     }
     else if (a.actionCode == BUILD_CAMPUS) {
+        vert campus = getVertAtPath(g, a.destination);
         // check if there's enough students
         if (g->playerArray[g->currentTurn]->students[STUDENT_BPS] < 1 ||
             g->playerArray[g->currentTurn % NUM_UNIS]->students[STUDENT_BQN] < 1 ||
             g->playerArray[g->currentTurn % NUM_UNIS]->students[STUDENT_MJ] < 1 ||
             g->playerArray[g->currentTurn % NUM_UNIS]->students[STUDENT_MTV] < 1) {
             return FALSE;
-            // TODO - check if the campus is connected to an ARC grant
-        } else if (FALSE) { // Placeholder
+        // Check if the campus is connected to an ARC grant
+        } else if ((campus->edgeUp->contents != currentPlayer->playerID) &&
+                   (campus->edgeDown->contents != currentPlayer->playerID) &&
+                   (campus->edgeSide->contents != currentPlayer->playerID)) { // Placeholder
             return FALSE;
         }
         else {
