@@ -113,7 +113,7 @@ typedef struct _vert {
 
 typedef struct _edge {
     int contents;
-        
+    
     hex hexUp;
     hex hexDown;
     
@@ -999,8 +999,13 @@ void makeAction(Game g, action a) {
         
         // Add a campus
         vert campus = getVertAtPath(g, a.destination);
+<<<<<<< HEAD
         currentPlayer->numUnis++;
         campus->playerID = currentPlayer->playerID;
+=======
+        currentPlayer.numUnis++;
+        campus->playerID = currentPlayer.playerID;
+>>>>>>> bbd641ef2e5e21ce2cfd864a0ec008206ca7f78e
 		campus->hasUni = TRUE;
 		campus->hasGO8 = FALSE;
         // If there's a better way to do this, let me know.
@@ -1031,8 +1036,13 @@ void makeAction(Game g, action a) {
 
         // Add arc
         edge arc = getEdgeAtPath(g, a.destination);
+<<<<<<< HEAD
         arc->contents = currentPlayer->playerID;
         currentPlayer->numARCs++;
+=======
+        arc->contents = currentPlayer.playerID;
+        currentPlayer.numARCs++;
+>>>>>>> bbd641ef2e5e21ce2cfd864a0ec008206ca7f78e
         
         // Take the cost from the user
         currentPlayer->students[STUDENT_BQN]--;
@@ -1249,21 +1259,20 @@ int isLegalAction(Game g, action a){
         }
     }
     else if (a.actionCode == BUILD_GO8) {
-        
+        vert campus = getVertAtPath(g, a.destination);
         // check if there's enough students
         if (g->playerArray[g->currentTurn]->students[STUDENT_MJ] < 2 ||
             g->playerArray[g->currentTurn % NUM_UNIS]->students[STUDENT_MMONEY] < 3) {
             return FALSE;
-            // TODO - check if there's a campus by the player
-        } else if (FALSE) {//Placeholder
-            return FALSE; // Placeholder
+            // Check if there's a campus by the player
+        } else if (campus->contents != currentPlayer.playerID) {
+            return FALSE;
         } else {
             return TRUE;
         }
     }
     else if (a.actionCode == OBTAIN_ARC) {
         // check if the location of the player is connected to his/her ARC
-        
         // check if there's enough students
         // Add arc and take the cost from the user
         // Add 2 KPI points
