@@ -976,7 +976,7 @@ void disposeGame(Game g) {
     
 }
 
-// Complete?
+//Complete
 void makeAction(Game g, action a) {
     
     player currentPlayer = g->playerArray[g->currentTurn % NUM_UNIS];
