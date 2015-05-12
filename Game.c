@@ -33,7 +33,7 @@
 #define VERT_B1_INDEX 0
 #define VERT_B2_INDEX 50
 #define VERT_C1_INDEX 6
-#define VERT_C2_INDEX 
+#define VERT_C2_INDEX 47
 
 #define VERT_CONV_MTV1_INDEX 11
 #define VERT_CONV_MTV2_INDEX 16
@@ -971,9 +971,9 @@ void makeAction(Game g, action a) {
 
 		// Add a campus
 		vert campus = getVertAtPath(g, a.destination);
-		campus.playerID = currentPlayer.playerID;
+		campus->playerID = currentPlayer.playerID;
 		// If there's a better way to do this, let me know.
-		campus.contents = (g->currentTurn % NUM_UNIS) + 1;
+		campus->contents = (g->currentTurn % NUM_UNIS) + 1;
 
 		// also add 10 KPI points
 		currentPlayer.kpiPoints += 10;
@@ -982,7 +982,7 @@ void makeAction(Game g, action a) {
 		// remove the campus, add a GO8 campus
 		vert go8 = getVertAtPath(g, a.destination);
 		// I also want a better way to do this.
-		go8.contents += NUM_UNIS;
+		go8->contents += NUM_UNIS;
 
 		// take the cost from the user
 		currentPlayer.students[STUDENT_MJ] -= 2;
@@ -1299,4 +1299,3 @@ int getExchangeRate(Game g, int player, int disciplineFrom, int disciplineTo){
 
 	return 0; // Placeholder
 }
-========

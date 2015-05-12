@@ -24,6 +24,8 @@ void displayPlayerAssets(Game game, int playerId);
 int displayPlayerInfo(Game game);
 void castPlayerAction(Game game, int playerId);
 void displayMap(Game game);
+char* getCampusColor(Game game, path pathToVertex);
+char printCampus(Game game, path pathToVertex);
 
 int main(int argc, char *argv[]) {
 	Game game;
@@ -262,7 +264,13 @@ void displayMap(Game game) {
 
 	printf (            "Campuses / GO8s: TODO\n");
 
-	// Can't do it yet because the resolvePath functions are static!
+	printf ("      %s%c %s%c\n", getCampusColor(g, "LRRRRR"), printCampus(g, "LRRRRR"),
+	       getCampusColor(g, "L"), printCampus(g, "L"));
+	printf ("   %s%c %s%c   %s%c %s%c\n", getCampusColor(g, "RR"), printCampus(g, "RR"),
+	       getCampusColor(g, "R"), printCampus(g, "R"),
+	       getCampusColor(g, "LR"), printCampus(g, "LR"),
+	       getCampusColor(g, "LRL"), printCampus(g, "LRL"));
+	// TODO - Continue
 
 	/*    * *
            * *   * *
@@ -278,4 +286,27 @@ void displayMap(Game game) {
        */
 
 	printf (RESET BLUE "ARCs: TODO\n");
+}
+
+char* getCampusColor(Game game, path pathToVertex) {
+  int campus = getCampus(game, pathToVertex);
+  char* playerColors[] = {RED, GREEN, CYAN};
+  if (campus == NO_ONE) {
+    return BLUE;
+  } else {
+    return playerColors[campus % 3 - 1];
+  }
+}
+
+char printCampus(Game game, path pathToVertex) {
+  int campus = getCampus(game, pathToVertex);
+  if (campus == NO_ONE) {
+    return '*';
+  } else {
+    if (campus <= 3) {
+      return 'C';
+    } else {
+      return 'G';
+    }
+  }
 }
