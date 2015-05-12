@@ -178,6 +178,10 @@ static edge getEdgeAtPath(Game game, path pathToEdge);
 /*Finds the next vert knowing which vert is which direction. Updates prev direction*/
 static vert getNextVert(Game game, vert verts[3], int tureDir[3], char letter, int *dir);
 
+//Search Functions
+static player getPlayerWithMostARCs(Game game);
+static player getPlayerWithMostPubs(Game game);
+
 //------------Main-------------//
 
 
@@ -982,7 +986,7 @@ void makeAction(Game g, action a) {
     player currentPlayer = g->playerArray[g->currentTurn % NUM_UNIS];
     
     if (a.actionCode == PASS) {
-        // Do nothing - runGame.c increments the turn number
+        // Do nothing - runGame.c via throwDice() increments the turn number
     }
     else if (a.actionCode == BUILD_CAMPUS) {
         // Take the cost from the user
@@ -994,6 +998,8 @@ void makeAction(Game g, action a) {
         // Add a campus
         vert campus = getVertAtPath(g, a.destination);
         campus->playerID = currentPlayer.playerID;
+		campus->hasUni = TRUE;
+		campus->hasGO8 = FALSE;
         // If there's a better way to do this, let me know.
         campus->contents = (g->currentTurn % NUM_UNIS) + 1;
         
@@ -1005,8 +1011,10 @@ void makeAction(Game g, action a) {
         vert go8 = getVertAtPath(g, a.destination);
         // I also want a better way to do this.
         go8->contents += NUM_UNIS;
+		go8->hasUni = FALSE;
+		go8->hasGO8 = TRUE;
+		currentPlayer.numUnis--;
         currentPlayer.numGO8s++;
-        
         // take the cost from the user
         currentPlayer.students[STUDENT_MJ] -= 2;
         currentPlayer.students[STUDENT_MMONEY] -= 3;
@@ -1018,6 +1026,7 @@ void makeAction(Game g, action a) {
         // Add arc
         edge arc = getEdgeAtPath(g, a.destination);
         arc->contents = currentPlayer.playerID;
+		arc->playerID = currentPlayer.playerID;
         currentPlayer.numARCs++;
         
         // Take the cost from the user
@@ -1026,27 +1035,24 @@ void makeAction(Game g, action a) {
         
         // Add 2 KPI points
         currentPlayer.kpiPoints += 2;
-    }
-    else if (a.actionCode == START_SPINOFF) {
-        // check if it's a legal action
-        // 1/3 of the chance will be OBTAIN_IP_PATENT
-        // if not, then OBTAIN_PUBLICATION
-        
-        // Create a sort-of-almost-random number
-        srand((unsigned int)time(NULL));//Simpler
-        int r = rand() % 3;
-        if (r == 0) {
-            a.actionCode = OBTAIN_IP_PATENT;
-            makeAction(g, a);
-        }
-        else {
-            a.actionCode = OBTAIN_PUBLICATION;
-            makeAction(g, a);
-        }
+
+		/*
+
+			CHECK IF HAS THE MOST PUBLICATIONS
+
+		*/
+
     }
     else if (a.actionCode == OBTAIN_PUBLICATION) {
         // increase the number of publications by 1
         currentPlayer.numPubs++;
+
+		/*
+		
+			CHECK IF HAS THE MOST PUBLICATIONS
+
+		*/
+
     }
     else if (a.actionCode == OBTAIN_IP_PATENT) {
         // increase the number of IP patents by 1
