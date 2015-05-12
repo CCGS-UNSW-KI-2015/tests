@@ -91,7 +91,9 @@ typedef struct _hex {
 typedef struct _vert {
     //These will store the campus code or VACANT_VERTEX look at #defines in .h
     int contents;
-    
+	int hasGO8;
+	int hasUni;
+
     int playerID;
     
     int vertIndex;
@@ -167,6 +169,7 @@ static void buildVerts(Game game);
 
 //Range Checked
 static vert getVert(Game game, int index);
+static player getPlayer(Game game, int playerID);
 static void linkVertOffsets(Game game, int vertNum, int up, int down, int side);
 
 //Getting a vert or edge
@@ -189,6 +192,10 @@ static vert getVert(Game game, int index){
         vertPtr = game->vertArray[index];
     }
     return vertPtr;
+}
+
+static player getPlayer(Game game, int playerID){
+	return game->playerArray[playerID - 1];
 }
 
 static void linkVertOffsets(Game game, int vertNum, int up, int down, int side){
@@ -215,6 +222,27 @@ static player newPlayer(int playerID){
     playerNew.kpiPoints = 0;
     
     return playerNew;
+}
+
+static void addResourcesToPlayer(Game game, int playerID, int resources[NUM_DISCIPLINES]){
+	player playerToAdd = getPlayer(game, playerID);
+
+	int discipline = 0;
+	while (discipline < NUM_DISCIPLINES) {
+		playerToAdd.students[discipline] += resources[discipline];
+	}
+}
+
+static void addResourcesForHexAndVert(Game game, hex hexRolled, vert vertToCheck){
+	if (vertToCheck->hasUni == TRUE) {
+		int resources[NUM_DISCIPLINES] = { 0, 0, 0, 0, 0, 0 };
+		resources[hexRolled->hexDiscipline] = 1;
+		addResourcesToPlayer(game, vertToCheck->playerID, resources);
+	} else if (vertToCheck->hasGO8 == TRUE){
+		int resources[NUM_DISCIPLINES] = { 0, 0, 0, 0, 0, 0 };
+		resources[hexRolled->hexDiscipline] = 2;
+		addResourcesToPlayer(game, vertToCheck->playerID, resources);
+	}
 }
 
 //------Getting vert/edge functions-------//
@@ -1032,30 +1060,45 @@ void makeAction(Game g, action a) {
     }
 }
 
-//Incomplete
+//Complete
 void throwDice(Game g, int diceScore){
-    //Adv turn
-    g->currentTurn++;
-    //Give resources
-    
-    //Give resources
-    //Find hexs that have dice value == diceScore
-    //Added rescourese to players that have unis/GO8s in on the adjacant verts
-    
-    if (diceScore == 7) {
-        int i = 0;
-        int temp = 0;
-        while (i < NUM_UNIS) {
-            temp = g->playerArray[i].students[STUDENT_MTV];
-            g->playerArray[i].students[STUDENT_MTV] = 0;
-            temp += g->playerArray[i].students[STUDENT_MMONEY];
-            g->playerArray[i].students[STUDENT_MMONEY] = 0;
-            g->playerArray[i].students[STUDENT_THD] += temp;
-            
-            i++;
-        }
-    }
-    
+	//Adv turn
+	g->currentTurn++;
+	//Give resources
+
+	//Give resources
+	//Find hexs that have dice value == diceScore
+	//Added rescourese to players that have unis/GO8s in on the adjacant verts
+	int iter = 0;
+	while (iter < NUM_HEXS) {
+		if (g->dice[iter] == diceScore) {
+			//Hex iter has been rolled
+			hex hexRolled = g->hexArray[iter];
+
+			addResourcesForHexAndVert(g, hexRolled, hexRolled->vertLeft);
+			addResourcesForHexAndVert(g, hexRolled, hexRolled->vertUpLeft);
+			addResourcesForHexAndVert(g, hexRolled, hexRolled->vertUpRight);
+			addResourcesForHexAndVert(g, hexRolled, hexRolled->vertRight);
+			addResourcesForHexAndVert(g, hexRolled, hexRolled->vertDownRight);
+			addResourcesForHexAndVert(g, hexRolled, hexRolled->vertDownLeft);
+		}
+
+		iter++;
+	}
+
+	if (diceScore == 7) {
+		int i = 0;
+		int temp = 0;
+		while (i < NUM_UNIS) {
+			temp = g->playerArray[i].students[STUDENT_MTV];
+			g->playerArray[i].students[STUDENT_MTV] = 0;
+			temp += g->playerArray[i].students[STUDENT_MMONEY];
+			g->playerArray[i].students[STUDENT_MMONEY] = 0;
+			g->playerArray[i].students[STUDENT_THD] += temp;
+
+			i++;
+		}
+	}
 }
 
 // Completed
