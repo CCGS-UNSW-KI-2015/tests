@@ -113,7 +113,7 @@ typedef struct _vert {
 
 typedef struct _edge {
     int contents;
-        
+    
     hex hexUp;
     hex hexDown;
     
@@ -995,7 +995,7 @@ void makeAction(Game g, action a) {
         
         // Add a campus
         vert campus = getVertAtPath(g, a.destination);
-        currentPlayer->numUnis++;
+        currentPlayer.numUnis++;
         campus->playerID = currentPlayer.playerID;
 		campus->hasUni = TRUE;
 		campus->hasGO8 = FALSE;
@@ -1025,7 +1025,6 @@ void makeAction(Game g, action a) {
         // Add arc
         edge arc = getEdgeAtPath(g, a.destination);
         arc->contents = currentPlayer.playerID;
-		arc->playerID = currentPlayer.playerID;
         currentPlayer.numARCs++;
         
         // Take the cost from the user
@@ -1213,9 +1212,9 @@ int isLegalAction(Game g, action a){
             g->playerArray[g->currentTurn % NUM_UNIS].students[STUDENT_MTV] < 1) {
             return FALSE;
         // Check if the campus is connected to an ARC grant
-        } else if ((campus->edgeUp.contents != currentPlayer.playerID) &&
-                   (campus->edgeDown.contents != currentPlayer.playerID) &&
-                   (campus->edgeSide.contents != currentPlayer.playerID)) { // Placeholder
+        } else if ((campus->edgeUp->contents != currentPlayer.playerID) &&
+                   (campus->edgeDown->contents != currentPlayer.playerID) &&
+                   (campus->edgeSide->contents != currentPlayer.playerID)) {
             return FALSE;
         }
         else {
@@ -1223,21 +1222,20 @@ int isLegalAction(Game g, action a){
         }
     }
     else if (a.actionCode == BUILD_GO8) {
-        
+        vert campus = getVertAtPath(g, a.destination);
         // check if there's enough students
         if (g->playerArray[g->currentTurn].students[STUDENT_MJ] < 2 ||
             g->playerArray[g->currentTurn % NUM_UNIS].students[STUDENT_MMONEY] < 3) {
             return FALSE;
-            // TODO - check if there's a campus by the player
-        } else if (FALSE) {//Placeholder
-            return FALSE; // Placeholder
+            // Check if there's a campus by the player
+        } else if (campus->contents != currentPlayer.playerID) {
+            return FALSE;
         } else {
             return TRUE;
         }
     }
     else if (a.actionCode == OBTAIN_ARC) {
         // check if the location of the player is connected to his/her ARC
-        
         // check if there's enough students
         // Add arc and take the cost from the user
         // Add 2 KPI points
