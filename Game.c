@@ -15,6 +15,7 @@
 #define NUM_DISCIPLINES 6
 #define NUM_HEXS 19
 #define NUM_VERTS 53
+#define NUM_EDGES 72
 #define HEX_BUILD_PRINT 14
 
 #define ORIGIN_VERT_ID 21
@@ -1047,7 +1048,6 @@ void makeAction(Game g, action a) {
         currentPlayer->students[STUDENT_BPS]--;
         
         // Add 2 KPI points
-<<<<<<< Updated upstream
         currentPlayer->kpiPoints += 2;
 
 
@@ -1065,10 +1065,6 @@ void makeAction(Game g, action a) {
 				g->mostARCs = currentPlayer;
 			}
 		}
-
-=======
-        currentPlayer.kpiPoints += 2;
->>>>>>> Stashed changes
     }
     else if (a.actionCode == OBTAIN_PUBLICATION) {
 
