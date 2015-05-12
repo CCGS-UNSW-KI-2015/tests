@@ -1250,7 +1250,7 @@ int getStudents(Game g, int player, int discipline){
 	return g->playerArray[player - 1].students[discipline];
 }
 
-// Incomplete
+// Completed
 int getExchangeRate(Game g, int player, int disciplineFrom, int disciplineTo){
 	int hasBPSExchange = FALSE;
 	int hasMJExchange = FALSE;
@@ -1294,9 +1294,34 @@ int getExchangeRate(Game g, int player, int disciplineFrom, int disciplineTo){
 		hasAllExchange = TRUE;
 	}
 
+	int exchangeRate = 3;
+
+	if (hasAllExchange == TRUE){
+		exchangeRate = 2;
+	}
+
+	if (disciplineFrom == STUDENT_BPS){
+		if (hasBPSExchange == TRUE){
+			exchangeRate = 1;
+		}
+	} else if (disciplineFrom == STUDENT_MJ) {
+		if (hasMJExchange == TRUE){
+			exchangeRate = 1;
+		}
+	} else if (disciplineFrom == STUDENT_BQN) {
+		if (hasBQNExchange == TRUE){
+			exchangeRate = 1;
+		}
+	} else if (disciplineFrom == STUDENT_MTV) {
+		if (hasMTVExchange == TRUE){
+			exchangeRate = 1;
+		}
+	} else if (disciplineFrom == STUDENT_MMONEY) {
+		if (hasMMONEYExchange == TRUE){
+			exchangeRate = 1;
+		}
+	} 
 
 
-
-	return 0; // Placeholder
+	return exchangeRate;
 }
-========
