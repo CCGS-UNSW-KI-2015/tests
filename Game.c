@@ -950,6 +950,7 @@ void disposeGame(Game g) {
 
 // Incomplete
 void makeAction(Game g, action a) {
+<<<<<<< Updated upstream
   /*
 
 
