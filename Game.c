@@ -1036,13 +1036,8 @@ void makeAction(Game g, action a) {
 
         // Add arc
         edge arc = getEdgeAtPath(g, a.destination);
-<<<<<<< HEAD
         arc->contents = currentPlayer->playerID;
         currentPlayer->numARCs++;
-=======
-        arc->contents = currentPlayer.playerID;
-        currentPlayer.numARCs++;
->>>>>>> bbd641ef2e5e21ce2cfd864a0ec008206ca7f78e
         
         // Take the cost from the user
         currentPlayer->students[STUDENT_BQN]--;
@@ -1265,7 +1260,7 @@ int isLegalAction(Game g, action a){
             g->playerArray[g->currentTurn % NUM_UNIS]->students[STUDENT_MMONEY] < 3) {
             return FALSE;
             // Check if there's a campus by the player
-        } else if (campus->contents != currentPlayer.playerID) {
+        } else if (campus->contents != currentPlayer->playerID) {
             return FALSE;
         } else {
             return TRUE;
