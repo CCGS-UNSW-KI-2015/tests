@@ -33,7 +33,7 @@
 #define VERT_B1_INDEX 0
 #define VERT_B2_INDEX 50
 #define VERT_C1_INDEX 6
-#define VERT_C2_INDEX
+#define VERT_C2_INDEX 47
 
 #define VERT_CONV_MTV1_INDEX 11
 #define VERT_CONV_MTV2_INDEX 16
