@@ -1047,6 +1047,7 @@ void makeAction(Game g, action a) {
         currentPlayer->students[STUDENT_BPS]--;
         
         // Add 2 KPI points
+<<<<<<< Updated upstream
         currentPlayer->kpiPoints += 2;
 
 
@@ -1065,6 +1066,9 @@ void makeAction(Game g, action a) {
 			}
 		}
 
+=======
+        currentPlayer.kpiPoints += 2;
+>>>>>>> Stashed changes
     }
     else if (a.actionCode == OBTAIN_PUBLICATION) {
 
@@ -1232,11 +1236,12 @@ int getARC(Game g, path pathToEdge){
 
 // Still incomplete
 int isLegalAction(Game g, action a){
+    int isLegal;
     
     player currentPlayer = g->playerArray[g->currentTurn % NUM_UNIS];
 
     if (a.actionCode == PASS) {
-        return TRUE;
+        isLegal = TRUE;
     }
     else if (a.actionCode == BUILD_CAMPUS) {
         vert campus = getVertAtPath(g, a.destination);
@@ -1245,15 +1250,15 @@ int isLegalAction(Game g, action a){
             g->playerArray[g->currentTurn % NUM_UNIS]->students[STUDENT_BQN] < 1 ||
             g->playerArray[g->currentTurn % NUM_UNIS]->students[STUDENT_MJ] < 1 ||
             g->playerArray[g->currentTurn % NUM_UNIS]->students[STUDENT_MTV] < 1) {
-            return FALSE;
+            isLegal = FALSE;
         // Check if the campus is connected to an ARC grant
         } else if ((campus->edgeUp->contents != currentPlayer->playerID) &&
                    (campus->edgeDown->contents != currentPlayer->playerID) &&
                    (campus->edgeSide->contents != currentPlayer->playerID)) { // Placeholder
-            return FALSE;
+            isLegal = FALSE;
         }
         else {
-            return TRUE;
+            isLegal = TRUE;
         }
     }
     else if (a.actionCode == BUILD_GO8) {
@@ -1261,15 +1266,16 @@ int isLegalAction(Game g, action a){
         // check if there's enough students
         if (g->playerArray[g->currentTurn]->students[STUDENT_MJ] < 2 ||
             g->playerArray[g->currentTurn % NUM_UNIS]->students[STUDENT_MMONEY] < 3) {
-            return FALSE;
+            isLegal = FALSE;
             // Check if there's a campus by the player
         } else if (campus->contents != currentPlayer->playerID) {
-            return FALSE;
+            isLegal = FALSE;
         } else {
-            return TRUE;
+            isLegal = TRUE;
         }
     }
     else if (a.actionCode == OBTAIN_ARC) {
+        edge arc = getEdgeAtPath(g, a.destination);
         // check if the location of the player is connected to his/her ARC
         // check if there's enough students
         // Add arc and take the cost from the user
@@ -1279,33 +1285,34 @@ int isLegalAction(Game g, action a){
         if (g->playerArray[g->currentTurn % NUM_UNIS]->students[STUDENT_MJ] < 1 ||
             g->playerArray[g->currentTurn % NUM_UNIS]->students[STUDENT_MTV] < 1 ||
             g->playerArray[g->currentTurn % NUM_UNIS]->students[STUDENT_MMONEY] < 1) {
-            return FALSE;
+            isLegal = FALSE;
         }
         else {
-            return TRUE;
+            isLegal = TRUE;
         }
     }
     else if (a.actionCode == OBTAIN_PUBLICATION) {
         // OBTAIN_PUBLICATION and OBTAIN_IP_PATENT are always illegal unless called by START_SPINOFF
-        return FALSE;
+        isLegal = FALSE;
     }
     else if (a.actionCode == OBTAIN_IP_PATENT) {
-        return FALSE;
+        isLegal = FALSE;
     }
     else if (a.actionCode == RETRAIN_STUDENTS) {
         // see if (disciplineFrom != STUDENT_THD)
         if (a.disciplineFrom == STUDENT_THD) {
-            return FALSE;
+            isLegal = FALSE;
         } else if (g->playerArray[g->currentTurn % NUM_UNIS]->students[a.disciplineFrom] < 
 			getExchangeRate(g, g->playerArray[g->currentTurn % NUM_UNIS]->playerID, 
 			a.disciplineFrom, a.disciplineTo)) {
-            return FALSE;
+            isLegal = FALSE;
         }
         else {
-            return TRUE;
+            isLegal = TRUE;
         }
     }
-    return 0; // Placeholder
+    
+    return isLegal; // Placeholder
 }
 
 // Completed
