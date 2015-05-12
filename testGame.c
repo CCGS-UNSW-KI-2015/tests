@@ -215,8 +215,8 @@ stateSet initState (stateSet state) {
 
 	i = 0;
 	while (i < universitySize) {
-		state.unis[i].numKPIPoints = 24;
-		state.unis[i].numARCs = 2;
+		state.unis[i].numKPIPoints = 20;
+		state.unis[i].numARCs = 0;
 		state.unis[i].numGroupOfEights = 0;
 		state.unis[i].numCampuses = 2;
 		state.unis[i].numIPs = 0;
