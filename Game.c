@@ -965,9 +965,9 @@ void makeAction(Game g, action a) {
         
         // Add a campus
         vert campus = getVertAtPath(g, a.destination);
-        campus.playerID = currentPlayer.playerID;
+        campus->playerID = currentPlayer.playerID;
         // If there's a better way to do this, let me know.
-        campus.contents = (g->currentTurn % NUM_UNIS) + 1;
+        campus->contents = (g->currentTurn % NUM_UNIS) + 1;
         
         // also add 10 KPI points
         currentPlayer.kpiPoints += 10;
@@ -976,7 +976,7 @@ void makeAction(Game g, action a) {
         // remove the campus, add a GO8 campus
         vert go8 = getVertAtPath(g, a.destination);
         // I also want a better way to do this.
-        go8.contents += NUM_UNIS;
+        go8->contents += NUM_UNIS;
         currentPlayer.numGO8s++;
         
         // take the cost from the user
@@ -989,7 +989,7 @@ void makeAction(Game g, action a) {
     else if (a.actionCode == OBTAIN_ARC) {
         // Add arc
         edge arc = getEdgeAtPath(g, a.destination);
-        arc.contents = currentPlayer.playerID;
+        arc->contents = currentPlayer.playerID;
         currentPlayer.numARCs++;
         
         // Take the cost from the user
