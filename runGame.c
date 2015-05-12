@@ -264,12 +264,12 @@ void displayMap(Game game) {
 
 	printf (            "Campuses / GO8s: TODO\n");
 
-	printf ("      %s%c %s%c\n", getCampusColor(g, "LRRRRR"), printCampus(g, "LRRRRR"),
-	       getCampusColor(g, "L"), printCampus(g, "L"));
-	printf ("   %s%c %s%c   %s%c %s%c\n", getCampusColor(g, "RR"), printCampus(g, "RR"),
-	       getCampusColor(g, "R"), printCampus(g, "R"),
-	       getCampusColor(g, "LR"), printCampus(g, "LR"),
-	       getCampusColor(g, "LRL"), printCampus(g, "LRL"));
+	printf ("      %s%c %s%c\n", getCampusColor(game, "LRRRRR"), printCampus(game, "LRRRRR"),
+	       getCampusColor(game, "L"), printCampus(game, "L"));
+	printf ("   %s%c %s%c   %s%c %s%c\n", getCampusColor(game, "RR"), printCampus(game, "RR"),
+	       getCampusColor(game, "R"), printCampus(game, "R"),
+	       getCampusColor(game, "LR"), printCampus(game, "LR"),
+	       getCampusColor(game, "LRL"), printCampus(game, "LRL"));
 	// TODO - Continue
 
 	/*    * *
