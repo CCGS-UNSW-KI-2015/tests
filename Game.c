@@ -1060,7 +1060,7 @@ void makeAction(Game g, action a) {
 					mostARCs->kpiPoints -= 10;
 				}
 				else {
-					g->mostARCsUsed == TRUE;
+					g->mostARCsUsed = TRUE;
 				}
 				g->mostARCs = currentPlayer;
 			}
@@ -1081,7 +1081,7 @@ void makeAction(Game g, action a) {
 				if (g->mostPubsUsed == TRUE){
 					mostPubs->kpiPoints -= 10;
 				} else {
-					g->mostPubsUsed == TRUE;
+					g->mostPubsUsed = TRUE;
 				}
 				g->mostPubs = currentPlayer;
 			}
