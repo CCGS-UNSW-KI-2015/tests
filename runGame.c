@@ -259,10 +259,10 @@ void displayMap(Game game) {
 	printf (RESET GREEN "Player Two, ");
 	printf (RESET CYAN  "Player Three\n");
 	printf (RESET BLUE  "C means Campus, G means GO8\n");
-	
+
 	printf (            "Campuses / GO8s: TODO\n");
-	
-	// When resolvePath() is working, this should be implemented.
+
+	// Can't do it yet because the resolvePath functions are static!
 
 	/*    * *
            * *   * *
