@@ -1242,10 +1242,10 @@ int isLegalAction(Game g, action a){
     else if (a.actionCode == BUILD_CAMPUS) {
         vert campus = getVertAtPath(g, a.destination);
         // check if there's enough students
-        if (g->playerArray[g->currentTurn]->students[STUDENT_BPS] < 1 ||
-            g->playerArray[g->currentTurn % NUM_UNIS]->students[STUDENT_BQN] < 1 ||
-            g->playerArray[g->currentTurn % NUM_UNIS]->students[STUDENT_MJ] < 1 ||
-            g->playerArray[g->currentTurn % NUM_UNIS]->students[STUDENT_MTV] < 1) {
+        if (currentPlayer->students[STUDENT_BPS] < 1 ||
+            currentPlayer->students[STUDENT_BQN] < 1 ||
+            currentPlayer->students[STUDENT_MJ] < 1 ||
+            currentPlayer->students[STUDENT_MTV] < 1) {
             isLegal = FALSE;
         // Check if the campus is connected to an ARC grant
         } else if ((campus->edgeUp->contents != currentPlayer->playerID) &&
@@ -1260,8 +1260,8 @@ int isLegalAction(Game g, action a){
     else if (a.actionCode == BUILD_GO8) {
         vert campus = getVertAtPath(g, a.destination);
         // check if there's enough students
-        if (g->playerArray[g->currentTurn]->students[STUDENT_MJ] < 2 ||
-            g->playerArray[g->currentTurn % NUM_UNIS]->students[STUDENT_MMONEY] < 3) {
+        if (currentPlayer->students[STUDENT_MJ] < 2 ||
+            currentPlayer->students[STUDENT_MMONEY] < 3) {
             isLegal = FALSE;
             // Check if there's a campus by the player
         } else if (campus->contents != currentPlayer->playerID) {
@@ -1273,9 +1273,19 @@ int isLegalAction(Game g, action a){
     else if (a.actionCode == OBTAIN_ARC) {
         edge arc = getEdgeAtPath(g, a.destination);
         // check if the location of the player is connected to his/her ARC
+        if ((arc->vertUp->edgeUp->contents != currentPlayer->playerID) &&
+            (arc->vertUp->edgeDown->contents != currentPlayer->playerID) &&
+            (arc->vertUp->edgeSide->contents != currentPlayer->playerID) &&
+            (arc->vertDown->edgeUp->contents != currentPlayer->playerID) &&
+            (arc->vertDown->edgeDown->contents != currentPlayer->playerID) &&
+            (arc->vertDown->edgeSide->contents != currentPlayer->playerID)) {
+            isLegal = FALSE;
         // check if there's enough students
-        // Add arc and take the cost from the user
-        // Add 2 KPI points
+        } else if (currentPlayer->students[STUDENT_BPS] < 1 || currentPlayer->students[STUDENT_BQN] < 1) {
+            isLegal = FALSE;
+        } else {
+            isLegal = TRUE;
+        }
     }
     else if (a.actionCode == START_SPINOFF) {
         if (g->playerArray[g->currentTurn % NUM_UNIS]->students[STUDENT_MJ] < 1 ||
