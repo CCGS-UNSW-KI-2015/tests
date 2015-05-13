@@ -170,6 +170,7 @@ typedef struct _game {
 static player newPlayer(int playerID);
 static void buildHexMap(Game game);
 static void buildVerts(Game game);
+static void buildEdges(Game game);
 
 //Range Checked
 static vert getVert(Game game, int index);
@@ -840,12 +841,12 @@ static void buildVerts(Game game) {
             vertNum = hexLink + 21;
             game->hexArray[hexLink]->vertUpLeft = getVert(game, vertNum);
             getVert(game, vertNum)->hexDown = game->hexArray[hexLink];
-            linkVertOffsets(game, vertNum, -5, -4, 5);
+			linkVertOffsets(game, vertNum, -6, -5, 5);
 
             vertNum = hexLink + 26;
             game->hexArray[hexLink]->vertUpRight = getVert(game, vertNum);
             getVert(game, vertNum)->hexDown = game->hexArray[hexLink];
-            linkVertOffsets(game, vertNum, 4, 5, -4);
+            linkVertOffsets(game, vertNum, 4, 5, -5);
 
             vertNum = hexLink + 31;
             game->hexArray[hexLink]->vertRight = getVert(game, vertNum);
@@ -860,7 +861,7 @@ static void buildVerts(Game game) {
             vertNum = hexLink + 22;
             game->hexArray[hexLink]->vertDownLeft = getVert(game, vertNum);
             getVert(game, vertNum)->hexUp = game->hexArray[hexLink];
-            linkVertOffsets(game, vertNum, -5, -4, 5);
+            linkVertOffsets(game, vertNum, -6, -5, 5);
         } else {
             vertNum = hexLink + 23;
             game->hexArray[hexLink]->vertLeft = getVert(game, vertNum);
@@ -895,6 +896,39 @@ static void buildVerts(Game game) {
         hexLink++;
     }
 }
+
+/*
+static void buildEdges(Game game){
+	int edgeNum = 0;
+	while (edgeNum < NUM_EDGES) {
+		edge tempEdge = malloc(sizeof(struct _edge));
+		tempEdge->contents = VACANT_ARC;
+		game->edgeArray[edgeNum] = tempEdge;
+		edgeNum++;
+	}
+
+	int hexLink = 0;
+	while (hexLink < NUM_HEXS) {
+		hex currHex = 
+		if (hexLink > -1 && hexLink < 3) {//First col
+
+		}
+		else if (hexLink > 2 && hexLink < 7) {
+			
+		}
+		else if (hexLink > 6 && hexLink < 12) {
+			
+		}
+		else if (hexLink > 11 && hexLink < 16) {
+			
+		}
+		else {
+			
+		}
+		hexLink++;
+	}
+
+}*/
 
 //------------Interface functons------------//
 
@@ -1092,6 +1126,7 @@ void makeAction(Game g, action a) {
         currentPlayer->students[a.disciplineTo]++;
     }
 }
+
 
 //Complete
 void throwDice(Game g, int diceScore) {
