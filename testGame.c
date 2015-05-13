@@ -9,6 +9,7 @@
 #include "Game.h"
 
 #define NUM_DISCIPLINES 6
+#define VACANT_VERTICES = {"RRLRLL", "RRLRLL",}
 
 /* uniSet
  * Information on a single
@@ -53,7 +54,7 @@ typedef struct _stateSet {
 	int numMostPublications;
 	int numTurnNumber;
 	int numWhoseTurn;
-	pathSet paths[PATH_LIMIT];
+	pathSet vertices[NUM_VERTS];
 	uniSet unis[20];
 } stateSet;
 
@@ -310,9 +311,9 @@ stateSet initState (stateSet state) {
 	state.numWhoseTurn = NO_ONE;
 
 	i = 0;
-	while (i < PATH_LIMIT) {
-		state.paths[i].numCampus = VACANT_VERTEX;
-		state.paths[i].numARC = VACANT_ARC;
+	while (i < NUM_VERTS) {
+		state.vertices[i].numCampus = VACANT_VERTEX;
+		state.vertices[i].numARC = VACANT_ARC;
 
 		i++;
 	}
@@ -553,17 +554,19 @@ void assertState(Game game, stateSet state) {
     infoPos++;
 
     i = 0;
-    while (i < PATH_LIMIT) {
+    while (i < NUM_VERTS) {
     	info[infoPos].action = "getCampus";
-	    info[infoPos].expected = state.paths[i].numCampus;
-	    info[infoPos].got = getCampus(game, state.paths[i].myPath);
+	    info[infoPos].expected = state.vertices[i].numCampus;
+	    printf("getCampus: %d\n", state.vertices[i].myPath);
+	    info[infoPos].got = getCampus(game, state.vertices[i].myPath);
 	    sprintf(info[infoPos].helpText, "The game did not find the correct campus at path number %d", i);
 
 	    infoPos++;
 
 	    info[infoPos].action = "getARC";
-	    info[infoPos].expected = state.paths[i].numARC;
-	    info[infoPos].got = getARC(game, state.paths[i].myPath);
+	    info[infoPos].expected = state.vertices[i].numARC;
+	    printf("getPath: %d\n", state.vertices[i].myPath);
+	    info[infoPos].got = getARC(game, state.vertices[i].myPath);
 	    sprintf(info[infoPos].helpText, "The game did not find the correct number of ARCs for path number %d", i);
 
 	    infoPos++;
