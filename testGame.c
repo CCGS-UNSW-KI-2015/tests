@@ -165,7 +165,7 @@ int main(int argc, char *argv[]){
 	// ACTION 2
 	//
 
-	currentAction = printAction("Integrity check with buiilding a campus at \"L\" (should be illegal)",
+	currentAction = printAction("Integrity check with building a campus at \"L\" (should be illegal)",
 		currentAction);
 
 	myAction.actionCode = BUILD_CAMPUS;
@@ -182,7 +182,7 @@ int main(int argc, char *argv[]){
 	myAction.actionCode = OBTAIN_ARC;
 	myAction.destination[0] = 'B';
 
-	currentAction = printAction("Integirty check with building an ARC at \"B\" (should be illegal)",
+	currentAction = printAction("Integrity check with building an ARC at \"B\" (should be illegal)",
 		currentAction);
 
 	if (isLegalAction(game, myAction) == TRUE) {
