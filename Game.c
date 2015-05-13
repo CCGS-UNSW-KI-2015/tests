@@ -351,8 +351,8 @@ static vert getVertAtPath(Game game, path pathToVert){
         verts[BACK_I] = prevVert;
 
         nextVert = getNextVert(game, verts, trueDir, currentLetter, &prevVertDir);
-        printf("Curr vertID: %d, Next vertID: %d\n",
-        	currVert->vertIndex, nextVert->vertIndex);
+        /*printf("Curr vertID: %d, Next vertID: %d\n",
+        	currVert->vertIndex, nextVert->vertIndex);*/
         prevVert = currVert;
         currVert = nextVert;
 
@@ -822,7 +822,7 @@ static void buildVerts(Game game){
             vertNum = hexLink + 14;
             game->hexArray[hexLink]->vertUpLeft = getVert(game, vertNum);
             getVert(game, vertNum)->hexDown = game->hexArray[hexLink];
-            linkVertOffsets(game, vertNum, -5, -4, 6);
+            linkVertOffsets(game, vertNum, -6, -5, 6);
             /*getVert(game, vertNum)->vertUp = getVert(game, vertNum - 5);
              getVert(game, vertNum)->vertDown = getVert(game, vertNum - 4);
              getVert(game, vertNum)->vertSide = getVert(game, vertNum + 6);*/
@@ -854,7 +854,7 @@ static void buildVerts(Game game){
             vertNum = hexLink + 15;
             game->hexArray[hexLink]->vertDownLeft = getVert(game, vertNum);
             getVert(game, vertNum)->hexUp = game->hexArray[hexLink];
-            linkVertOffsets(game, vertNum, -5, -4, 6);
+            linkVertOffsets(game, vertNum, -6, -5, 6);
         }
         else if (hexLink > 11 && hexLink < 16){
             vertNum = hexLink + 16;
