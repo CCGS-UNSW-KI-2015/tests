@@ -352,7 +352,7 @@ static vert getVertAtPath(Game game, path pathToVert){
 
         nextVert = getNextVert(game, verts, trueDir, currentLetter, &prevVertDir);
         printf("Curr vertID: %d, Next vertID: %d\n",
-        	currVert->vertID, nextVert->vertID);
+        	currVert->vertIndex, nextVert->vertIndex);
         prevVert = currVert;
         currVert = nextVert;
 
