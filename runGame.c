@@ -262,9 +262,9 @@ void displayMap(Game game) {
 	printf (RESET CYAN  "Player Three\n");
 	printf (RESET BLUE  "C means Campus, G means GO8\n");
 
-	printf (            "Campuses / GO8s: TODO\n");
+	printf (            "Campuses / GO8s:\n");
 
-	printf ("       %s%c %s%c\n", getCampusColor(game, "LRRRRR"), printCampus(game, "LRRRRR"),
+	printf ("       %s%c %s%c\n", getCampusColor(game, ""), printCampus(game, ""),
 		getCampusColor(game, "L"), printCampus(game, "L"));
 	printf ("    %s%c %s%c   %s%c %s%c\n", getCampusColor(game, "RR"), printCampus(game, "RR"),
 		getCampusColor(game, "R"), printCampus(game, "R"),
