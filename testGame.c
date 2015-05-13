@@ -8,6 +8,7 @@
 #include <string.h>
 #include "Game.h"
 
+#define NUM_VERTS 53
 #define NUM_DISCIPLINES 6
 #define ALL_PATHS {"RRLR", "RRLRL", "RRLRLL", "RRLRLLR", "RRLRLLRL",\
  "RRLRLLRLR", "RRLRLLRLRL", "RR", "RRL", "RRLL", "RRLLR", "RRLLRL", "RRLLRLR",\
