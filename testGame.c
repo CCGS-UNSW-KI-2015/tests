@@ -8,6 +8,7 @@
 #include <string.h>
 #include "Game.h"
 
+#define NUM_VERTS 53
 #define NUM_DISCIPLINES 6
 #define VACANT_VERTICES = {"RRLRLL", "RRLRLL",}
 

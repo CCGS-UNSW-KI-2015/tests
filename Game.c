@@ -1257,7 +1257,7 @@ int getARC(Game g, path pathToEdge){
     return 0;
 }
 
-// Still incomplete
+// Completed
 int isLegalAction(Game g, action a){
     int isLegal = FALSE;
 
@@ -1315,9 +1315,9 @@ int isLegalAction(Game g, action a){
         }
     }
     else if (a.actionCode == START_SPINOFF) {
-        if (g->playerArray[g->currentTurn % NUM_UNIS]->students[STUDENT_MJ] < 1 ||
-            g->playerArray[g->currentTurn % NUM_UNIS]->students[STUDENT_MTV] < 1 ||
-            g->playerArray[g->currentTurn % NUM_UNIS]->students[STUDENT_MMONEY] < 1) {
+        if (currentPlayer->students[STUDENT_MJ] < 1 ||
+            currentPlayer->students[STUDENT_MTV] < 1 ||
+            currentPlayer->students[STUDENT_MMONEY] < 1) {
             isLegal = FALSE;
         }
         else {
@@ -1335,8 +1335,8 @@ int isLegalAction(Game g, action a){
         // see if (disciplineFrom != STUDENT_THD)
         if (a.disciplineFrom == STUDENT_THD) {
             isLegal = FALSE;
-        } else if (g->playerArray[g->currentTurn % NUM_UNIS]->students[a.disciplineFrom] <
-			getExchangeRate(g, g->playerArray[g->currentTurn % NUM_UNIS]->playerID,
+        } else if (currentPlayer->students[a.disciplineFrom] <
+			getExchangeRate(g, currentPlayer->playerID,
 			a.disciplineFrom, a.disciplineTo)) {
             isLegal = FALSE;
         }
@@ -1344,7 +1344,6 @@ int isLegalAction(Game g, action a){
             isLegal = TRUE;
         }
     }
-
     return isLegal; // Placeholder
 }
 
