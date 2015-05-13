@@ -1259,7 +1259,7 @@ int getARC(Game g, path pathToEdge){
 
 // Still incomplete
 int isLegalAction(Game g, action a){
-    int isLegal;
+    int isLegal = FALSE;
 
     player currentPlayer = g->playerArray[g->currentTurn % NUM_UNIS];
 

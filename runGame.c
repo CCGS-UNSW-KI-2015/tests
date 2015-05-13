@@ -264,12 +264,30 @@ void displayMap(Game game) {
 
 	printf (            "Campuses / GO8s: TODO\n");
 
-	printf ("      %s%c %s%c\n", getCampusColor(g, "LRRRRR"), printCampus(g, "LRRRRR"),
-	       getCampusColor(g, "L"), printCampus(g, "L"));
-	printf ("   %s%c %s%c   %s%c %s%c\n", getCampusColor(g, "RR"), printCampus(g, "RR"),
-	       getCampusColor(g, "R"), printCampus(g, "R"),
-	       getCampusColor(g, "LR"), printCampus(g, "LR"),
-	       getCampusColor(g, "LRL"), printCampus(g, "LRL"));
+	printf ("       %s%c %s%c\n", getCampusColor(game, "LRRRRR"), printCampus(game, "LRRRRR"),
+		getCampusColor(game, "L"), printCampus(game, "L"));
+	printf ("    %s%c %s%c   %s%c %s%c\n", getCampusColor(game, "RR"), printCampus(game, "RR"),
+		getCampusColor(game, "R"), printCampus(game, "R"),
+		getCampusColor(game, "LR"), printCampus(game, "LR"),
+		getCampusColor(game, "LRL"), printCampus(game, "LRL"));
+	printf (" %s%c %s%c   %s%c %s%c   %s%c %s%c\n", getCampusColor(game, "RRLR"), printCampus(game, "RRLR"),
+		getCampusColor(game, "RRL"), printCampus(game, "RRL"),
+		getCampusColor(game, "RL"), printCampus(game, "RL"),
+		getCampusColor(game, "LRR"), printCampus(game, "LRR"),
+		getCampusColor(game, "LRLR"), printCampus(game, "LRLR"),
+		getCampusColor(game, "LRLRL"), printCampus(game, "LRLRL"));
+	printf ("%s%c   %s%c %s%c   %s%c %s%c   %s%c\n", getCampusColor(game, "RRLRL"), printCampus(game, "RRLRL"),
+		getCampusColor(game, "RRLL"), printCampus(game, "RRLL"),
+		getCampusColor(game, "RRLLL"), printCampus(game, "RRLLL"),
+		getCampusColor(game, "LRRL"), printCampus(game, "LRRL"),
+		getCampusColor(game, "LRLRR"), printCampus(game, "LRLRR"),
+		getCampusColor(game, "LRLRLR"), printCampus(game, "LRLRLR"));
+	printf (" %s%c %s%c   %s%c %s%c   %s%c %s%c\n", getCampusColor(game, "RRLRLL"), printCampus(game, "RRLRLL"),
+		getCampusColor(game, "RRLLR"), printCampus(game, "RRLLR"),
+		getCampusColor(game, "RLRL"), printCampus(game, "RLRL"),
+		getCampusColor(game, "RLRLL"), printCampus(game, "RLRLL"),
+		getCampusColor(game, "LRLRRL"), printCampus(game, "LRLRRL"),
+		getCampusColor(game, "LRLRLRR"), printCampus(game, "LRLRLRR"));
 	// TODO - Continue
 
 	/*    * *
@@ -294,7 +312,7 @@ char* getCampusColor(Game game, path pathToVertex) {
   if (campus == NO_ONE) {
     return BLUE;
   } else {
-    return playerColors[campus % 3 - 1];
+    return playerColors[(campus - 1) % 3];
   }
 }
 
