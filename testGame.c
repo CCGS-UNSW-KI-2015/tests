@@ -9,7 +9,16 @@
 #include "Game.h"
 
 #define NUM_DISCIPLINES 6
-#define VACANT_VERTICES = {"RRLRLL", "RRLRLL",}
+#define ALL_PATHS {"RRLR", "RRLRL", "RRLRLL", "RRLRLLR", "RRLRLLRL",\
+ "RRLRLLRLR", "RRLRLLRLRL", "RR", "RRL", "RRLL", "RRLLR", "RRLLRL", "RRLLRLR",\
+ "RRLLRLRL", "RRLLRLRLR", "RRLLRLRLRL", "", "L", "LL", "LLR", "LLRL", "LLRLR",\
+ "LLRLRL", "LLRLRLR", "LLRLRLRL", "LLRLRLRLR", "LLRLRLRLRL", "L", "LR", "LRR",\
+ "LRRL", "LRRLR", "LRRLRL", "LRRLRLR", "LRRLRLRL", "LRRLRLRLR", "LRRLRLRLRL",\
+ "LRRLRLRLRLR", "LRL", "LRLR", "LRLRR", "LRLRRL", "LRLRRLR", "LRLRRLRL",\
+ "LRLRRLRLR", "LRLRRLRLRL", "LRLRRLRLRLR", "LRLRL", "LRLRLR", "LRLRLRR",\
+ "LRLRLRRL", "LRLRLRRLR", "LRLRLRRLRL", "LRLRLRRLRLR"}
+
+#define NUM_VERTS 54
 
 /* uniSet
  * Information on a single
@@ -310,13 +319,22 @@ stateSet initState (stateSet state) {
 	state.numTurnNumber = -1;
 	state.numWhoseTurn = NO_ONE;
 
+	char paths[NUM_VERTS][PATH_LIMIT] = ALL_PATHS;
+
 	i = 0;
 	while (i < NUM_VERTS) {
 		state.vertices[i].numCampus = VACANT_VERTEX;
 		state.vertices[i].numARC = VACANT_ARC;
-
+		strcpy(state.vertices[i].myPath, paths[i]);
 		i++;
 	}
+
+	state.vertices[16].numCampus = CAMPUS_A;
+	state.vertices[32].numCampus = CAMPUS_A;
+	state.vertices[1].numCampus = CAMPUS_B;
+	state.vertices[52].numCampus = CAMPUS_B;
+	state.vertices[47].numCampus = CAMPUS_C;
+	state.vertices[6].numCampus = CAMPUS_C;
 
 	i = 0;
 	while (i < universitySize) {
@@ -559,7 +577,7 @@ void assertState(Game game, stateSet state) {
 	    info[infoPos].expected = state.vertices[i].numCampus;
 	    printf("getCampus: %d\n", state.vertices[i].myPath);
 	    info[infoPos].got = getCampus(game, state.vertices[i].myPath);
-	    sprintf(info[infoPos].helpText, "The game did not find the correct campus at path number %d", i);
+	    sprintf(info[infoPos].helpText, "The game did not find the correct campus at path %s", state.vertices[i].myPath);
 
 	    infoPos++;
 
@@ -567,7 +585,7 @@ void assertState(Game game, stateSet state) {
 	    info[infoPos].expected = state.vertices[i].numARC;
 	    printf("getPath: %d\n", state.vertices[i].myPath);
 	    info[infoPos].got = getARC(game, state.vertices[i].myPath);
-	    sprintf(info[infoPos].helpText, "The game did not find the correct number of ARCs for path number %d", i);
+	    sprintf(info[infoPos].helpText, "The game did not find the correct number of ARCs for path %s", state.vertices[i].myPath);
 
 	    infoPos++;
 
