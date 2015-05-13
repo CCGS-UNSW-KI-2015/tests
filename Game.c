@@ -14,7 +14,7 @@
 #define DEFAULT_PLAYERS {0, 3, 3, 1, 1, 1}
 #define NUM_DISCIPLINES 6
 #define NUM_HEXS 19
-#define NUM_VERTS 53
+#define NUM_VERTS 54
 #define NUM_EDGES 72
 #define HEX_BUILD_PRINT 14
 

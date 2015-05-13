@@ -8,7 +8,7 @@
 #include <string.h>
 #include "Game.h"
 
-#define NUM_VERTS 53
+#define NUM_VERTS 54
 #define NUM_DISCIPLINES 6
 #define ALL_PATHS {"RRLR", "RRLRL", "RRLRLL", "RRLRLLR", "RRLRLLRL",\
  "RRLRLLRLR", "RRLRLLRLRL", "RR", "RRL", "RRLL", "RRLLR", "RRLLRL", "RRLLRLR",\
@@ -18,8 +18,6 @@
  "LRRLRLRLRLR", "LRL", "LRLR", "LRLRR", "LRLRRL", "LRLRRLR", "LRLRRLRL",\
  "LRLRRLRLR", "LRLRRLRLRL", "LRLRRLRLRLR", "LRLRL", "LRLRLR", "LRLRLRR",\
  "LRLRLRRL", "LRLRLRRLR", "LRLRLRRLRL", "LRLRLRRLRLR"}
-
-#define NUM_VERTS 54
 
 /* uniSet
  * Information on a single
@@ -378,7 +376,7 @@ void basicAssertFailure(int expected, int got, char* helpText) {
 }
 
 
-int defaultSize = 12;
+int defaultSize = NUM_REGIONS;
 int universitiesSize = NUM_UNIS;
 int universities[] = {UNI_A, UNI_B, UNI_C};
 
@@ -521,153 +519,151 @@ void advAssert(Game game, assertInfo info[], int infoLen) {
 void assertState(Game game, stateSet state) {
 	// I'm assuming there will never be
 	// more than 1000 checks necessary...
-    assertInfo info[1000];
-    int infoPos = 0;
+	assertInfo info[1000];
+	int infoPos = 0;
 
-    // The way this works is it just
-    // passes everything into advAssert to
-    // have it checked. (At once.)
-    // :D
+	// The way this works is it just
+	// passes everything into advAssert to
+	// have it checked. (At once.)
+	// :D
 
-    int i = 0;
-    while (i < NUM_REGIONS) {
-    	info[infoPos].action = "getDiscipline";
-    	info[infoPos].expected = state.regions[i].numDiscipline;
-    	info[infoPos].got = getDiscipline(game, i);
-    	sprintf(info[infoPos].helpText, "The game did not find the correct discipline at region number %d", i);
+	int i = 0;
+	while (i < NUM_REGIONS) {
+		info[infoPos].action = "getDiscipline";
+		info[infoPos].expected = state.regions[i].numDiscipline;
+		info[infoPos].got = getDiscipline(game, i);
+		sprintf(info[infoPos].helpText, "The game did not find the correct discipline at region number %d", i);
 
-    	infoPos++;
+		infoPos++;
 
-    	info[infoPos].action = "getDiceValue";
-    	info[infoPos].expected = state.regions[i].numDiceValue;
-    	info[infoPos].got = getDiceValue(game, i);
-    	sprintf(info[infoPos].helpText, "The game did not find the correct dice value for region number %d", i);
+		info[infoPos].action = "getDiceValue";
+		info[infoPos].expected = state.regions[i].numDiceValue;
+		info[infoPos].got = getDiceValue(game, i);
+		sprintf(info[infoPos].helpText, "The game did not find the correct dice value for region number %d", i);
 
-    	infoPos++;
-
-    	i++;
-    }
-
-    info[infoPos].action = "getMostARCs";
-    info[infoPos].expected = state.numMostARCs;
-    info[infoPos].got = getMostARCs(game);
-    sprintf(info[infoPos].helpText, "The game did not find the correct player number.");
-    infoPos++;
-
-    info[infoPos].action = "getMostPublications";
-    info[infoPos].expected = state.numMostPublications;
-    info[infoPos].got = getMostPublications(game);
-    sprintf(info[infoPos].helpText, "The game did not find the correct player number.");
-    infoPos++;
-
-    info[infoPos].action = "getTurnNumber";
-    info[infoPos].expected = state.numTurnNumber;
-    info[infoPos].got = getTurnNumber(game);
-    sprintf(info[infoPos].helpText, "The game did not find the correct turn number.");
-    infoPos++;
-
-    info[infoPos].action = "getWhoseTurn";
-    info[infoPos].expected = state.numWhoseTurn;
-    info[infoPos].got = getWhoseTurn(game);
-    sprintf(info[infoPos].helpText, "The game did not find the correct player number.");
-    infoPos++;
-
-    i = 0;
-    while (i < NUM_VERTS) {
-    	info[infoPos].action = "getCampus";
-	    info[infoPos].expected = state.vertices[i].numCampus;
-	    printf("getCampus: %d\n", state.vertices[i].myPath);
-	    info[infoPos].got = getCampus(game, state.vertices[i].myPath);
-	    sprintf(info[infoPos].helpText, "The game did not find the correct campus at path %s", state.vertices[i].myPath);
-
-	    infoPos++;
-
-	    info[infoPos].action = "getARC";
-	    info[infoPos].expected = state.vertices[i].numARC;
-	    printf("getPath: %d\n", state.vertices[i].myPath);
-	    info[infoPos].got = getARC(game, state.vertices[i].myPath);
-	    sprintf(info[infoPos].helpText, "The game did not find the correct number of ARCs for path %s", state.vertices[i].myPath);
-
-	    infoPos++;
-
-	    i++;
-    }
-
-    i = 0;
-    while (i < universitiesSize) {
-
-    	int currentUni = universities[i];
-
-    	info[infoPos].action = "getKPIPoints";
-	    info[infoPos].expected = state.unis[currentUni].numKPIPoints;
-	    info[infoPos].got = getKPIpoints(game, currentUni);
-	    sprintf(info[infoPos].helpText, "The game did not find the correct number of KPIs for uni number %d", currentUni);
-
-	    infoPos++;
-
-	    info[infoPos].action = "getARCs";
-	    info[infoPos].expected = state.unis[currentUni].numARCs;
-	    info[infoPos].got = getARCs(game, currentUni);
-	    sprintf(info[infoPos].helpText, "The game did not find the correct number of ARCs for uni number %d", currentUni);
-
-	    infoPos++;
-
-	    info[infoPos].action = "getGO8s";
-	    info[infoPos].expected = state.unis[currentUni].numGroupOfEights;
-	    info[infoPos].got = getGO8s(game, currentUni);
-	    sprintf(info[infoPos].helpText, "The game did not find the correct number of GO8s for uni number %d", currentUni);
-
-	    infoPos++;
-
-	    info[infoPos].action = "getCampuses";
-	    info[infoPos].expected = state.unis[currentUni].numCampuses;
-	    info[infoPos].got = getCampuses(game, currentUni);
-	    sprintf(info[infoPos].helpText, "The game did not find the correct number of campuses for uni number %d", currentUni);
-
-	    infoPos++;
-
-	    info[infoPos].action = "getIPs";
-	    info[infoPos].expected = state.unis[currentUni].numIPs;
-	    info[infoPos].got = getIPs(game, currentUni);
-	    sprintf(info[infoPos].helpText, "The game did not find the correct number of IPs for uni number %d", currentUni);
-
-	    infoPos++;
-
-	    info[infoPos].action = "getPublications";
-	    info[infoPos].expected = state.unis[currentUni].numPublications;
-	    info[infoPos].got = getPublications(game, currentUni);
-	    sprintf(info[infoPos].helpText, "The game did not find the correct number of publications for uni number %d", currentUni);
-
-	    infoPos++;
-
-	    int j = 0;
-	    while (j < NUM_DISCIPLINES) {
-		    info[infoPos].action = "getStudents";
-		    info[infoPos].expected = state.unis[currentUni].numStudents[j];
-		    info[infoPos].got = getStudents(game, currentUni, j);
-		    sprintf(info[infoPos].helpText, "The game did not find the correct number of students for uni number %d and discipline %d", currentUni, j);
-
-		    infoPos++;
-
-		    int k = 0;
-		    while (k < NUM_DISCIPLINES) {
-			    info[infoPos].action = "getExchangeRate";
-			    info[infoPos].expected = state.unis[currentUni].numExchangeRate[j][k];
-			    info[infoPos].got = getExchangeRate(game, currentUni, j, k);
-			    sprintf(info[infoPos].helpText, "The game did not find the correct exchange rate for uni number %d, discipline from %d and discipline to %d", currentUni, j, k);
-
-			    infoPos++;
-
-			    k++;
-			}
-
-		    	j++;
-	    	}
+		infoPos++;
 
 		i++;
-    }
+	}
 
-    advAssert(game, info, infoPos);
+	info[infoPos].action = "getMostARCs";
+	info[infoPos].expected = state.numMostARCs;
+	info[infoPos].got = getMostARCs(game);
+	sprintf(info[infoPos].helpText, "The game did not find the correct player number.");
+	infoPos++;
+
+	info[infoPos].action = "getMostPublications";
+	info[infoPos].expected = state.numMostPublications;
+	info[infoPos].got = getMostPublications(game);
+	sprintf(info[infoPos].helpText, "The game did not find the correct player number.");
+	infoPos++;
+
+	info[infoPos].action = "getTurnNumber";
+	info[infoPos].expected = state.numTurnNumber;
+	info[infoPos].got = getTurnNumber(game);
+	sprintf(info[infoPos].helpText, "The game did not find the correct turn number.");
+	infoPos++;
+
+	info[infoPos].action = "getWhoseTurn";
+	info[infoPos].expected = state.numWhoseTurn;
+	info[infoPos].got = getWhoseTurn(game);
+	sprintf(info[infoPos].helpText, "The game did not find the correct player number.");
+	infoPos++;
+
+	i = 0;
+	while (i < NUM_VERTS) {
+		info[infoPos].action = "getCampus";
+		info[infoPos].expected = state.vertices[i].numCampus;
+		info[infoPos].got = getCampus(game, state.vertices[i].myPath);
+		sprintf(info[infoPos].helpText, "The game did not find the correct campus at path %s", state.vertices[i].myPath);
+
+		infoPos++;
+
+		info[infoPos].action = "getARC";
+		info[infoPos].expected = state.vertices[i].numARC;
+		info[infoPos].got = getARC(game, state.vertices[i].myPath);
+		sprintf(info[infoPos].helpText, "The game did not find the correct number of ARCs for path %s", state.vertices[i].myPath);
+
+		infoPos++;
+
+		i++;
+	}
+
+	i = 0;
+	while (i < universitiesSize) {
+
+		int currentUni = universities[i];
+
+		info[infoPos].action = "getKPIPoints";
+		info[infoPos].expected = state.unis[currentUni].numKPIPoints;
+		info[infoPos].got = getKPIpoints(game, currentUni);
+		sprintf(info[infoPos].helpText, "The game did not find the correct number of KPIs for uni number %d", currentUni);
+
+		infoPos++;
+
+		info[infoPos].action = "getARCs";
+		info[infoPos].expected = state.unis[currentUni].numARCs;
+		info[infoPos].got = getARCs(game, currentUni);
+		sprintf(info[infoPos].helpText, "The game did not find the correct number of ARCs for uni number %d", currentUni);
+
+		infoPos++;
+
+		info[infoPos].action = "getGO8s";
+		info[infoPos].expected = state.unis[currentUni].numGroupOfEights;
+		info[infoPos].got = getGO8s(game, currentUni);
+		sprintf(info[infoPos].helpText, "The game did not find the correct number of GO8s for uni number %d", currentUni);
+
+		infoPos++;
+
+		info[infoPos].action = "getCampuses";
+		info[infoPos].expected = state.unis[currentUni].numCampuses;
+		info[infoPos].got = getCampuses(game, currentUni);
+		sprintf(info[infoPos].helpText, "The game did not find the correct number of campuses for uni number %d", currentUni);
+
+		infoPos++;
+
+		info[infoPos].action = "getIPs";
+		info[infoPos].expected = state.unis[currentUni].numIPs;
+		info[infoPos].got = getIPs(game, currentUni);
+		sprintf(info[infoPos].helpText, "The game did not find the correct number of IPs for uni number %d", currentUni);
+
+		infoPos++;
+
+		info[infoPos].action = "getPublications";
+		info[infoPos].expected = state.unis[currentUni].numPublications;
+		info[infoPos].got = getPublications(game, currentUni);
+		sprintf(info[infoPos].helpText, "The game did not find the correct number of publications for uni number %d", currentUni);
+
+		infoPos++;
+
+		int j = 0;
+		while (j < NUM_DISCIPLINES) {
+			info[infoPos].action = "getStudents";
+			info[infoPos].expected = state.unis[currentUni].numStudents[j];
+			info[infoPos].got = getStudents(game, currentUni, j);
+			sprintf(info[infoPos].helpText, "The game did not find the correct number of students for uni number %d and discipline %d", currentUni, j);
+
+			infoPos++;
+
+			int k = 0;
+			while (k < NUM_DISCIPLINES) {
+				info[infoPos].action = "getExchangeRate";
+				info[infoPos].expected = state.unis[currentUni].numExchangeRate[j][k];
+				info[infoPos].got = getExchangeRate(game, currentUni, j, k);
+				sprintf(info[infoPos].helpText, "The game did not find the correct exchange rate for uni number %d, discipline from %d and discipline to %d", currentUni, j, k);
+
+				infoPos++;
+
+				k++;
+			}
+
+				j++;
+			}
+
+		i++;
+	}
+
+	advAssert(game, info, infoPos);
 }
 
 
