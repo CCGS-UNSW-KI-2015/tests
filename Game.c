@@ -909,21 +909,21 @@ static void buildEdges(Game game){
 
 	int hexLink = 0;
 	while (hexLink < NUM_HEXS) {
-		hex currHex = 
+		hex currHex =
 		if (hexLink > -1 && hexLink < 3) {//First col
 
 		}
 		else if (hexLink > 2 && hexLink < 7) {
-			
+
 		}
 		else if (hexLink > 6 && hexLink < 12) {
-			
+
 		}
 		else if (hexLink > 11 && hexLink < 16) {
-			
+
 		}
 		else {
-			
+
 		}
 		hexLink++;
 	}
@@ -991,6 +991,22 @@ Game newGame(int discipline[], int dice[]) {
     getPlayer(game, UNI_A)->kpiPoints = 10;
     getPlayer(game, UNI_B)->kpiPoints = 10;
     getPlayer(game, UNI_C)->kpiPoints = 10;
+
+    getPlayer(game, UNI_A)->numARCs = 0;
+    getPlayer(game, UNI_B)->numARCs = 0;
+    getPlayer(game, UNI_C)->numARCs = 0;
+
+    getPlayer(game, UNI_A)->numPubs = 0;
+    getPlayer(game, UNI_B)->numPubs = 0;
+    getPlayer(game, UNI_C)->numPubs = 0;
+
+    getPlayer(game, UNI_A)->numIPs = 0;
+    getPlayer(game, UNI_B)->numIPs = 0;
+    getPlayer(game, UNI_C)->numIPs = 0;
+
+    getPlayer(game, UNI_A)->numGO8s = 0;
+    getPlayer(game, UNI_B)->numGO8s = 0;
+    getPlayer(game, UNI_C)->numGO8s = 0;
 
     return game;
 }

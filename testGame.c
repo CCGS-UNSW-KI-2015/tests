@@ -333,7 +333,7 @@ stateSet initState (stateSet state) {
 	state.vertices[16].numCampus = CAMPUS_A;
 	state.vertices[37].numCampus = CAMPUS_A;
 	state.vertices[1].numCampus = CAMPUS_B;
-	state.vertices[52].numCampus = CAMPUS_B;
+	state.vertices[53].numCampus = CAMPUS_B;
 	state.vertices[47].numCampus = CAMPUS_C;
 	state.vertices[6].numCampus = CAMPUS_C;
 
@@ -390,14 +390,14 @@ void advAssert(Game game, assertInfo info[], int infoLen) {
 	int displayedErrors = 0;
 	while (i < infoLen) {
 		if (info[i].expected != info[i].got) {
-			if (displayedErrors < 5) {
+			// if (displayedErrors < 5) {
 				passed = FALSE;
 				// printf(RED         "================================================\n");
 				printf(BOLD RED    "\nAssertion failed!\n");
 				printf(            "Expected %d got %d ", info[i].expected, info[i].got);
 				printf(            "for function \"%s\"\n", info[i].action);
 				printf(RESET RED   "%s\n", info[i].helpText);
-			}
+			// }
 
 			displayedErrors++;
 		}
