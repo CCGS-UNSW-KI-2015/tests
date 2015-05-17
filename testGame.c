@@ -225,6 +225,7 @@ int main(int argc, char *argv[]){
 	currentState.unis[UNI_A].numARCs += 1;
 	currentState.unis[UNI_A].numStudents[STUDENT_BPS]--;
 	currentState.unis[UNI_A].numStudents[STUDENT_BQN]--;
+	currentState.vertices[27].numARC = ARC_A;
 	currentState.numMostARCs = UNI_A;
 
 	assertState(game, currentState);
@@ -258,6 +259,7 @@ int main(int argc, char *argv[]){
 	currentState.unis[UNI_A].numStudents[STUDENT_BQN]--;
 	currentState.unis[UNI_A].numStudents[STUDENT_MJ]--;
 	currentState.unis[UNI_A].numStudents[STUDENT_MTV]--;
+	currentState.vertices[27].numCampus = CAMPUS_A;
 
 	assertState(game, currentState);
 
@@ -329,7 +331,7 @@ stateSet initState (stateSet state) {
 	}
 
 	state.vertices[16].numCampus = CAMPUS_A;
-	state.vertices[32].numCampus = CAMPUS_A;
+	state.vertices[37].numCampus = CAMPUS_A;
 	state.vertices[1].numCampus = CAMPUS_B;
 	state.vertices[52].numCampus = CAMPUS_B;
 	state.vertices[47].numCampus = CAMPUS_C;
