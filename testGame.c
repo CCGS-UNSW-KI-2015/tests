@@ -166,8 +166,6 @@ int main(int argc, char *argv[]){
 	currentState.numTurnNumber++;
 	currentState.numWhoseTurn = UNI_A;
 
-	// TODO: Give all universities who have campuses at dice values 2 resources
-
 	assertState(game, currentState);
 
 	//
