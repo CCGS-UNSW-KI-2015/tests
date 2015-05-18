@@ -284,9 +284,8 @@ int main(int argc, char *argv[]){
 	throwDice(game, 6);
 
 	currentState.numTurnNumber++;
+	currentState.unis[UNI_A].numStudents[STUDENT_MJ]++;
 	currentState.numWhoseTurn = UNI_B;
-
-	// TODO: Give all universities who have campuses at dice values 6 resources
 
 	assertState(game, currentState);
 
