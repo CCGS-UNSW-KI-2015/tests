@@ -635,7 +635,7 @@ void assertState(Game game, stateSet state) {
 
 		infoPos++;
 
-		int j = 0;
+		int j = 1;
 		while (j < NUM_DISCIPLINES) {
 			info[infoPos].action = "getStudents";
 			info[infoPos].expected = state.unis[currentUni].numStudents[j];
@@ -644,7 +644,7 @@ void assertState(Game game, stateSet state) {
 
 			infoPos++;
 
-			int k = 0;
+			int k = 1;
 			while (k < NUM_DISCIPLINES) {
 				info[infoPos].action = "getExchangeRate";
 				info[infoPos].expected = state.unis[currentUni].numExchangeRate[j][k];
