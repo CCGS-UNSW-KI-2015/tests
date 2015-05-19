@@ -1386,7 +1386,6 @@ int getExchangeRate(Game g, int player, int disciplineFrom, int disciplineTo) {
     int hasBQNExchange = FALSE;
     int hasMMONEYExchange = FALSE;
     int hasMTVExchange = FALSE;
-    int hasAllExchange = FALSE;
 
         //Check which verts the player owns
     if (getVert(g, VERT_CONV_BPS1_INDEX)->playerID == player ||
@@ -1414,40 +1413,31 @@ int getExchangeRate(Game g, int player, int disciplineFrom, int disciplineTo) {
         hasMTVExchange = TRUE;
     }
 
-    if (getVert(g, VERT_CONV_ALL1_INDEX)->playerID == player ||
-        getVert(g, VERT_CONV_ALL2_INDEX)->playerID == player ||
-        getVert(g, VERT_CONV_ALL3_INDEX)->playerID == player ||
-        getVert(g, VERT_CONV_ALL4_INDEX)->playerID == player ||
-        getVert(g, VERT_CONV_ALL5_INDEX)->playerID == player ||
-        getVert(g, VERT_CONV_ALL6_INDEX)->playerID == player) {
-        hasAllExchange = TRUE;
-    }
+	/*printf("BPS:%d, MJ:%d, BQN:%d, MTV:%d, MMONEY:%d\n",
+		hasBPSExchange, hasMJExchange, 
+		hasBQNExchange, hasMTVExchange, hasMMONEYExchange);8?
 
     int exchangeRate = 3;
 
-    if (hasAllExchange == TRUE) {
-        exchangeRate = 2;
-    }
-
     if (disciplineFrom == STUDENT_BPS) {
         if (hasBPSExchange == TRUE) {
-            exchangeRate = 1;
+            exchangeRate = 2;
         }
     } else if (disciplineFrom == STUDENT_MJ) {
         if (hasMJExchange == TRUE) {
-            exchangeRate = 1;
+            exchangeRate = 2;
         }
     } else if (disciplineFrom == STUDENT_BQN) {
         if (hasBQNExchange == TRUE) {
-            exchangeRate = 1;
+            exchangeRate = 2;
         }
     } else if (disciplineFrom == STUDENT_MTV) {
         if (hasMTVExchange == TRUE) {
-            exchangeRate = 1;
+            exchangeRate = 2;
         }
     } else if (disciplineFrom == STUDENT_MMONEY) {
         if (hasMMONEYExchange == TRUE) {
-            exchangeRate = 1;
+            exchangeRate = 2;
         }
     }
 
