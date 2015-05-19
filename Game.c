@@ -1415,7 +1415,7 @@ int getExchangeRate(Game g, int player, int disciplineFrom, int disciplineTo) {
 
 	/*printf("BPS:%d, MJ:%d, BQN:%d, MTV:%d, MMONEY:%d\n",
 		hasBPSExchange, hasMJExchange, 
-		hasBQNExchange, hasMTVExchange, hasMMONEYExchange);8?
+		hasBQNExchange, hasMTVExchange, hasMMONEYExchange);*/
 
     int exchangeRate = 3;
 
