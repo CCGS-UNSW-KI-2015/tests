@@ -224,7 +224,9 @@ static player newPlayer(int playerID) {
     playerNew->numARCs = 0;
     playerNew->numPubs = 0;
     playerNew->numIPs = 0;
-    playerNew->kpiPoints = 0;
+	playerNew->numUnis = 2;
+	playerNew->numGO8s = 0;
+    playerNew->kpiPoints = 20;
 
     return playerNew;
 }
@@ -649,7 +651,7 @@ static void buildHexMap(Game game) {
         }
         hexLink++;
     }
-    printf("Hex ID: %d,", game->hexArray[HEX_BUILD_PRINT]->hexID);
+   /* printf("Hex ID: %d,", game->hexArray[HEX_BUILD_PRINT]->hexID);
 
     if (game->hexArray[HEX_BUILD_PRINT]->hexUpLeft != NULL) {
         printf(" upL: %d,", game->hexArray[HEX_BUILD_PRINT]->hexUpLeft->hexID);
@@ -670,7 +672,7 @@ static void buildHexMap(Game game) {
         printf(" down: %d", game->hexArray[HEX_BUILD_PRINT]->hexDown->hexID);
     }
 
-    printf("\n");
+    printf("\n");*/
 }
 
 static void buildVerts(Game game) {
@@ -988,25 +990,11 @@ Game newGame(int discipline[], int dice[]) {
     game->startC2->hasUni = TRUE;
     game->startC2->playerID = CAMPUS_C - 1;
 
-    getPlayer(game, UNI_A)->kpiPoints = 10;
-    getPlayer(game, UNI_B)->kpiPoints = 10;
-    getPlayer(game, UNI_C)->kpiPoints = 10;
+	printf("numIPs : %d\n", getPlayer(game, UNI_A)->numIPs);
+	printf("numIPs : %d\n", getPlayer(game, UNI_B)->numIPs);
+	printf("numIPs : %d\n", getPlayer(game, UNI_C)->numIPs);
 
-    getPlayer(game, UNI_A)->numARCs = 0;
-    getPlayer(game, UNI_B)->numARCs = 0;
-    getPlayer(game, UNI_C)->numARCs = 0;
-
-    getPlayer(game, UNI_A)->numPubs = 0;
-    getPlayer(game, UNI_B)->numPubs = 0;
-    getPlayer(game, UNI_C)->numPubs = 0;
-
-    getPlayer(game, UNI_A)->numIPs = 0;
-    getPlayer(game, UNI_B)->numIPs = 0;
-    getPlayer(game, UNI_C)->numIPs = 0;
-
-    getPlayer(game, UNI_A)->numGO8s = 0;
-    getPlayer(game, UNI_B)->numGO8s = 0;
-    getPlayer(game, UNI_C)->numGO8s = 0;
+    //Set in newPlayer()
 
     return game;
 }
@@ -1377,12 +1365,13 @@ int getCampuses(Game g, int player) {
 
 // Completed
 int getIPs(Game g, int player) {
-    return g->playerArray[g->currentTurn % NUM_UNIS]->numIPs;
+	return g->playerArray[player - 1]->numIPs;
+    //return getPlayer(g, player);
 }
 
 // Completed
 int getPublications(Game g, int player) {
-    return g->playerArray[g->currentTurn % NUM_UNIS]->numPubs;
+	return g->playerArray[player - 1]->numPubs;
 }
 
 // Completed
