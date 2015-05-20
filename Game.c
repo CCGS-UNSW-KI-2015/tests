@@ -379,7 +379,6 @@ static vert getVertAtPath(Game game, path pathToVert) {
 
 static edge getEdgeAtPath(Game game, path pathToVert) {
     //------------NOTE SAME AS getVertAtPath() BUT FINDS THE EDGE AT THE END------------//
-    printf("getEdgeAtPath\n");
     
     path nextPath;
     
@@ -402,11 +401,11 @@ static edge getEdgeAtPath(Game game, path pathToVert) {
     
     vert vertFar = getVertAtPath(game, pathToVert);
     vert vertClose = getVertAtPath(game, nextPath);
-    printf("vertID1:%d vertID2:%d\n", vertFar->vertIndex, vertClose->vertIndex);
+    /*printf("vertID1:%d vertID2:%d\n", vertFar->vertIndex, vertClose->vertIndex);
     printf("Far:%p Close:%p\n", vertFar, vertClose);
     printf("vertClose vertUp:%p, vertDown:%p, vertSide:%p\n", vertClose->vertUp, vertClose->vertDown, vertClose->vertSide);
     printf("vertClose Up:%p, Down:%p, Side:%p\n", vertClose->edgeUp, vertClose->edgeDown, vertClose->edgeSide);
-    printf("vertFar vertUp:%p, vertDown:%p, vertSide:%p\n", vertFar->vertUp, vertFar->vertDown, vertFar->vertSide);
+    printf("vertFar vertUp:%p, vertDown:%p, vertSide:%p\n", vertFar->vertUp, vertFar->vertDown, vertFar->vertSide);*/
     //Last bit to get the edge
     edge edgeToReturn = NULL;
     if (vertClose->vertUp == vertFar) {
@@ -847,7 +846,6 @@ static void buildVerts(Game game) {
     }
 }
 
-
 static void buildEdges(Game game){
 	int edgeNum = 0;
 	while (edgeNum < NUM_EDGES) {
@@ -951,15 +949,15 @@ static void buildEdges(Game game){
             currHex->edgeUpRight->hexDown = currHex;
             currHex->edgeUpRight->vertUp = currHex->vertUpRight;
             currHex->edgeUpRight->vertDown = currHex->vertRight;
-            currHex->vertUpLeft->edgeDown = currHex->edgeUpLeft;
-            currHex->vertRight->edgeUp = currHex->edgeUpLeft;
+			currHex->vertUpRight->edgeDown = currHex->edgeUpRight;
+			currHex->vertRight->edgeUp = currHex->edgeUpRight;
             
             currHex->edgeDownRight = getEdge(game, hexLink + 33 + (hexLink - 7));
             currHex->edgeDownRight->hexUp = currHex;
             currHex->edgeDownRight->vertUp = currHex->vertRight;
             currHex->edgeDownRight->vertDown = currHex->vertDownRight;
-            currHex->vertUpRight->edgeSide = currHex->edgeUp;
-            currHex->vertUpLeft->edgeSide = currHex->edgeUp;
+			currHex->vertRight->edgeSide = currHex->edgeDownRight;
+			currHex->vertDownRight->edgeSide = currHex->edgeDownRight;
             
             currHex->edgeUp = getEdge(game, hexLink + 26);
             currHex->edgeUp->hexDown = currHex;
@@ -1028,9 +1026,9 @@ static void buildEdges(Game game){
             currHex->edgeUpLeft = getEdge(game, hexLink + 28 + (hexLink - 12));
             currHex->edgeUpLeft->hexDown = currHex;
             currHex->edgeUpLeft->vertUp = currHex->vertUpLeft;
-            currHex->edgeUpLeft->vertDown = currHex->vertRight;
-            currHex->vertRight->edgeDown = currHex->edgeDownLeft;
-            currHex->vertDownRight->edgeUp = currHex->edgeDownLeft;
+            currHex->edgeUpLeft->vertDown = currHex->vertLeft;
+			currHex->vertUpLeft->edgeDown = currHex->edgeUpLeft;
+			currHex->vertLeft->edgeUp = currHex->edgeUpLeft;
 		}
 		else {
             currHex->edgeUp = getEdge(game, hexLink + 46);
@@ -1069,11 +1067,11 @@ static void buildEdges(Game game){
             currHex->vertDownLeft->edgeUp = currHex->edgeDownLeft;
             
             currHex->edgeUpLeft = getEdge(game, hexLink + 39 + (hexLink - 16));
-            currHex->edgeUpLeft->hexDown = currHex;
-            currHex->edgeUpLeft->vertUp = currHex->vertUpLeft;
-            currHex->edgeUpLeft->vertDown = currHex->vertRight;
-            currHex->vertRight->edgeDown = currHex->edgeDownLeft;
-            currHex->vertDownRight->edgeUp = currHex->edgeDownLeft;
+			currHex->edgeUpLeft->hexDown = currHex;
+			currHex->edgeUpLeft->vertUp = currHex->vertUpLeft;
+			currHex->edgeUpLeft->vertDown = currHex->vertLeft;
+			currHex->vertUpLeft->edgeDown = currHex->edgeUpLeft;
+			currHex->vertLeft->edgeUp = currHex->edgeUpLeft;
 		}
 		hexLink++;
 	}
@@ -1402,8 +1400,8 @@ int getCampus(Game g, path pathToVertex) {
 int getARC(Game g, path pathToEdge) {
     vert vertAtPath = getVertAtPath(g, pathToEdge);
     edge edgeToReturn = getEdgeAtPath(g, pathToEdge);
-    printf("%p\n", edgeToReturn);
-    printf("%d\n", edgeToReturn->contents);
+    //printf("%p\n", edgeToReturn);
+    //printf("%d\n\n", edgeToReturn->contents);
     return edgeToReturn->contents;
 }
 
