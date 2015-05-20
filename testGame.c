@@ -176,7 +176,8 @@ int main(int argc, char *argv[]){
 		currentAction);
 
 	myAction.actionCode = BUILD_CAMPUS;
-	myAction.destination[0] = "L";
+	myAction.destination[0] = 'L';
+	myAction.destination[1] = 0;
 
 	if (isLegalAction(game, myAction) == TRUE) {
 		basicAssertFailure(0, 1, "UNI_A building a campus at \"L\" should be illegal!");
@@ -187,7 +188,8 @@ int main(int argc, char *argv[]){
 	//
 
 	myAction.actionCode = OBTAIN_ARC;
-	myAction.destination[0] = "B";
+	myAction.destination[0] = 'B';
+	myAction.destination[1] = 0;
 
 	currentAction = printAction("Integrity check with building an ARC at \"B\" (should be illegal)",
 		currentAction);
