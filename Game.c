@@ -118,8 +118,8 @@ typedef struct _edge {
     hex hexUp;
     hex hexDown;
 
-vert vertUp;//If level up == right
-vert vertDown;
+    vert vertUp;//If level up == right
+    vert vertDown;
 
 } *edge;
 
@@ -175,6 +175,7 @@ static void buildEdges(Game game);
 //Range Checked
 static vert getVert(Game game, int index);
 static player getPlayer(Game game, int playerID);
+static edge getEdge(Game game, int edgeIndex);
 static void linkVertOffsets(Game game, int vertNum, int up, int down, int side);
 
 //Getting a vert or edge
@@ -187,6 +188,18 @@ static vert getNextVert(Game game, vert verts[3], int tureDir[3], char letter, i
 
 
 //------------Helper Functions-------------//
+
+static edge getEdge(Game game, int edgeIndex){
+    edge edgePtr = NULL;
+    
+    if (edgeIndex > NUM_EDGES || edgeIndex < 0){
+        //Out of range
+    } else {
+        edgePtr = game->edgeArray[edgeIndex];
+    }
+    
+    return edgePtr;
+}
 
 static vert getVert(Game game, int index) {
     vert vertPtr = NULL;
@@ -350,8 +363,6 @@ static vert getVertAtPath(Game game, path pathToVert) {
         verts[BACK_I] = prevVert;
 
         nextVert = getNextVert(game, verts, trueDir, currentLetter, &prevVertDir);
-        /*printf("Curr vertID: %d, Next vertID: %d\n",
-        currVert->vertIndex, nextVert->vertIndex);*/
         prevVert = currVert;
         currVert = nextVert;
 
@@ -366,107 +377,44 @@ static vert getVertAtPath(Game game, path pathToVert) {
     return currVert;
 }
 
-static edge getEdgeAtPath(Game game, path pathToEdge) {
+static edge getEdgeAtPath(Game game, path pathToVert) {
     //------------NOTE SAME AS getVertAtPath() BUT FINDS THE EDGE AT THE END------------//
-    vert prevVert = (vert)malloc(sizeof(struct _vert));
-    vert toFree = prevVert;
-    vert currVert;
-    vert nextVert;
-    int prevVertDir; // Last link taken
-
-    currVert = getVert(game, ORIGIN_VERT_ID);
-    prevVert->vertIndex = ORIGIN_VERT_ID - 1;
-    prevVertDir = PREV_DIR_DOWN;
-
-    //Loop over path
-    char currentLetter;
-    int pos = 0;
-
-    currentLetter = pathToEdge[pos];
-    pos++;
-
-    while (currentLetter != 0) {
-        vert verts[3];
-        int trueDir[3];
-
-        if (prevVertDir == PREV_DIR_DOWN) {
-            if (prevVert->vertIndex < currVert->vertIndex) {
-                //Came from left, left = side, right = down, back == prev
-                verts[LEFT_I] = currVert->vertSide;
-                verts[RIGHT_I] = currVert->vertDown;
-
-                trueDir[LEFT_I] = PREV_DIR_SIDE;
-                trueDir[RIGHT_I] = PREV_DIR_DOWN;
-                trueDir[BACK_I] = PREV_DIR_UP;
-            } else {
-                //Came from right; left = down, right = side, back == prev
-                verts[LEFT_I] = currVert->vertDown;
-                verts[RIGHT_I] = currVert->vertSide;
-
-                trueDir[LEFT_I] = PREV_DIR_DOWN;
-                trueDir[RIGHT_I] = PREV_DIR_SIDE;
-                trueDir[BACK_I] = PREV_DIR_UP;
-            }
-        } else if (prevVertDir == PREV_DIR_SIDE) {
-            if (prevVert->vertIndex < currVert->vertIndex) {
-                //Came from left, left = up, right = down, back = prev
-                verts[LEFT_I] = currVert->vertUp;
-                verts[RIGHT_I] = currVert->vertDown;
-
-                trueDir[LEFT_I] = PREV_DIR_UP;
-                trueDir[RIGHT_I] = PREV_DIR_DOWN;
-                trueDir[BACK_I] = PREV_DIR_SIDE;
-            } else {
-                //Came from right; left = down, right = up, back = prev
-                verts[LEFT_I] = currVert->vertDown;
-                verts[RIGHT_I] = currVert->vertSide;
-
-                trueDir[LEFT_I] = PREV_DIR_DOWN;
-                trueDir[RIGHT_I] = PREV_DIR_UP;
-                trueDir[BACK_I] = PREV_DIR_SIDE;
-            }
-        } else if (prevVertDir == PREV_DIR_UP) {
-            if (prevVert->vertIndex < currVert->vertIndex) {
-                //Came from left, left = up, right = side, back = prev
-                verts[LEFT_I] = currVert->vertUp;
-                verts[RIGHT_I] = currVert->vertSide;
-
-                trueDir[LEFT_I] = PREV_DIR_UP;
-                trueDir[RIGHT_I] = PREV_DIR_SIDE;
-                trueDir[BACK_I] = PREV_DIR_DOWN;
-            } else {
-                //Came from right; left = side, right = up, back = prev
-                verts[LEFT_I] = currVert->vertSide;
-                verts[RIGHT_I] = currVert->vertUp;
-
-                trueDir[LEFT_I] = PREV_DIR_SIDE;
-                trueDir[RIGHT_I] = PREV_DIR_UP;
-                trueDir[BACK_I] = PREV_DIR_DOWN;
-            }
-        }
-
-        verts[BACK_I] = prevVert;
-
-        nextVert = getNextVert(game, verts, trueDir, currentLetter, &prevVertDir);
-        prevVert = currVert;
-        currVert = nextVert;
-
-        currentLetter = pathToEdge[pos];
-        pos++;
-
+    printf("getEdgeAtPath\n");
+    
+    path nextPath;
+    
+    int iter = 0;
+    while (iter < PATH_LIMIT) {
+        nextPath[iter] = pathToVert[iter];
+        iter++;
     }
-
-    free(toFree);
-    toFree = NULL;
-
+    
+    int pos = 0;
+    while (pos < PATH_LIMIT) {
+        if (pathToVert[pos] == 0){
+            if (pos - 1 >= 0) {
+                nextPath[pos - 1] = 0; 
+            }
+            break;
+        }
+        pos++;
+    }
+    
+    vert vertFar = getVertAtPath(game, pathToVert);
+    vert vertClose = getVertAtPath(game, nextPath);
+    printf("vertID1:%d vertID2:%d\n", vertFar->vertIndex, vertClose->vertIndex);
+    printf("Far:%p Close:%p\n", vertFar, vertClose);
+    printf("vertClose vertUp:%p, vertDown:%p, vertSide:%p\n", vertClose->vertUp, vertClose->vertDown, vertClose->vertSide);
+    printf("vertClose Up:%p, Down:%p, Side:%p\n", vertClose->edgeUp, vertClose->edgeDown, vertClose->edgeSide);
+    printf("vertFar vertUp:%p, vertDown:%p, vertSide:%p\n", vertFar->vertUp, vertFar->vertDown, vertFar->vertSide);
     //Last bit to get the edge
-    edge edgeToReturn;
-    if (prevVertDir == PREV_DIR_UP) {
-        edgeToReturn = currVert->edgeUp;
-    } else if (prevVertDir == PREV_DIR_SIDE) {
-        edgeToReturn = currVert->edgeSide;
+    edge edgeToReturn = NULL;
+    if (vertClose->vertUp == vertFar) {
+        edgeToReturn = vertClose->edgeUp;
+    } else if (vertClose->vertDown == vertFar) {
+        edgeToReturn = vertClose->edgeDown;
     } else {
-        edgeToReturn = currVert->edgeDown;
+        edgeToReturn = vertClose->edgeSide;
     }
     return edgeToReturn;
 }
@@ -899,7 +847,7 @@ static void buildVerts(Game game) {
     }
 }
 
-/*
+
 static void buildEdges(Game game){
 	int edgeNum = 0;
 	while (edgeNum < NUM_EDGES) {
@@ -911,26 +859,226 @@ static void buildEdges(Game game){
 
 	int hexLink = 0;
 	while (hexLink < NUM_HEXS) {
-		hex currHex =
+        hex currHex = game->hexArray[hexLink];
 		if (hexLink > -1 && hexLink < 3) {//First col
-
+            currHex->edgeUpLeft = getEdge(game, hexLink * 2);
+            currHex->edgeUpLeft->hexDown = currHex;
+            currHex->edgeUpLeft->vertUp = currHex->vertUpLeft;
+            currHex->edgeUpLeft->vertDown = currHex->vertLeft;
+            currHex->vertUpLeft->edgeDown = currHex->edgeUpLeft;
+            currHex->vertLeft->edgeUp = currHex->edgeUpLeft;
+            
+            currHex->edgeUp = getEdge(game, hexLink + 6);
+            currHex->edgeUp->hexDown = currHex;
+            currHex->edgeUp->vertUp = currHex->vertUpRight;
+            currHex->edgeUp->vertDown = currHex->vertUpLeft;
+            currHex->vertUpRight->edgeSide = currHex->edgeUp;
+            currHex->vertUpLeft->edgeSide = currHex->edgeUp;
+            
+            currHex->edgeUpRight = getEdge(game, hexLink * 2 + 11);
+            currHex->edgeUpRight->hexDown = currHex;
+            currHex->edgeUpRight->vertUp = currHex->vertUpRight;
+            currHex->edgeUpRight->vertDown = currHex->vertRight;
+            currHex->vertUpRight->edgeDown = currHex->edgeUpRight;
+            currHex->vertRight->edgeUp = currHex->edgeUpRight;
+            
+            currHex->edgeDownRight = getEdge(game, hexLink * 2 + 12);
+            currHex->edgeDownRight->hexUp = currHex;
+            currHex->edgeDownRight->vertUp = currHex->vertRight;
+            currHex->edgeDownRight->vertDown = currHex->vertDownRight;
+            currHex->vertRight->edgeDown = currHex->edgeDownRight;
+            currHex->vertDownRight->edgeUp = currHex->edgeDownRight;
+            
+            currHex->edgeDown = getEdge(game, hexLink + 7);
+            currHex->edgeDown->hexUp = currHex;
+            currHex->edgeDown->vertUp = currHex->vertDownRight;
+            currHex->edgeDown->vertDown = currHex->vertDownLeft;
+            currHex->vertRight->edgeSide = currHex->edgeDown;
+            currHex->vertDownRight->edgeSide = currHex->edgeDown;
+            
+            currHex->edgeDownLeft = getEdge(game, hexLink * 2 + 1);
+            currHex->edgeDownLeft->hexUp = currHex;
+            currHex->edgeDownLeft->vertUp = currHex->vertLeft;
+            currHex->edgeDownLeft->vertDown = currHex->vertDownLeft;
+            currHex->vertLeft->edgeDown = currHex->edgeDownLeft;
+            currHex->vertDownLeft->edgeUp = currHex->edgeDownLeft;
 		}
 		else if (hexLink > 2 && hexLink < 7) {
-
+            currHex->edgeUpLeft = getEdge(game, hexLink + 7 + (hexLink - 3));
+            currHex->edgeUpLeft->hexDown = currHex;
+            currHex->edgeUpLeft->vertUp = currHex->vertUpLeft;
+            currHex->edgeUpLeft->vertDown = currHex->vertRight;
+            currHex->vertUpLeft->edgeDown = currHex->edgeUpLeft;
+            currHex->vertRight->edgeUp = currHex->edgeUpLeft;
+            
+            currHex->edgeUp = getEdge(game, hexLink + 15);
+            currHex->edgeUp->hexDown = currHex;
+            currHex->edgeUp->vertUp = currHex->vertUpRight;
+            currHex->edgeUp->vertDown = currHex->vertUpLeft;
+            currHex->vertUpRight->edgeSide = currHex->edgeUp;
+            currHex->vertUpLeft->edgeSide = currHex->edgeUp;
+            
+            currHex->edgeUpRight = getEdge(game, hexLink + 21 + (hexLink - 3));
+            currHex->edgeUpRight->hexDown = currHex;
+            currHex->edgeUpRight->vertUp = currHex->vertUpRight;
+            currHex->edgeUpRight->vertDown = currHex->vertRight;
+            currHex->vertUpRight->edgeDown = currHex->edgeUpRight;
+            currHex->vertRight->edgeUp = currHex->edgeUpRight;
+            
+            currHex->edgeDownRight = getEdge(game, hexLink + 22 + (hexLink - 3));
+            currHex->edgeDownRight->hexUp = currHex;
+            currHex->edgeDownRight->vertUp = currHex->vertRight;
+            currHex->edgeDownRight->vertDown = currHex->vertDownRight;
+            currHex->vertRight->edgeDown = currHex->edgeDownRight;
+            currHex->vertDownRight->edgeUp = currHex->edgeDownRight;
+            
+            currHex->edgeDown = getEdge(game, hexLink + 16);
+            currHex->edgeDown->hexUp = currHex;
+            currHex->edgeDown->vertUp = currHex->vertDownRight;
+            currHex->edgeDown->vertDown = currHex->vertDownLeft;
+            currHex->vertRight->edgeSide = currHex->edgeDown;
+            currHex->vertDownRight->edgeSide = currHex->edgeDown;
+            
+            currHex->edgeDownLeft = getEdge(game, hexLink + 8 + (hexLink - 3));
+            currHex->edgeDownLeft->hexUp = currHex;
+            currHex->edgeDownLeft->vertUp = currHex->vertLeft;
+            currHex->edgeDownLeft->vertDown = currHex->vertDownLeft;
+            currHex->vertLeft->edgeDown = currHex->edgeDownLeft;
+            currHex->vertDownLeft->edgeUp = currHex->edgeDownLeft;
 		}
 		else if (hexLink > 6 && hexLink < 12) {
-
+            currHex->edgeUpRight = getEdge(game, hexLink + 32 + (hexLink - 7));
+            currHex->edgeUpRight->hexDown = currHex;
+            currHex->edgeUpRight->vertUp = currHex->vertUpRight;
+            currHex->edgeUpRight->vertDown = currHex->vertRight;
+            currHex->vertUpLeft->edgeDown = currHex->edgeUpLeft;
+            currHex->vertRight->edgeUp = currHex->edgeUpLeft;
+            
+            currHex->edgeDownRight = getEdge(game, hexLink + 33 + (hexLink - 7));
+            currHex->edgeDownRight->hexUp = currHex;
+            currHex->edgeDownRight->vertUp = currHex->vertRight;
+            currHex->edgeDownRight->vertDown = currHex->vertDownRight;
+            currHex->vertUpRight->edgeSide = currHex->edgeUp;
+            currHex->vertUpLeft->edgeSide = currHex->edgeUp;
+            
+            currHex->edgeUp = getEdge(game, hexLink + 26);
+            currHex->edgeUp->hexDown = currHex;
+            currHex->edgeUp->vertUp = currHex->vertUpRight;
+            currHex->edgeUp->vertDown = currHex->vertUpLeft;
+            currHex->vertUpRight->edgeSide = currHex->edgeUp;
+            currHex->vertUpLeft->edgeSide = currHex->edgeUp;
+            
+            currHex->edgeDown = getEdge(game, hexLink + 27);
+            currHex->edgeDown->hexUp = currHex;
+            currHex->edgeDown->vertUp = currHex->vertDownRight;
+            currHex->edgeDown->vertDown = currHex->vertDownLeft;
+            currHex->vertRight->edgeDown = currHex->edgeDownRight;
+            currHex->vertDownRight->edgeUp = currHex->edgeDownRight;
+            
+            currHex->edgeUpLeft = getEdge(game, hexLink + 16 + (hexLink - 7));
+            currHex->edgeUpLeft->hexDown = currHex;
+            currHex->edgeUpLeft->vertUp = currHex->vertUpLeft;
+            currHex->edgeUpLeft->vertDown = currHex->vertLeft;
+            currHex->vertLeft->edgeUp = currHex->edgeUpLeft;
+            currHex->vertUpLeft->edgeDown = currHex->edgeUpLeft;
+            
+            currHex->edgeDownLeft = getEdge(game, hexLink + 17 + (hexLink - 7));
+            currHex->edgeDownLeft->hexUp = currHex;
+            currHex->edgeDownLeft->vertUp = currHex->vertLeft;
+            currHex->edgeDownLeft->vertDown = currHex->vertDownLeft;
+            currHex->vertLeft->edgeDown = currHex->edgeDownLeft;
+            currHex->vertDownLeft->edgeUp = currHex->edgeDownLeft;
 		}
 		else if (hexLink > 11 && hexLink < 16) {
-
+            currHex->edgeUp = getEdge(game, hexLink + 37);
+            currHex->edgeUp->hexDown = currHex;
+            currHex->edgeUp->vertUp = currHex->vertUpRight;
+            currHex->edgeUp->vertDown = currHex->vertUpLeft;
+            currHex->vertUpLeft->edgeDown = currHex->edgeUpLeft;
+            currHex->vertRight->edgeUp = currHex->edgeUpLeft;
+            
+            currHex->edgeDown = getEdge(game, hexLink + 38);
+            currHex->edgeDown->hexUp = currHex;
+            currHex->edgeDown->vertUp = currHex->vertDownRight;
+            currHex->edgeDown->vertDown = currHex->vertDownLeft;
+            currHex->vertUpRight->edgeSide = currHex->edgeUp;
+            currHex->vertUpLeft->edgeSide = currHex->edgeUp;
+            
+            currHex->edgeUpRight = getEdge(game, hexLink + 42 + (hexLink - 12));
+            currHex->edgeUpRight->hexDown = currHex;
+            currHex->edgeUpRight->vertUp = currHex->vertUpRight;
+            currHex->edgeUpRight->vertDown = currHex->vertRight;
+            currHex->vertUpRight->edgeDown = currHex->edgeUpRight;
+            currHex->vertRight->edgeUp = currHex->edgeUpRight;
+            
+            currHex->edgeDownRight = getEdge(game, hexLink + 43 + (hexLink - 12));
+            currHex->edgeDownRight->hexUp = currHex;
+            currHex->edgeDownRight->vertUp = currHex->vertRight;
+            currHex->edgeDownRight->vertDown = currHex->vertDownRight;
+            currHex->vertRight->edgeDown = currHex->edgeDownRight;
+            currHex->vertDownRight->edgeUp = currHex->edgeDownRight;
+            
+            currHex->edgeDownLeft = getEdge(game, hexLink + 29 + (hexLink - 12));
+            currHex->edgeDownLeft->hexUp = currHex;
+            currHex->edgeDownLeft->vertUp = currHex->vertLeft;
+            currHex->edgeDownLeft->vertDown = currHex->vertDownLeft;
+            currHex->vertLeft->edgeDown = currHex->edgeDownLeft;
+            currHex->vertDownLeft->edgeUp = currHex->edgeDownLeft;
+            
+            currHex->edgeUpLeft = getEdge(game, hexLink + 28 + (hexLink - 12));
+            currHex->edgeUpLeft->hexDown = currHex;
+            currHex->edgeUpLeft->vertUp = currHex->vertUpLeft;
+            currHex->edgeUpLeft->vertDown = currHex->vertRight;
+            currHex->vertRight->edgeDown = currHex->edgeDownLeft;
+            currHex->vertDownRight->edgeUp = currHex->edgeDownLeft;
 		}
 		else {
-
+            currHex->edgeUp = getEdge(game, hexLink + 46);
+            currHex->edgeUp->hexDown = currHex;
+            currHex->edgeUp->vertUp = currHex->vertUpRight;
+            currHex->edgeUp->vertDown = currHex->vertUpLeft;
+            currHex->vertUpLeft->edgeDown = currHex->edgeUpLeft;
+            currHex->vertRight->edgeUp = currHex->edgeUpLeft;
+            
+            currHex->edgeDown = getEdge(game, hexLink + 47);
+            currHex->edgeDown->hexUp = currHex;
+            currHex->edgeDown->vertUp = currHex->vertDownRight;
+            currHex->edgeDown->vertDown = currHex->vertDownLeft;
+            currHex->vertUpRight->edgeSide = currHex->edgeUp;
+            currHex->vertUpLeft->edgeSide = currHex->edgeUp;
+            
+            currHex->edgeUpRight = getEdge(game, hexLink + 50 + (hexLink - 16));
+            currHex->edgeUpRight->hexDown = currHex;
+            currHex->edgeUpRight->vertUp = currHex->vertUpRight;
+            currHex->edgeUpRight->vertDown = currHex->vertRight;
+            currHex->vertUpRight->edgeDown = currHex->edgeUpRight;
+            currHex->vertRight->edgeUp = currHex->edgeUpRight;
+            
+            currHex->edgeDownRight = getEdge(game, hexLink + 51 + (hexLink - 16));
+            currHex->edgeDownRight->hexUp = currHex;
+            currHex->edgeDownRight->vertUp = currHex->vertRight;
+            currHex->edgeDownRight->vertDown = currHex->vertDownRight;
+            currHex->vertRight->edgeDown = currHex->edgeDownRight;
+            currHex->vertDownRight->edgeUp = currHex->edgeDownRight;
+            
+            currHex->edgeDownLeft = getEdge(game, hexLink + 40 + (hexLink - 16));
+            currHex->edgeDownLeft->hexUp = currHex;
+            currHex->edgeDownLeft->vertUp = currHex->vertLeft;
+            currHex->edgeDownLeft->vertDown = currHex->vertDownLeft;
+            currHex->vertLeft->edgeDown = currHex->edgeDownLeft;
+            currHex->vertDownLeft->edgeUp = currHex->edgeDownLeft;
+            
+            currHex->edgeUpLeft = getEdge(game, hexLink + 39 + (hexLink - 16));
+            currHex->edgeUpLeft->hexDown = currHex;
+            currHex->edgeUpLeft->vertUp = currHex->vertUpLeft;
+            currHex->edgeUpLeft->vertDown = currHex->vertRight;
+            currHex->vertRight->edgeDown = currHex->edgeDownLeft;
+            currHex->vertDownRight->edgeUp = currHex->edgeDownLeft;
 		}
 		hexLink++;
 	}
-
-}*/
+    printf("%d\n", game->edgeArray[0]->contents);
+}
 
 //------------Interface functons------------//
 
@@ -961,6 +1109,7 @@ Game newGame(int discipline[], int dice[]) {
 
     buildHexMap(game);
     buildVerts(game);
+    buildEdges(game);
 
     game->startA1 = getVert(game, VERT_A1_INDEX);
     game->startA2 = getVert(game, VERT_A2_INDEX);
@@ -1255,11 +1404,11 @@ int getCampus(Game g, path pathToVertex) {
 // Completed - ish
 // Needs edges to be initalised
 int getARC(Game g, path pathToEdge) {
-    /*
+    vert vertAtPath = getVertAtPath(g, pathToEdge);
     edge edgeToReturn = getEdgeAtPath(g, pathToEdge);
-
-    return edgeToReturn->contents;*/
-    return 0;
+    printf("%p\n", edgeToReturn);
+    printf("%d\n", edgeToReturn->contents);
+    return edgeToReturn->contents;
 }
 
 // Completed
