@@ -1139,10 +1139,6 @@ Game newGame(int discipline[], int dice[]) {
     game->startC2->hasUni = TRUE;
     game->startC2->playerID = CAMPUS_C - 1;
 
-	printf("numIPs : %d\n", getPlayer(game, UNI_A)->numIPs);
-	printf("numIPs : %d\n", getPlayer(game, UNI_B)->numIPs);
-	printf("numIPs : %d\n", getPlayer(game, UNI_C)->numIPs);
-
     //Set in newPlayer()
 
     return game;
