@@ -206,7 +206,8 @@ int main(int argc, char *argv[]){
 		currentAction);
 
 	myAction.actionCode = OBTAIN_ARC;
-	myAction.destination[0] = "L";
+	myAction.destination[0] = 'L';
+	myAction.destination[1] = 0;
 
 	if (isLegalAction(game, myAction) == FALSE) {
 		basicAssertFailure(1, 0, "UNI_A building an ARC at \"L\" should be legal!");
@@ -238,7 +239,8 @@ int main(int argc, char *argv[]){
 		currentAction);
 
 	myAction.actionCode = BUILD_CAMPUS;
-	myAction.destination[0] = "L";
+	myAction.destination[0] = 'L';
+	myAction.destination[1] = 0;
 
 	if (isLegalAction(game, myAction) == FALSE) {
 		basicAssertFailure(1, 0, "UNI_A building a campus at \"L\" should be legal!");
