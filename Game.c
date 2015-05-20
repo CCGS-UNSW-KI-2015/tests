@@ -53,6 +53,10 @@
 #define VERT_CONV_ALL5_INDEX 26
 #define VERT_CONV_ALL6_INDEX 32
 
+#define TOP_EDGE_VERTS_LEN 6
+#define TOP_EDGE_VERTS_ARRAY {3,11,21,27,38,47}
+
+
 //-----------Structs-----------//
 
 typedef struct _game * Game;
@@ -178,6 +182,9 @@ static player getPlayer(Game game, int playerID);
 static edge getEdge(Game game, int edgeIndex);
 static void linkVertOffsets(Game game, int vertNum, int up, int down, int side);
 
+//Returns TRUE if they are ==
+static int cmpEdgeToPlayer(edge edgeIn, int playerID);
+
 //Getting a vert or edge
 static vert getVertAtPath(Game game, path pathToVert);
 static edge getEdgeAtPath(Game game, path pathToEdge);
@@ -265,10 +272,23 @@ static void addResourcesForHexAndVert(Game game, hex hexRolled, vert vertToCheck
     }
 }
 
+static int cmpEdgeToPlayer(edge edgeIn, int playerID){
+	int returnVal = FALSE;
+	if (edgeIn == NULL) {
+		returnVal = FALSE;
+	} else if (edgeIn->contents == playerID) {
+			returnVal = TRUE;
+	} else {
+		returnVal = FALSE;
+	}
+	return returnVal;
+}
+
 //------Getting vert/edge functions-------//
 
 static vert getNextVert(Game game, vert verts[3], int tureDir[3], char letter, int *dir) {
-    vert returnVert;
+	vert returnVert = NULL;
+
     if (letter == LEFT) {
         returnVert = verts[LEFT_I];
         *dir = tureDir[LEFT_I];
@@ -283,14 +303,12 @@ static vert getNextVert(Game game, vert verts[3], int tureDir[3], char letter, i
 }
 
 static vert getVertAtPath(Game game, path pathToVert) {
-    vert prevVert = (vert)malloc(sizeof(struct _vert));
-    vert toFree = prevVert;
+	vert prevVert = NULL;
     vert currVert;
     vert nextVert;
     int prevVertDir; // Last link taken
 
     currVert = getVert(game, ORIGIN_VERT_ID);
-    prevVert->vertIndex = ORIGIN_VERT_ID - 1;
     prevVertDir = PREV_DIR_DOWN;
 
     //Loop over path
@@ -305,7 +323,16 @@ static vert getVertAtPath(Game game, path pathToVert) {
         int trueDir[3];
 
         if (prevVertDir == PREV_DIR_DOWN) {
-            if (prevVert->vertIndex < currVert->vertIndex) {
+			//Special case for start
+			int num;
+			if (prevVert == NULL){
+				num = ORIGIN_VERT_ID - 1;
+			} else {
+				num = prevVert->vertIndex;
+			}
+
+
+            if (num < currVert->vertIndex) {
                 //Came from left, left = side, right = down, back == prev
                 verts[LEFT_I] = currVert->vertSide;
                 verts[RIGHT_I] = currVert->vertDown;
@@ -366,13 +393,14 @@ static vert getVertAtPath(Game game, path pathToVert) {
         prevVert = currVert;
         currVert = nextVert;
 
+		if (currVert == NULL){
+			break;
+		}
+
         currentLetter = pathToVert[pos];
         pos++;
 
     }
-
-    free(toFree);
-    toFree = NULL;
 
     return currVert;
 }
@@ -407,14 +435,21 @@ static edge getEdgeAtPath(Game game, path pathToVert) {
     printf("vertClose Up:%p, Down:%p, Side:%p\n", vertClose->edgeUp, vertClose->edgeDown, vertClose->edgeSide);
     printf("vertFar vertUp:%p, vertDown:%p, vertSide:%p\n", vertFar->vertUp, vertFar->vertDown, vertFar->vertSide);*/
     //Last bit to get the edge
+
     edge edgeToReturn = NULL;
-    if (vertClose->vertUp == vertFar) {
-        edgeToReturn = vertClose->edgeUp;
-    } else if (vertClose->vertDown == vertFar) {
-        edgeToReturn = vertClose->edgeDown;
-    } else {
-        edgeToReturn = vertClose->edgeSide;
-    }
+
+	if (vertFar == NULL || vertClose == NULL){
+		 //None
+	} else {
+		if (vertClose->vertUp == vertFar) {
+			edgeToReturn = vertClose->edgeUp;
+		} else if (vertClose->vertDown == vertFar) {
+			edgeToReturn = vertClose->edgeDown;
+		} else {
+			edgeToReturn = vertClose->edgeSide;
+		}
+	}
+
     return edgeToReturn;
 }
 
@@ -632,6 +667,11 @@ static void buildVerts(Game game) {
         tempVert->contents = VACANT_VERTEX;
         tempVert->playerID = NO_ONE;
         tempVert->vertIndex = vertNum;
+		tempVert->edgeDown = NULL;
+		tempVert->edgeSide = NULL;
+		tempVert->edgeUp = NULL;
+		tempVert->hasUni = FALSE;
+		tempVert->hasGO8 = FALSE;
         game->vertArray[vertNum] = tempVert;
         vertNum++;
     }
@@ -844,6 +884,16 @@ static void buildVerts(Game game) {
         }
         hexLink++;
     }
+
+	int topEdgeBuffer[TOP_EDGE_VERTS_LEN] = TOP_EDGE_VERTS_ARRAY;
+
+	int iter = 0;
+	while (iter < TOP_EDGE_VERTS_LEN){
+		vert vertToFix = getVert(game, topEdgeBuffer[iter]);
+		vertToFix->vertUp = NULL;
+		iter++;
+	}
+
 }
 
 static void buildEdges(Game game){
@@ -851,6 +901,10 @@ static void buildEdges(Game game){
 	while (edgeNum < NUM_EDGES) {
 		edge tempEdge = malloc(sizeof(struct _edge));
 		tempEdge->contents = VACANT_ARC;
+		tempEdge->vertDown = NULL;
+		tempEdge->vertUp = NULL;
+		tempEdge->hexDown = NULL;
+		tempEdge->hexUp = NULL;
 		game->edgeArray[edgeNum] = tempEdge;
 		edgeNum++;
 	}
@@ -1084,6 +1138,8 @@ static void buildEdges(Game game){
 Game newGame(int discipline[], int dice[]) {
     Game game = (Game)malloc(sizeof(struct _game));
 
+	game->mostARCs = NULL;
+
     //Setting disciplines and dice vals
     int i = 0;
     while (i < NUM_REGIONS) {
@@ -1118,24 +1174,24 @@ Game newGame(int discipline[], int dice[]) {
 
     game->startA1->contents = CAMPUS_A;
     game->startA1->hasUni = TRUE;
-    game->startA1->playerID = CAMPUS_A - 1;
+    game->startA1->playerID = CAMPUS_A;
     game->startA2->contents = CAMPUS_A;
     game->startA2->hasUni = TRUE;
-    game->startA2->playerID = CAMPUS_A - 1;
+    game->startA2->playerID = CAMPUS_A;
 
     game->startB1->contents = CAMPUS_B;
     game->startB1->hasUni = TRUE;
-    game->startB1->playerID = CAMPUS_B - 1;
+    game->startB1->playerID = CAMPUS_B;
     game->startB2->contents = CAMPUS_B;
     game->startB2->hasUni = TRUE;
-    game->startB2->playerID = CAMPUS_B - 1;
+    game->startB2->playerID = CAMPUS_B ;
 
     game->startC1->contents = CAMPUS_C;
     game->startC1->hasUni = TRUE;
-    game->startC1->playerID = CAMPUS_C - 1;
+    game->startC1->playerID = CAMPUS_C;
     game->startC2->contents = CAMPUS_C;
     game->startC2->hasUni = TRUE;
-    game->startC2->playerID = CAMPUS_C - 1;
+    game->startC2->playerID = CAMPUS_C;
 
     //Set in newPlayer()
 
@@ -1230,7 +1286,7 @@ void makeAction(Game g, action a) {
         currentPlayer->kpiPoints += 2;
 
 
-        if (g->mostARCs->playerID == currentPlayer->playerID) {
+        if (g->mostARCsUsed == FALSE) {
             //Player now has same Pubs as other player OR more
             if (currentPlayer->numPubs > mostARCs->numPubs) {
                 //Player actually has more
@@ -1242,7 +1298,22 @@ void makeAction(Game g, action a) {
                 }
                 g->mostARCs = currentPlayer;
             }
-        }
+		} if (g->mostARCs != NULL) {
+			if (g->mostARCs->playerID != currentPlayer->playerID){
+				//Player now has same Pubs as other player OR more
+				if (currentPlayer->numPubs > mostARCs->numPubs) {
+					//Player actually has more
+					currentPlayer->kpiPoints += 10;
+					if (g->mostARCsUsed == TRUE) {
+						mostARCs->kpiPoints -= 10;
+					}
+					else {
+						g->mostARCsUsed = TRUE;
+					}
+					g->mostARCs = currentPlayer;
+				}
+			}
+		}
     } else if (a.actionCode == OBTAIN_PUBLICATION) {
 
         player mostPubs = g->mostPubs;
@@ -1398,10 +1469,12 @@ int getCampus(Game g, path pathToVertex) {
 // Completed - ish
 // Needs edges to be initalised
 int getARC(Game g, path pathToEdge) {
+	
     vert vertAtPath = getVertAtPath(g, pathToEdge);
     edge edgeToReturn = getEdgeAtPath(g, pathToEdge);
     //printf("%p\n", edgeToReturn);
     //printf("%d\n\n", edgeToReturn->contents);
+	printf("%s == %d\n", pathToEdge, edgeToReturn->contents);
     return edgeToReturn->contents;
 }
 
@@ -1415,20 +1488,27 @@ int isLegalAction(Game g, action a) {
         isLegal = TRUE;
     } else if (a.actionCode == BUILD_CAMPUS) {
         vert campus = getVertAtPath(g, a.destination);
-        // check if there's enough students
-        if (currentPlayer->students[STUDENT_BPS] < 1 ||
-            currentPlayer->students[STUDENT_BQN] < 1 ||
-            currentPlayer->students[STUDENT_MJ] < 1 ||
-            currentPlayer->students[STUDENT_MTV] < 1) {
-            isLegal = FALSE;
-        // Check if the campus is connected to an ARC grant
-        } else if ((campus->edgeUp->contents != currentPlayer->playerID) &&
-        (campus->edgeDown->contents != currentPlayer->playerID) &&
-        (campus->edgeSide->contents != currentPlayer->playerID)) { // Placeholder
-            isLegal = FALSE;
-        } else {
-            isLegal = TRUE;
-        }
+		if ((campus->edgeUp == NULL) ||
+			(campus->edgeUp == NULL) ||
+			(campus->edgeUp == NULL)){
+			isLegal = FALSE;
+		}
+		else {
+			// check if there's enough students
+			if (currentPlayer->students[STUDENT_BPS] < 1 ||
+				currentPlayer->students[STUDENT_BQN] < 1 ||
+				currentPlayer->students[STUDENT_MJ] < 1 ||
+				currentPlayer->students[STUDENT_MTV] < 1) {
+				isLegal = FALSE;
+				// Check if the campus is connected to an ARC grant
+			} else if (cmpEdgeToPlayer(campus->edgeUp, currentPlayer->playerID) == FALSE && 
+				cmpEdgeToPlayer(campus->edgeDown, currentPlayer->playerID) == FALSE &&
+				cmpEdgeToPlayer(campus->edgeSide, currentPlayer->playerID) == FALSE) { // Placeholder
+				isLegal = FALSE;
+			} else {
+				isLegal = TRUE;
+			}
+		}
     } else if (a.actionCode == BUILD_GO8) {
         vert campus = getVertAtPath(g, a.destination);
         // check if there's enough students
@@ -1444,19 +1524,28 @@ int isLegalAction(Game g, action a) {
     } else if (a.actionCode == OBTAIN_ARC) {
         edge arc = getEdgeAtPath(g, a.destination);
         // check if the location of the player is connected to his/her ARC
-        if ((arc->vertUp->edgeUp->contents != currentPlayer->playerID) &&
-            (arc->vertUp->edgeDown->contents != currentPlayer->playerID) &&
-            (arc->vertUp->edgeSide->contents != currentPlayer->playerID) &&
-            (arc->vertDown->edgeUp->contents != currentPlayer->playerID) &&
-            (arc->vertDown->edgeDown->contents != currentPlayer->playerID) &&
-            (arc->vertDown->edgeSide->contents != currentPlayer->playerID)) {
-            isLegal = FALSE;
-        // check if there's enough students
-        } else if (currentPlayer->students[STUDENT_BPS] < 1 || currentPlayer->students[STUDENT_BQN] < 1) {
-            isLegal = FALSE;
-        } else {
-            isLegal = TRUE;
-        }
+		if (arc == NULL || arc->vertUp == NULL || arc->vertDown == NULL) {
+			isLegal = FALSE;
+		} else {
+			if (arc->vertUp->playerID != currentPlayer->playerID &&
+				arc->vertDown->playerID != currentPlayer->playerID) {
+				/*cmpEdgeToPlayer(arc->vertUp->edgeUp, currentPlayer->playerID) == FALSE &&
+				cmpEdgeToPlayer(arc->vertUp->edgeDown, currentPlayer->playerID) == FALSE &&
+				cmpEdgeToPlayer(arc->vertUp->edgeSide, currentPlayer->playerID) == FALSE &&
+				cmpEdgeToPlayer(arc->vertDown->edgeUp, currentPlayer->playerID) == FALSE &&
+				cmpEdgeToPlayer(arc->vertDown->edgeDown, currentPlayer->playerID) == FALSE &&
+				cmpEdgeToPlayer(arc->vertDown->edgeSide, currentPlayer->playerID) == FALSE*/
+				isLegal = FALSE;
+				// check if there's enough students
+			} else if (currentPlayer->students[STUDENT_BPS] < 1 || 
+				currentPlayer->students[STUDENT_BQN] < 1) {
+				isLegal = FALSE;
+			} else if (arc->contents != VACANT_ARC) {
+				isLegal = FALSE;
+			} else {
+				isLegal = TRUE;
+			}
+		}
     } else if (a.actionCode == START_SPINOFF) {
         if (currentPlayer->students[STUDENT_MJ] < 1 ||
             currentPlayer->students[STUDENT_MTV] < 1 ||
