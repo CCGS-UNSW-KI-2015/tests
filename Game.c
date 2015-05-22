@@ -303,7 +303,7 @@ static vert getNextVert(Game game, vert verts[3], int tureDir[3], char letter, i
 }
 
 static vert getVertAtPath(Game game, path pathToVert) {
-	vert prevVert = NULL;
+    vert prevVert = NULL;
     vert currVert;
     vert nextVert;
     int prevVertDir; // Last link taken
@@ -1470,11 +1470,11 @@ int getCampus(Game g, path pathToVertex) {
 // Needs edges to be initalised
 int getARC(Game g, path pathToEdge) {
 	
-    vert vertAtPath = getVertAtPath(g, pathToEdge);
+    //vert vertAtPath = getVertAtPath(g, pathToEdge);
     edge edgeToReturn = getEdgeAtPath(g, pathToEdge);
     //printf("%p\n", edgeToReturn);
     //printf("%d\n\n", edgeToReturn->contents);
-	printf("%s == %d\n", pathToEdge, edgeToReturn->contents);
+    printf("%s == %d\n", pathToEdge, edgeToReturn->contents);
     return edgeToReturn->contents;
 }
 

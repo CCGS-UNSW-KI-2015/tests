@@ -56,7 +56,8 @@ int rollDice(Game game) {
 	while (diceRoll < 2 || diceRoll > 12) {
 		printf(BOLD YELLOW "\nEnter a dice roll number: " RESET YELLOW);
 
-		scanf("%d", &diceRoll);
+		int dummy = scanf("%d", &diceRoll);
+		dummy++;
 
 		if (diceRoll >= 2 && diceRoll <= 12) {
 			throwDice(game, diceRoll);
@@ -65,7 +66,7 @@ int rollDice(Game game) {
 			printf("This is an input sink, press a letter on your keyboard\n");
 			printf("followed by the enter key\n");
 			char sink[10];
-			scanf("%s", &sink);
+			dummy = scanf("%s", sink);
 		}
 	}
 
@@ -124,7 +125,8 @@ void castPlayerAction(Game game, int playerId) {
 		printf(BOLD YELLOW "\nEnter action code (or 9 to end turn): " RESET YELLOW);
 		int actionCode = -1;
 
-		scanf("%d", &actionCode);
+		int dummy = scanf("%d", &actionCode);
+		dummy++;
 
 		char confirmationMessage[500];
 
@@ -138,11 +140,11 @@ void castPlayerAction(Game game, int playerId) {
 		        complete = 1;
 		} else if (actionCode == BUILD_CAMPUS) {
 			printf(BOLD YELLOW "Enter path to build campus: " RESET YELLOW);
-			scanf("%s", playerAction.destination);
+			dummy = scanf("%s", playerAction.destination);
 			sprintf(confirmationMessage, "Build campus at: %s", playerAction.destination);
 		} else if (actionCode == BUILD_GO8) {
 			printf("Enter path to build Go8: ");
-			scanf("%s", playerAction.destination);
+			dummy = scanf("%s", playerAction.destination);
 			sprintf(confirmationMessage, "Build Go8 at: %s", playerAction.destination);
 		} else if (actionCode == OBTAIN_ARC) {
 			sprintf(confirmationMessage, "Obtain ARC");
@@ -156,9 +158,9 @@ void castPlayerAction(Game game, int playerId) {
 			playerAction.disciplineFrom = -1;
 			playerAction.disciplineTo = -1;
 			printf(BOLD YELLOW "Discipline from? " RESET YELLOW);
-			scanf("%d", &playerAction.disciplineFrom);
+			dummy = scanf("%d", &playerAction.disciplineFrom);
 			printf(BOLD YELLOW "Discipline to? " RESET YELLOW);
-			scanf("%d", &playerAction.disciplineTo);
+			dummy = scanf("%d", &playerAction.disciplineTo);
 			sprintf(confirmationMessage,
 				"Retrain student from type %d to %d",
 				playerAction.disciplineFrom, playerAction.disciplineTo);
@@ -175,7 +177,7 @@ void castPlayerAction(Game game, int playerId) {
 			printf("This is an input sink, press a letter on your keyboard\n");
 			printf("followed by the enter key\n");
 			char sink[10];
-			scanf("%s", &sink);
+			dummy = scanf("%s", sink);
 			discardAction = 1;
 		}
 
@@ -183,7 +185,7 @@ void castPlayerAction(Game game, int playerId) {
 			printf(BOLD CYAN "You have selected the action: %s\n", confirmationMessage);
 			printf(BOLD YELLOW "Confirm (y/n)? " RESET YELLOW);
 			char response;
-			scanf(" %c", &response);
+			dummy = scanf(" %c", &response);
 
 			if (response == 'y') {
 				makeAction(game, playerAction);
