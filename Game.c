@@ -32,7 +32,7 @@
 #define VERT_A1_INDEX 21
 #define VERT_A2_INDEX 32
 #define VERT_B1_INDEX 0
-#define VERT_B2_INDEX 50
+#define VERT_B2_INDEX 53
 #define VERT_C1_INDEX 6
 #define VERT_C2_INDEX 47
 
@@ -1147,6 +1147,7 @@ Game newGame(int discipline[], int dice[]) {
         game->dice[i] = dice[i];
         game->mostPubs = NULL;
         game->mostPubsUsed = FALSE;
+		game->mostARCsUsed = FALSE;
         i++;
     }
 
@@ -1286,31 +1287,27 @@ void makeAction(Game g, action a) {
         currentPlayer->kpiPoints += 2;
 
 
-        if (g->mostARCsUsed == FALSE) {
-            //Player now has same Pubs as other player OR more
-            if (currentPlayer->numPubs > mostARCs->numPubs) {
-                //Player actually has more
-                currentPlayer->kpiPoints += 10;
-                if (g->mostARCsUsed == TRUE) {
-                    mostARCs->kpiPoints -= 10;
-                } else {
-                    g->mostARCsUsed = TRUE;
-                }
-                g->mostARCs = currentPlayer;
-            }
-		} if (g->mostARCs != NULL) {
-			if (g->mostARCs->playerID != currentPlayer->playerID){
-				//Player now has same Pubs as other player OR more
-				if (currentPlayer->numPubs > mostARCs->numPubs) {
-					//Player actually has more
-					currentPlayer->kpiPoints += 10;
-					if (g->mostARCsUsed == TRUE) {
-						mostARCs->kpiPoints -= 10;
+        if (g->mostARCsUsed == FALSE) {            
+            //Player actually has more
+            currentPlayer->kpiPoints += 10;
+            g->mostARCsUsed = TRUE;
+            g->mostARCs = currentPlayer;
+		}
+		else {
+			if (g->mostARCs != NULL) {
+				if (g->mostARCs->playerID != currentPlayer->playerID){
+					//Player now has same Pubs as other player OR more
+					if (currentPlayer->numARCs > mostARCs->numARCs) {
+						//Player actually has more
+						currentPlayer->kpiPoints += 10;
+						if (g->mostARCsUsed == TRUE) {
+							mostARCs->kpiPoints -= 10;
+						}
+						else {
+							g->mostARCsUsed = TRUE;
+						}
+						g->mostARCs = currentPlayer;
 					}
-					else {
-						g->mostARCsUsed = TRUE;
-					}
-					g->mostARCs = currentPlayer;
 				}
 			}
 		}
@@ -1474,7 +1471,7 @@ int getARC(Game g, path pathToEdge) {
     edge edgeToReturn = getEdgeAtPath(g, pathToEdge);
     //printf("%p\n", edgeToReturn);
     //printf("%d\n\n", edgeToReturn->contents);
-    printf("%s == %d\n", pathToEdge, edgeToReturn->contents);
+    //printf("%s == %d\n", pathToEdge, edgeToReturn->contents);
     return edgeToReturn->contents;
 }
 
@@ -1527,14 +1524,14 @@ int isLegalAction(Game g, action a) {
 		if (arc == NULL || arc->vertUp == NULL || arc->vertDown == NULL) {
 			isLegal = FALSE;
 		} else {
-			if (arc->vertUp->playerID != currentPlayer->playerID &&
-				arc->vertDown->playerID != currentPlayer->playerID) {
-				/*cmpEdgeToPlayer(arc->vertUp->edgeUp, currentPlayer->playerID) == FALSE &&
+			if (cmpEdgeToPlayer(arc->vertUp->edgeUp, currentPlayer->playerID) == FALSE &&
 				cmpEdgeToPlayer(arc->vertUp->edgeDown, currentPlayer->playerID) == FALSE &&
 				cmpEdgeToPlayer(arc->vertUp->edgeSide, currentPlayer->playerID) == FALSE &&
 				cmpEdgeToPlayer(arc->vertDown->edgeUp, currentPlayer->playerID) == FALSE &&
 				cmpEdgeToPlayer(arc->vertDown->edgeDown, currentPlayer->playerID) == FALSE &&
-				cmpEdgeToPlayer(arc->vertDown->edgeSide, currentPlayer->playerID) == FALSE*/
+				cmpEdgeToPlayer(arc->vertDown->edgeSide, currentPlayer->playerID) == FALSE && 
+				arc->vertUp->playerID != currentPlayer->playerID &&
+				arc->vertDown->playerID != currentPlayer->playerID) {
 				isLegal = FALSE;
 				// check if there's enough students
 			} else if (currentPlayer->students[STUDENT_BPS] < 1 || 
