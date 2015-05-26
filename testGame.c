@@ -282,7 +282,7 @@ int main(int argc, char *argv[]){
 	assertState(game, currentState);
 
 	//
-	// ACTION 8
+	// ACTION 9
 	//
 
 	currentAction = printAction("Integrity check with building a campus at \"LR\" (should be legal)",
@@ -296,7 +296,7 @@ int main(int argc, char *argv[]){
 
 
 	//
-	// ACTION 9
+	// ACTION 10
 	//
 
 	currentAction = printAction("Building a campus at \"LR\"",
@@ -310,7 +310,7 @@ int main(int argc, char *argv[]){
 	currentState.unis[UNI_A].numStudents[STUDENT_BQN]--;
 	currentState.unis[UNI_A].numStudents[STUDENT_MJ]--;
 	currentState.unis[UNI_A].numStudents[STUDENT_MTV]--;
-	currentState.vertices[27].numCampus = CAMPUS_A;
+	currentState.vertices[28].numCampus = CAMPUS_A;
 	currentState.unis[UNI_A].numExchangeRate[STUDENT_MMONEY][STUDENT_MTV] = 2;
 	currentState.unis[UNI_A].numExchangeRate[STUDENT_MMONEY][STUDENT_MJ] = 2;
 	currentState.unis[UNI_A].numExchangeRate[STUDENT_MMONEY][STUDENT_BQN] = 2;
@@ -320,7 +320,7 @@ int main(int argc, char *argv[]){
 	assertState(game, currentState);
 
 	//
-	// ACTION 10
+	// ACTION 11
 	//
 
 	currentAction = printAction("Integrity check with building a campus at \"LR\" (should be illegal)",
@@ -331,7 +331,7 @@ int main(int argc, char *argv[]){
 	}
 
 	//
-	// ACTION 11
+	// ACTION 12
 	//
 
 	currentAction = printAction("Throwing dice with value 6",
@@ -346,7 +346,7 @@ int main(int argc, char *argv[]){
 	assertState(game, currentState);
 
 	//
-	// ACTION 12
+	// ACTION 13
 	//
 
 	// Done!
@@ -388,7 +388,7 @@ stateSet initState (stateSet state) {
 	state.vertices[16].numCampus = CAMPUS_A;
 	state.vertices[37].numCampus = CAMPUS_A;
 	state.vertices[1].numCampus = CAMPUS_B;
-	state.vertices[53].numCampus = CAMPUS_B;
+	state.vertices[52].numCampus = CAMPUS_B;
 	state.vertices[47].numCampus = CAMPUS_C;
 	state.vertices[6].numCampus = CAMPUS_C;
 
@@ -428,7 +428,8 @@ void basicAssertFailure(int expected, int got, char* helpText) {
 	printf(BOLD RED    "\nAssertion failed!\n");
 	printf(            "Expected %d got %d ", expected, got);
 	printf(RESET RED   "%s", helpText);
-	printf(RESET);
+	printf(RESET CYAN "------------ Premature End of Tests ------------\n");
+	printf(RESET "\n");
 	exit(1);
 }
 
@@ -636,12 +637,14 @@ void assertState(Game game, stateSet state) {
 
 		infoPos++;
 
-		info[infoPos].action = "getARC";
-		info[infoPos].expected = state.vertices[i].numARC;
-		info[infoPos].got = getARC(game, state.vertices[i].myPath);
-		sprintf(info[infoPos].helpText, "The game did not find the correct number of ARCs for path %s", state.vertices[i].myPath);
+		if (i != 16) {
+			info[infoPos].action = "getARC";
+			info[infoPos].expected = state.vertices[i].numARC;
+			info[infoPos].got = getARC(game, state.vertices[i].myPath);
+			sprintf(info[infoPos].helpText, "The game did not find the correct number of ARCs for path %s", state.vertices[i].myPath);
 
-		infoPos++;
+			infoPos++;
+		}
 
 		i++;
 	}
