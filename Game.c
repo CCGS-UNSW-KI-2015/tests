@@ -6,7 +6,7 @@
 #include <stdlib.h>
 #include <time.h>
 #include <string.h>
-
+#include <assert.h>
 #include "Game.h"
 
 //----------#defines----------//
@@ -257,6 +257,7 @@ static void addResourcesToPlayer(Game game, int playerID, int resources[NUM_DISC
     int discipline = 0;
     while (discipline < NUM_DISCIPLINES) {
         playerToAdd->students[discipline] += resources[discipline];
+		discipline++;
     }
 }
 
@@ -1365,7 +1366,6 @@ void throwDice(Game g, int diceScore) {
             addResourcesForHexAndVert(g, hexRolled, hexRolled->vertDownRight);
             addResourcesForHexAndVert(g, hexRolled, hexRolled->vertDownLeft);
         }
-
         iter++;
     }
 
@@ -1378,7 +1378,6 @@ void throwDice(Game g, int diceScore) {
             temp += g->playerArray[i]->students[STUDENT_MMONEY];
             g->playerArray[i]->students[STUDENT_MMONEY] = 0;
             g->playerArray[i]->students[STUDENT_THD] += temp;
-
             i++;
         }
     }
