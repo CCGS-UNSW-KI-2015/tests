@@ -225,7 +225,7 @@ int main(int argc, char *argv[]){
 
 	makeAction(game, myAction);
 
-	currentState.unis[UNI_A].numKPIPoints += 2;
+	currentState.unis[UNI_A].numKPIPoints += 12;
 	currentState.unis[UNI_A].numARCs += 1;
 	currentState.unis[UNI_A].numStudents[STUDENT_BPS]--;
 	currentState.unis[UNI_A].numStudents[STUDENT_BQN]--;
@@ -238,22 +238,68 @@ int main(int argc, char *argv[]){
 	// ACTION 6
 	//
 
-	currentAction = printAction("Integrity check with building a campus at \"L\" (should be legal)",
+	currentAction = printAction("Integrity check with building a campus at \"L\" (should be illegal)",
 		currentAction);
 
 	myAction.actionCode = BUILD_CAMPUS;
 	myAction.destination[0] = 'L';
 	myAction.destination[1] = 0;
 
-	if (isLegalAction(game, myAction) == FALSE) {
-		basicAssertFailure(1, 0, "UNI_A building a campus at \"L\" should be legal!");
+	if (isLegalAction(game, myAction) == TRUE) {
+		basicAssertFailure(1, 0, "UNI_A building a campus at \"L\" should be illegal!");
 	}
 
 	//
 	// ACTION 7
 	//
 
-	currentAction = printAction("Building a campus at \"L\"",
+	currentAction = printAction("Integrity check with building ARC at \"LR\" (should be legal)",
+		currentAction);
+
+	myAction.actionCode = OBTAIN_ARC;
+	myAction.destination[0] = 'L';
+	myAction.destination[1] = 'R';
+	myAction.destination[2] = 0;
+
+	if (isLegalAction(game, myAction) == FALSE) {
+		basicAssertFailure(1, 0, "UNI_A building an ARC at \"LR\" should be legal!");
+	}
+
+	//
+	// ACTION 8
+	//
+
+	currentAction = printAction("Building an ARC at \"LR\"", currentAction);
+
+	makeAction(game, myAction);
+
+	currentState.unis[UNI_A].numKPIPoints += 2;
+	currentState.unis[UNI_A].numARCs += 1;
+	currentState.unis[UNI_A].numStudents[STUDENT_BPS]--;
+	currentState.unis[UNI_A].numStudents[STUDENT_BQN]--;
+	currentState.vertices[28].numARC = ARC_A;
+
+	assertState(game, currentState);
+
+	//
+	// ACTION 8
+	//
+
+	currentAction = printAction("Integrity check with building a campus at \"LR\" (should be legal)",
+		currentAction);
+
+	myAction.actionCode = BUILD_CAMPUS;
+
+	if (isLegalAction(game, myAction) == FALSE) {
+		basicAssertFailure(1, 0, "UNI_A building a campus at \"LR\" should be legal!");
+	}
+
+
+	//
+	// ACTION 9
+	//
+
+	currentAction = printAction("Building a campus at \"LR\"",
 		currentAction);
 
 	makeAction(game, myAction);
@@ -265,22 +311,27 @@ int main(int argc, char *argv[]){
 	currentState.unis[UNI_A].numStudents[STUDENT_MJ]--;
 	currentState.unis[UNI_A].numStudents[STUDENT_MTV]--;
 	currentState.vertices[27].numCampus = CAMPUS_A;
+	currentState.unis[UNI_A].numExchangeRate[STUDENT_MMONEY][STUDENT_MTV] = 2;
+	currentState.unis[UNI_A].numExchangeRate[STUDENT_MMONEY][STUDENT_MJ] = 2;
+	currentState.unis[UNI_A].numExchangeRate[STUDENT_MMONEY][STUDENT_BQN] = 2;
+	currentState.unis[UNI_A].numExchangeRate[STUDENT_MMONEY][STUDENT_BPS] = 2;
+	currentState.unis[UNI_A].numExchangeRate[STUDENT_MMONEY][STUDENT_MMONEY] = 2;
 
 	assertState(game, currentState);
 
 	//
-	// ACTION 8
+	// ACTION 10
 	//
 
-	currentAction = printAction("Integrity check with building a campus at \"L\" (should be illegal)",
+	currentAction = printAction("Integrity check with building a campus at \"LR\" (should be illegal)",
 		currentAction);
 
 	if (isLegalAction(game, myAction) == TRUE) {
-		basicAssertFailure(1, 0, "UNI_A building a campus at \"L\" should be illegal!");
+		basicAssertFailure(1, 0, "UNI_A building a campus at \"LR\" should be illegal!");
 	}
 
 	//
-	// ACTION 9
+	// ACTION 11
 	//
 
 	currentAction = printAction("Throwing dice with value 6",
@@ -295,7 +346,7 @@ int main(int argc, char *argv[]){
 	assertState(game, currentState);
 
 	//
-	// ACTION 10
+	// ACTION 12
 	//
 
 	// Done!
