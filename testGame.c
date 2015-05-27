@@ -190,21 +190,6 @@ int main(int argc, char *argv[]){
 	// ACTION 3
 	//
 
-	myAction.actionCode = OBTAIN_ARC;
-	myAction.destination[0] = 'B';
-	myAction.destination[1] = 0;
-
-	currentAction = printAction("Integrity check with building an ARC at \"B\" (should be illegal)",
-		currentAction);
-
-	if (isLegalAction(game, myAction) == TRUE) {
-		basicAssertFailure(0, 1, "UNI_A building an ARC at \"B\" should be illegal!");
-	}
-
-	//
-	// ACTION 4
-	//
-
 	currentAction = printAction("Integrity check with building an ARC at \"L\" (should be legal)",
 		currentAction);
 
@@ -217,7 +202,7 @@ int main(int argc, char *argv[]){
 	}
 
 	//
-	// ACTION 5
+	// ACTION 4
 	//
 
 	currentAction = printAction("Building an ARC at \"L\"",
@@ -235,7 +220,7 @@ int main(int argc, char *argv[]){
 	assertState(game, currentState);
 
 	//
-	// ACTION 6
+	// ACTION 5
 	//
 
 	currentAction = printAction("Integrity check with building a campus at \"L\" (should be illegal)",
@@ -250,7 +235,7 @@ int main(int argc, char *argv[]){
 	}
 
 	//
-	// ACTION 7
+	// ACTION 6
 	//
 
 	currentAction = printAction("Integrity check with building ARC at \"LR\" (should be legal)",
@@ -266,7 +251,7 @@ int main(int argc, char *argv[]){
 	}
 
 	//
-	// ACTION 8
+	// ACTION 7
 	//
 
 	currentAction = printAction("Building an ARC at \"LR\"", currentAction);
@@ -282,7 +267,7 @@ int main(int argc, char *argv[]){
 	assertState(game, currentState);
 
 	//
-	// ACTION 9
+	// ACTION 8
 	//
 
 	currentAction = printAction("Integrity check with building a campus at \"LR\" (should be legal)",
@@ -296,7 +281,7 @@ int main(int argc, char *argv[]){
 
 
 	//
-	// ACTION 10
+	// ACTION 9
 	//
 
 	currentAction = printAction("Building a campus at \"LR\"",
@@ -320,7 +305,7 @@ int main(int argc, char *argv[]){
 	assertState(game, currentState);
 
 	//
-	// ACTION 11
+	// ACTION 10
 	//
 
 	currentAction = printAction("Integrity check with building a campus at \"LR\" (should be illegal)",
@@ -331,7 +316,7 @@ int main(int argc, char *argv[]){
 	}
 
 	//
-	// ACTION 12
+	// ACTION 11
 	//
 
 	currentAction = printAction("Throwing dice with value 6",
@@ -346,7 +331,7 @@ int main(int argc, char *argv[]){
 	assertState(game, currentState);
 
 	//
-	// ACTION 13
+	// ACTION 12
 	//
 
 	// Done!
