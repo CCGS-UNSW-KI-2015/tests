@@ -1205,7 +1205,7 @@ void disposeGame(Game g) {
     //Free every thing in the hex, vert and edge arrays
     int playerLoop = 0;
     while (playerLoop < NUM_UNIS) {
-        free(g->hexArray[playerLoop]);
+        free(g->playerArray[playerLoop]);
         g->playerArray[playerLoop] = NULL;
         playerLoop++;
     }
@@ -1221,8 +1221,15 @@ void disposeGame(Game g) {
     while (vertLoop < NUM_VERTS) {
         free(g->vertArray[vertLoop]);
         g->vertArray[vertLoop] = NULL;
-        hexLoop++;
+		vertLoop++;
     }
+
+	int edgeLoop = 0;
+	while (vertLoop < NUM_VERTS) {
+		free(g->edgeArray[edgeLoop]);
+		g->edgeArray[edgeLoop] = NULL;
+		edgeLoop++;
+	}
 
     free(g);
 
