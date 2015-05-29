@@ -1520,6 +1520,9 @@ int isLegalAction(Game g, action a) {
         // Check if there's a campus by the player
         } else if (campus->contents != currentPlayer->playerID) {
             isLegal = FALSE;
+        // Check if a player has more than 8 GO8s
+        } else if (currentPlayer->numGO8s > 8) {
+            isLegal = FALSE;
         } else {
             isLegal = TRUE;
         }
