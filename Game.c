@@ -1313,26 +1313,32 @@ void makeAction(Game g, action a) {
 			}
 		}
     } else if (a.actionCode == OBTAIN_PUBLICATION) {
+        // Take the cost from the user
+        currentPlayer->students[STUDENT_MJ]--;
+        currentPlayer->students[STUDENT_MTV]--;
+        currentPlayer->students[STUDENT_MMONEY]--;
 
         player mostPubs = g->mostPubs;
 
         // increase the number of publications by 1
         currentPlayer->numPubs++;
-
-        if (g->mostARCs->playerID == currentPlayer->playerID) {
-            //Player now has same Pubs as other player OR more
-            if (currentPlayer->numPubs > mostPubs->numPubs) {
-                //Player actually has more
-                currentPlayer->kpiPoints += 10;
-                if (g->mostPubsUsed == TRUE) {
-                    mostPubs->kpiPoints -= 10;
-                } else {
-                    g->mostPubsUsed = TRUE;
-                }
-                g->mostPubs = currentPlayer;
-            }
+        
+        if (g->mostPubsUsed == FALSE) {
+            //Player actually has more
+            currentPlayer->kpiPoints += 10;
+            g->mostPubsUsed = TRUE;
+            g->mostPubs = currentPlayer;
+        } else if (currentPlayer->numPubs > mostPubs->numPubs) {
+            //Player actually has more
+            currentPlayer->kpiPoints += 10;
+            mostPubs->kpiPoints -= 10;
+            g->mostPubs = currentPlayer;
         }
     } else if (a.actionCode == OBTAIN_IP_PATENT) {
+        // take the cost from the user
+        currentPlayer->students[STUDENT_MJ]--;
+        currentPlayer->students[STUDENT_MTV]--;
+        currentPlayer->students[STUDENT_MMONEY]--;
         // increase the number of IP patents by 1
         // increase the KPI points by 10
         currentPlayer->numIPs++;
