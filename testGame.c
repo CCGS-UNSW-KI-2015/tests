@@ -413,7 +413,7 @@ void basicAssertFailure(int expected, int got, char* helpText) {
 	printf(BOLD RED    "\nAssertion failed!\n");
 	printf(            "Expected %d got %d ", expected, got);
 	printf(RESET RED   "%s", helpText);
-	printf(RESET CYAN "------------ Premature End of Tests ------------\n");
+	printf(RESET CYAN "\n------------ Premature End of Tests ------------\n");
 	printf(RESET "\n");
 	exit(1);
 }
